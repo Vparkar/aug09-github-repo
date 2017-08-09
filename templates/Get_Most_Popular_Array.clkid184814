@@ -1,0 +1,74 @@
+##Doesn't check master Array
+#set($checkMaster = false)
+
+#if(!$mpNumItems)
+	#set($mpNumItems = 10)
+#end
+
+#if(!$mpPeriod)
+	#set($mpPeriod = "D")
+#end
+
+#if(!$mpStartDate)
+	#set($mpStartDate = $curDate)
+#end
+
+#if(!$mpType)
+	#set($mpType = "V")
+#end
+
+
+#set($mostPopularArrayCounts = $util.newArrayList)
+#set($mostPopularArrayIDs = $util.newArrayList)
+
+#foreach($sectionID in $mpSectionIDs)
+	#if($checkMaster)
+		#set($mpNumItems = $math.add($masterArray.size(), $mpNumItems))
+	#end
+	
+	#foreach($mpItem in $imware.mostPopular2($sectionID, $mpType, $mpPeriod, $mpNumItems, $mpStartDate).getResults())
+		#set($curIndex = $mostPopularArrayIDs.indexOf($mpItem.contentID))
+		
+		#set($o = $util.newOrderedPair())
+		#set($foo = $o.setX($mpItem.contentID))
+		
+		#if($curIndex > -1)
+			#set($foo = $o.setY($math.add($mostPopularArrayCounts.get($curIndex).getY(), $mpItem.count)))
+			#set($foo = $mostPopularArrayCounts.set($curIndex, $o))
+		
+		#else
+			#set($foo = $o.setY($mpItem.count))
+			#set($foo = $mostPopularArrayIDs.add($mpItem.contentID))
+			#set($foo = $mostPopularArrayCounts.add($o))
+		#end
+	#end
+#end
+
+#set($curCount = 0)
+#set($mostPopularArray = $util.newArrayList)
+
+#foreach($mpOPair in $util.numericSort($mostPopularArrayCounts, "-y"))
+	#if($curCount < $mpNumItems)
+		#set($item = $cms.content($math.newInt("$mpOPair.getX()"), false))
+		#if(!$noShowContentTypes.contains($item.typeName) && (!$checkContentType || $checkContentType && $showContentTypes.contains($item.typeName)))
+			#set($gptItem = $item)
+			$cms.template("Get Primary Target")
+			#if($gptTargetedItem && (!$checkMaster || ($checkMaster && !$masterArray.contains($item.id.toString()))))
+				#if($addToMaster)
+					#set($foo = $masterArray.add($gptTargetedItem))
+				#end
+
+				#set($foo = $mostPopularArray.add($gptTargetedItem))
+				#set($curCount = $math.add($curCount, 1))
+			#end
+		#end
+	#end
+#end
+
+
+#set($mpNumItems = false)
+#set($mpPeriod = false)
+#set($mpType = false)
+#set($mpStartDate = false)
+#set($checkMaster = false)
+#set($addToMaster = false)

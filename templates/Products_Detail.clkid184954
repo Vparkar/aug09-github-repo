@@ -1,0 +1,136 @@
+#set($isEditable = true)
+
+#set($content = $cms.content)
+
+#if(!$content || $content.typeName != "Products")
+	#foreach($item in $cms.filteredLinks("Products", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+$cms.template("Top")
+
+<div class="headline">
+	$cms.edit($content, "title")
+
+	#if($content.price && $content.price != "")
+		<span class="indexPrice">$content.price</span>
+	#end
+</div>
+
+<div id="newsarticle">
+	$cms.template("Networking Tools")
+	
+	#if($content.subHeadline && $content.subHeadline != "")
+		<div class="calloutText">
+			$content.subHeadline
+		</div>
+	#end
+	
+	<div class="contentWrapper">
+		
+
+	<div class="content">
+		#set($glcInputItem = $content)
+		#set($glcTagName = "relatedProducts")
+		$cms.template("Get Linked Content")
+		
+		#set($found = false)
+		#foreach($item in $glcOutputArray)
+			#if(!$found)
+				#set($found = true)
+				<div class="contentRight" style="clear:right;">
+					<div class="infoWrapperRight">
+						<div class="infoUnder">
+							<div class="infoHeader">
+								RELATED PRODUCTS
+							</div>
+							<ul>
+			#end
+			
+			<li><a href="$item.url">$item.title</a></li>						
+		#end
+		
+		#if($found)
+						</ul>
+					</div>
+				</div>
+			</div>
+		#end
+		$cms.template("Display WMA Info")
+		#set($found = false)
+		#foreach($image in $content.images)
+			#if(!$found)
+				#set($found = true)
+				<div class="contentRight" style="clear:right;">
+					<div class="infoWrapperRight">
+						<div class="infoUnder">
+							<div class="infoHeader">PRODUCT IMAGES</div>
+			#end
+			
+			
+			<div class="relatedImages">
+			#set($grioInputImage = $image)
+			#set($grioMaxWidth = 220)
+			$cms.template("Get Resized Image Object")
+			$grio.imageTag<br/>
+			#if($image.caption && $image.caption != "")
+				$image.caption
+				<br/>
+			#end
+			<br/>
+			</div>
+		#end
+		
+		#if($found)
+					</div>
+				</div>
+			</div>
+		#end
+		#if($content.featuredImage)
+		<div class="relatedImages">
+			<br><div class="infoHeader">Featured Image</div>
+			#set($grioInputImage = $content.featuredImage)
+			#set($grioMaxWidth = 220)
+			$cms.template("Get Resized Image Object")
+			$!grio.imageTag<br/>
+			#if($image.caption && $image.caption != "")
+				$image.caption
+				<br/>
+			#end
+			<br/>
+		</div>
+		#end
+		<p>$cms.edit($content, "body")</p>
+		<br/>
+		<p><a href="$topLevel.path/products/submit">Submit your product</a></p>
+		#if(!$wma.isLoggedIn())
+			Login to view/post Comments!<br>
+		#end
+		$cms.template("Comments")
+		</div>
+
+	#set($trends = $util.newArrayList)
+		#foreach($catObj in $content.getCategorization().getCategories(7834))
+			#if($catObj.name != "Uncategorized")
+				#set($foo = $trends.add($catObj))
+			#end
+		#end
+		
+		#if($trends.size() > 0)
+			<br/>
+			<span class="tag-label">Trends: </span>
+
+			#foreach($catObj in $trends)
+				<span class="tags">$catObj.name</span>
+			#end
+			<br/><br/>
+		#end
+	
+	</div>
+</div>
+$cms.template("Bottom")
+
+
+
+

@@ -1,0 +1,13 @@
+#set($showSocialMedia = true)
+
+#if($req.param("shortForm") == "y")
+	#set($sectionTitle = " ")
+#else
+	#set($sectionTitle = "Tell us a little bit about you so we may tailor your web experience.")
+#end
+
+$cms.template("Top")
+
+$cms.template("Registration Form")
+
+$cms.template("Bottom")

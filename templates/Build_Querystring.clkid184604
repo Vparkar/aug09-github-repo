@@ -1,0 +1,10 @@
+#set($bqOutputString = "")##
+##
+#foreach($bqParamSet in $bqInputParams)##
+	#if(!$bqExcludeArray.contains($bqParamSet.name))##
+		#set($bqOutputString = "$!bqOutputString&$bqParamSet.name=$util.encode.url($bqParamSet.value)")##
+	#end##
+#end##
+##
+#set($bqExcludeArray = $util.newArrayList)##
+

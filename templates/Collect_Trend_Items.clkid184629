@@ -1,0 +1,145 @@
+<script>
+	Trends = {
+		"curSetArray" : [],
+		"i" : 0,
+		"trendTempObject": {},
+		"curTrendItems" : {},
+		
+		init: function(){
+			#if($content && $content.typeName != "Profile")
+				Trends.createTrends();
+				Trends.findTrendItems();
+			#end
+		},
+		
+		createTrends: function(){
+			try{
+				#set($setID = 7834)
+				#foreach($catObj in $content.getCategorization().getCategories($setID))
+					#if($catObj.name.toLowerCase() != "uncategorized")
+						Trends.curSetArray.push({"catId":"$catObj.id", "catName":"$catObj.name", "setId":"$setID"});
+					#end
+				#end
+
+				if(Trends.curSetArray.length > 0){
+					if(CLICK_CS.cookiejar.fetch("trendItems") && CLICK_CS.cookiejar.fetch("trendItems") !== "" && CLICK_CS.cookiejar.fetch("trendItems") !== null){
+						Trends.curTrendItems = JSON.parse(CLICK_CS.cookiejar.fetch("trendItems"));
+			
+						for (var j = 0; j < Trends.curSetArray.length; j++){
+							var key = Trends.curSetArray[j].catId.toString();
+
+							if(Trends.curTrendItems.hasOwnProperty(key)){
+								Trends.curTrendItems[key]["cnt"] = parseInt(Trends.curTrendItems[key]["cnt"]) + 1;
+							}else{
+								Trends.curTrendItems[key] = {};
+								Trends.curTrendItems[key]["catId"] = key;
+								Trends.curTrendItems[key]["setId"] = Trends.curSetArray[j].setId;
+								Trends.curTrendItems[key]["cnt"] = 1;
+								Trends.curTrendItems[key]["catName"] = Trends.curSetArray[j].catName;
+							}
+						}
+					}else{
+						var key = Trends.curSetArray[0].catId.toString();
+						Trends.curTrendItems[key] = {};
+						Trends.curTrendItems[key]["catId"] = key;
+						Trends.curTrendItems[key]["setId"] = Trends.curSetArray[0].setId;
+						Trends.curTrendItems[key]["cnt"] = 1;
+						Trends.curTrendItems[key]["catName"] = Trends.curSetArray[0].catName;
+					}		
+	
+					CLICK_CS.cookiejar.bake("trendItems", JSON.stringify(Trends.curTrendItems), 365)
+				}else if(CLICK_CS.cookiejar.fetch("trendItems") && CLICK_CS.cookiejar.fetch("trendItems") !== "" && CLICK_CS.cookiejar.fetch("trendItems") !== null){
+					Trends.curTrendItems = JSON.parse(CLICK_CS.cookiejar.fetch("trendItems"));
+				}
+			}catch(e){ 
+				RegActions.displayMessage({
+					errorMessage: e,
+					errorType: "System"
+				});
+			}
+		},
+		
+		findTrendItems: function (){
+			try{
+				var highSet = 0;
+				var highCount = 0;
+		
+				var trendListUL = document.createElement("ul");
+		
+				<!-- TRENDS -->
+				for(key in Trends.curTrendItems){
+					var tempAText = document.createTextNode(Trends.curTrendItems[key]['catName'] + " (" + Trends.curTrendItems[key]['cnt'] + ")");
+	
+					var tempA = document.createElement("a");
+					tempA.setAttribute("href", "#");
+					tempA.style.color = "black";
+					//tempA.onclick = function(){Trends.pullTrendItems(); return false;};
+					tempA.onclick = (function(key){return function(){Trends.pullTrendItems(key);}})(key);
+					tempA.style.display = "block";
+					tempA.appendChild(tempAText);
+			
+					var tempLi = document.createElement("li");
+					tempLi.appendChild(tempA);
+					trendListUL.appendChild(tempLi);
+			
+					if(parseInt(Trends.curTrendItems[key]['cnt']) > highCount){
+						highSet = key;
+						highCount = Trends.curTrendItems[key]['cnt'];
+					}
+				}
+		
+				if(highCount > 0){
+					document.getElementById("trendHeader").appendChild(trendListUL);
+					Trends.pullTrendItems(highSet);
+					document.getElementById("trend").style.display = "block";
+				}
+			}catch(e){ 
+				RegActions.displayMessage({
+					errorMessage: e,
+					errorType: "System"
+				});
+			}
+		},
+	
+		pullTrendItems: function(highSet){
+			var trendItems = document.getElementById("trendItems");
+			for (var i = 0; i < trendItems.childNodes.length; i++){
+				trendItems.childNodes[i].style.display = "none";
+			}
+	
+			if(document.getElementById("trendItems" + highSet) !== undefined && document.getElementById("trendItems" + highSet) !== null){
+				document.getElementById("trendItems" + highSet).style.display = "block";
+			}else{
+				#if(!$cms.isContentPreview) RegActions.ajaxRequest(Global.tapiUrl, "c=n&ran" + Math.floor(Math.random() * 10000000) + "&subAction=getTrendItems&7834=" + highSet, Trends.hrPullTrendItems); #end
+			}
+		},
+
+		hrPullTrendItems: function(response){
+			if(response.success === true){
+				var trendItemsDiv = document.createElement("div");
+				trendItemsDiv.setAttribute("id", "trendItems" + response.catID);
+				
+				var defaultText = document.createTextNode(response.catName + " Items");
+				var tempH3 = document.createElement("H3");
+				tempH3.appendChild(defaultText);
+				trendItemsDiv.appendChild(tempH3);
+				
+				for (var i = 0; i < response.items.length; i++){
+					var tempAText = document.createTextNode(response.items[i].title);
+
+					var tempA = document.createElement("a");
+					tempA.setAttribute("href", response.items[i].url);
+					tempA.appendChild(tempAText);
+
+					var tempP = document.createElement("p");
+					tempP.appendChild(tempA);
+
+					trendItemsDiv.appendChild(tempP);
+				}
+				
+				document.getElementById("trendItems").appendChild(trendItemsDiv);
+				document.getElementById("trend").style.display = "block";
+			}
+		}
+	}
+</script>

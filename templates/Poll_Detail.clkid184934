@@ -1,0 +1,57 @@
+#set($content = $cms.content)
+#set($poll = $cms.poll($content.id))
+
+#if(!$content || $content.typeName != "Poll")
+	#foreach($item in $cms.filteredLinks("Poll", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+$cms.template("Top")
+
+<div class="headline">$cms.edit($content, "title")</div>
+
+<div id="newsarticle">
+	$cms.template("Networking Tools")
+	
+	<div class="bodyCopy">
+		#if($content.body != "")
+        	<div class="pollIntro">$content.body</div>
+		#end
+		#if($req.param("results") && $req.param("results") == 'y')
+			#foreach($choice in $content.answers)
+				#set($colorimg = "blu_grad_backgrnd.gif")
+				#set($percent = $math.round($math.divide($math.multiply($math.newDouble($poll.votes($velocityCount)), 100),$math.newDouble($poll.totalResponses))))
+		
+				<div class="pollAnswer">$choice.answer (${percent}%) </div>
+		
+				<div class="pollBar">#if(${percent}>0)<img src="$cms.media("$colorimg","designimages").url" height="25" width="${percent}%" />#end</div>
+		#end
+
+		<div style="font-weight:bold;margin-top:3px;">Total Responses: $poll.totalResponses</div>            
+
+		#else
+			<form id="poll" action="http://polls.clickability.com/polls" >
+				<input type="hidden" name="pid" value="$content.id" />
+				<input type="hidden" name="cid" value="$cms.customerID" />
+				<input type="hidden" name="mr" value="1000" />
+				<input type="hidden" name="rurl" value="http://${cms.envHost}${cms.domain}$topLevel.path/polls/${content.id}.html?results=y">
+	
+				#foreach($choice in $content.answers)
+					<p><span class="pCheck"><input name="oid" value="$velocityCount" #if($content.ismultivalue)type="checkbox" #else type="radio" #end></span>$choice.answer</p>
+				#end
+			
+				<p><input type="submit" class="btn" value="vote" /></p>
+			</form>
+		#end
+
+		<br class="clear">
+		
+		$cms.template("Comments")
+	</div>
+
+
+</div>
+
+$cms.template("Bottom")
+

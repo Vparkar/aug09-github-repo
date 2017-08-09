@@ -1,0 +1,140 @@
+<div id="viewedItems" class="loggedin"></div>
+<script>
+	var nextWrapperDiv = document.createElement("div");
+	nextWrapperDiv.setAttribute("id", "nextWrapper");
+	
+	///////////////////////////////////////
+	// Create and append header
+	///////////////////////////////////////
+		var nextstepsSpan = document.createElement("span");
+		
+		#if($curSection.path == "$topLevel.path/profiles")
+			var nextstepsText = document.createTextNode("RECENTLY VIEWED");
+			nextstepsSpan.setAttribute("class", "profilenextsteps");
+			nextstepsSpan.className = "profilenextsteps";
+		
+		#else
+			var nextstepsText = document.createTextNode("Recently Viewed");
+			nextstepsSpan.className = "nextsteps";
+		
+		#end
+		
+		nextstepsSpan.appendChild(nextstepsText);
+	
+		var nextHeaderDiv = document.createElement("div");
+		nextHeaderDiv.setAttribute("id", "nextHeader");
+		nextHeaderDiv.appendChild(nextstepsSpan);
+	
+		nextWrapperDiv.appendChild(nextHeaderDiv);
+	
+		var nextHeaderDiv = document.createElement("div");
+		nextHeaderDiv.setAttribute("id", "nextHeader");
+	
+		var pullBodyWrapperDiv = document.createElement("div");
+		pullBodyWrapperDiv.setAttribute("class", "pullBodyWrapper");
+		
+	///////////////////////////////////////
+	// Create and append main text and list
+	///////////////////////////////////////
+		var i = 0;
+		#if($content && $content.typeName != "Profile" && $content.typeName != "Homepage")
+			#if($content.displayTitle && $content.displayTitle != "")
+				#set($contentTitle = $content.displayTitle)
+			#else
+				#set($contentTitle = $content.title)
+			#end
+
+			var tempObject = {"s0":{"u":location.href, "t":"$util.encode.js($contentTitle)"}};
+			i++;
+		#else
+			var tempObject = {};
+		#end
+		
+		if(CLICK_CS.cookiejar.fetch("viewedItems") && CLICK_CS.cookiejar.fetch("viewedItems") !== "" && CLICK_CS.cookiejar.fetch("viewedItems") !== null){
+			var curViewedItems = JSON.parse(CLICK_CS.cookiejar.fetch("viewedItems"));
+		
+			var tempCount = 0;
+			for(var key in curViewedItems) {
+				#if($curSection.path == "/")
+					tempCount += 1;
+				#end
+				
+				if(tempCount <= 2){
+					var tempAText = document.createTextNode(curViewedItems[key]["t"]);
+			
+					var tempA = document.createElement("a");
+					tempA.setAttribute("href", curViewedItems[key]["u"]);
+					tempA.appendChild(tempAText);
+
+					var tempP = document.createElement("p");
+					tempP.appendChild(tempA);
+			
+					pullBodyWrapperDiv.appendChild(tempP);
+				}
+				
+				if(curViewedItems.hasOwnProperty(key) && curViewedItems[key]["u"] !== location.href && location.href.indexOf("/error") == -1 && i <= 4) {
+					var s = "s" + i;
+					tempObject[s] = {"u":curViewedItems[key]["u"], "t":curViewedItems[key]["t"]};
+					i++;
+				}
+			}
+		}else{
+			var defaultText = document.createTextNode("As you browse, items you view will appear here.");
+			var defaultTextSpan = document.createElement("span");
+			defaultTextSpan.setAttribute("class", "pullquoteSub");
+			defaultTextSpan.appendChild(defaultText);
+			
+			pullBodyWrapperDiv.appendChild(defaultTextSpan);
+		}
+		
+		if(curViewedItems === undefined || curViewedItems.numItems === undefined){
+			tempObject["numItems"] = 1;
+		}else{
+			tempObject["numItems"] = curViewedItems.numItems + 1;
+		}
+		
+		CLICK_CS.cookiejar.bake("viewedItems", JSON.stringify(tempObject), 365)
+		
+		
+		#if($curSection.path != "$topLevel.path/profiles")
+			if(CLICK_CS.subcookiejar.fetch("curUserInfo", "url") !== null){
+				// Create and append Profile and Saved Items Links
+				var profileLinkButton = document.createElement("img");
+				profileLinkButton.setAttribute("src", "$cms.media("my_portfolio_green.png", "designimages").url");			
+				profileLinkButton.setAttribute("border", "0");	
+			
+				var profileLink = document.createElement("a");
+				profileLink.setAttribute("href", CLICK_CS.subcookiejar.fetch("curUserInfo", "url") + "?c=n&ran=" + Math.floor(Math.random()*1000000));
+				profileLink.style.display = "block";
+				profileLink.appendChild(profileLinkButton);
+			
+				var tempP = document.createElement("p");
+				tempP.appendChild(profileLink);
+				pullBodyWrapperDiv.appendChild(tempP);
+			}
+		#end
+		
+		var pullBodyDiv = document.createElement("div");
+		#if($curSection.path == "/")
+			pullBodyDiv.setAttribute("class", "pullBody minBoxHeight");
+		#else
+			pullBodyDiv.setAttribute("class", "pullBody");
+		#end
+		
+		pullBodyDiv.appendChild(pullBodyWrapperDiv);
+		
+		nextWrapperDiv.appendChild(pullBodyDiv);
+	
+	///////////////////////////////////////
+	// Create and append bottom div
+	///////////////////////////////////////
+		var nextBottomDiv = document.createElement("div");
+		nextBottomDiv.setAttribute("class", "thinBottom");
+	
+		nextWrapperDiv.appendChild(nextBottomDiv);
+		
+	///////////////////////////////////////
+	// Create and append bottom div
+	///////////////////////////////////////
+		document.getElementById("viewedItems").appendChild(nextWrapperDiv);
+</script>

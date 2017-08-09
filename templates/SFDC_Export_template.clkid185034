@@ -1,0 +1,22 @@
+#set($mySearch = $cms.newSearch)
+
+$mySearch.addContentType("Blog Post")
+$mySearch.addContentType("Event")
+$mySearch.addContentType("General Page")
+$mySearch.addContentType("Press Release")
+
+$mySearch.addContentType("Products")
+$mySearch.addContentType("Polls")
+$mySearch.addContentType("Quote")
+
+
+
+Press Mentions
+
+
+$mySearch.pageSize(10000)
+
+contentID, content Type,Title,COntent Item Name,Summary<br>
+#foreach($item in  $mySearch.execute())
+$item.id,$item.contentTypeName,$!string.replaceAll($item.title,",",""),$!string.replaceAll($item.title,",",""),$!string.replaceAll($!item.summary,",","") <br>
+#end

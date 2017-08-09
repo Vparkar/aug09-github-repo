@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Styles>
+	<Style name="Clear Style" element="span"><Attribute name="class" value="" />
+</Style >
+<Style name="Paragraph" element="p"></Style >
+
+	<Style name="Blockquote" element="blockquote"></Style >
+
+	<Style name="Date" element="span">
+		<Attribute name="class" value="date" />
+	</Style >
+	
+	<Style name="Green" element="span">
+		<Attribute name="class" value="green" />
+	</Style >
+	
+	<Style name="Big" element="span">
+		<Attribute name="class" value="bigl" />
+	</Style >
+	
+	<Style name="Bold" element="span">
+		<Attribute name="class" value="bold" />
+	</Style >
+	
+	<Style name="Italic" element="em"></Style >
+
+	<Style name="Header" element="h2"></Style >
+</Styles>

@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+$cms.template("Setup")
+
+#set($homepage = $cms.content($req.intParam("hid"), false))
+##$homepage.title
+#if(!$homepage || $homepage.typeName != "Homepage")
+	#foreach($item in $cms.filteredLinks("Homepage", $topLevel.path, 1, 1))
+		#set($homepage = $item)
+	#end
+#end
+
+<BANNER>
+	#set($gibInputIB = $homepage.flashModules)
+	#set($returnUntargetedItems = true)
+	$cms.template("Get IB Items")
+	#foreach($item in $gibOutputArray)
+		<SECTION>
+			<SECTIONMETADATA>
+				<THUMBNAIL>
+					<HEAD>$item.title</HEAD>
+				</THUMBNAIL>
+				#if($item.link && $item.link != "")
+					<LEARNMORE><![CDATA[http://$cms.envHost$cms.domain$imware.trackedUrl($item.link, "Flash - $curSectionName - $item.link")]]></LEARNMORE>
+				#end
+				
+				#set($transition = "")
+				
+				#if($item.transition.equals("Circle Vertical"))
+					#set($transition = "circle_vert")
+					
+				#elseif($item.transition.equals("Circle Horizontal"))
+					#set($transition = "circle_horiz")
+					
+				#elseif($item.transition.equals("Box Vertical"))
+					#set($transition = "box_vert")
+					
+				#elseif($item.transition.equals("Box Horizontal"))
+					#set($transition = "box_horiz")
+					
+				#elseif($item.transition.equals("Fade"))
+					#set($transition = "fade")
+					
+				#elseif($item.transition.equals("Horizontal"))
+					#set($transition = "horiz")
+					
+				#elseif($item.transition.equals("Vertical"))
+					#set($transition = "vert")
+					
+				#elseif($item.transition.equals("Diagonal"))
+					#set($transition = "diagonal")
+					
+				#end
+				
+				#if($transition && $transition != "")
+					<TRANSITION><![CDATA[$transition]]></TRANSITION>
+				#end		 
+			</SECTIONMETADATA>
+			<LAYERS>
+				<LAYER type="learnmore" x="405" y="175" /> 
+				
+				#if($item.mainText && $item.mainText != "")
+					<LAYER type="textLayer" x="403" y="40" width="325" height="200"><![CDATA[$item.mainText]]></LAYER>
+				#end
+				
+				#set($videoURL = "")
+				#set($videoCaption = "")
+				#if($item.externalVideoURL && $item.externalVideoURL != "")
+					#set($videoURL = $item.externalVideoURL)
+				#elseif($item.video && $item.video.url != "")
+					#set($videoURL = $item.video.url)
+					#if($item.video.caption && $item.video.caption != "")
+						#set($videoCaption = $item.video.caption)
+					#end
+				#end
+				
+				#if($videoURL && $videoURL != "")
+					<LAYER type="playVideo" xpos="245" ypos="0" videoX="75" name="" title="$videoCaption"><![CDATA[$videoURL]]></LAYER>
+				#end
+				
+				#if($item.mainImage && $item.mainImage.url != "")
+					#set($grioInputImage = $item.mainImage)
+					#set($grioMaxHeight = 220)
+					$cms.template("Get Resized Image Object")
+					<LAYER type="image"><![CDATA[$grio.url]]></LAYER>
+				#end
+				
+				#if($item.backgroundImage && $item.backgroundImage.url != "")
+					<LAYER type="image"><![CDATA[$item.backgroundImage.url]]></LAYER>
+				#end
+			</LAYERS>    
+		</SECTION>
+	#end
+</BANNER>

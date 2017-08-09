@@ -1,0 +1,178 @@
+				<div class='GS_GuidedNav_TD'>
+<table width=100% cellpadding='0' cellspacing='0' border='0'>
+	<tr><td bgcolor='#FFFFFF' style='height:26px;' class='GS_GuidedNav_Title'>&nbsp;&nbsp;FIND PRODUCTS</td></tr>
+</table>
+
+<div class='GS_GuidedNav_Category' style='padding:0px 3px 0px 3px'>Narrow your search for<br>Desktops:</div>
+
+<br>
+
+<table border="0" cellspacing="0" cellpadding="0" style="margin:0;padding: 0 0 0 10px;background-color: #EEE;">
+	<tr align="left" valign="top"></tr>
+	<tr align="left" valign="top"></tr>
+	
+	#set($found = false)
+	#set($myParams = $util.newArrayList)
+	#foreach($param in $req.params)
+		#if($math.newInt($param) > 0)
+			#set($foo = $myParams.add($param))
+		#end
+	#end
+	
+	#if($myParams.size() > 0)
+		<tr align="left" valign="top"><td class="GS_GuidedNav_Category">Filtered by:</td></tr>
+		<tr align="left" valign="top"><td align="left" valign="top" width="155">
+			<div style="padding: 0px 0px 0px 4px; line-height:15px; position:relative; width:151px; ">
+				#foreach($param in $myParams)
+					<span class="GS_GuidedNav_Selected_Item">$cms.getCategorySet($math.newInt($param)).getCategory($req.intParam($param))</span>
+					#set($bqInputParams = $productParams)
+					#set($bqExcludeArray = [$param.toString()])
+					$cms.template("Build Querystring")
+					<span class="GS_GuidedNav_Num"><a class="GS_Link" href="/products?c=y&$bqOutputString"> (Clear)</a></span>
+					<br />
+				#end
+			<br /><br /></div>
+		</td></tr>
+	#end
+	   <!-- resave -->
+	#set($cat7542 = $util.newHashMap)
+	#set($cat7547 = $util.newHashMap)
+	#set($cat7552 = $util.newHashMap)
+	
+	#foreach($item in $productArray)
+		##<tr align="left" valign="top"><td align="left" valign="top" width="155">$item.title</td></tr>
+		#foreach($catObj in $item.getCategorization().getCategories(7542))
+			#if($catObj.name != "Uncategorized")
+				#if($cat7542.containsKey("$catObj.id"))
+					#set($foo = $cat7542.put("$catObj.id", $math.add($math.newInt($cat7542.get("$catObj.id")), 1)))
+				#else
+					#set($foo = $cat7542.put("$catObj.id", 1))
+				#end
+			#end
+		#end
+		
+		#foreach($catObj in $item.getCategorization().getCategories(7547))
+			#if($catObj.name != "Uncategorized")
+				#if($cat7547.containsKey("$catObj.id"))
+					#set($foo = $cat7547.put("$catObj.id", $math.add($math.newInt($cat7547.get("$catObj.id")), 1)))
+				#else
+					#set($foo = $cat7547.put("$catObj.id", 1))
+				#end
+			#end
+		#end
+		
+		#foreach($catObj in $item.getCategorization().getCategories(7552))
+			#if($catObj.name != "Uncategorized")
+				#if($cat7552.containsKey("$catObj.id"))
+					#set($foo = $cat7552.put("$catObj.id", $math.add($math.newInt($cat7552.get("$catObj.id")), 1)))
+				#else
+					#set($foo = $cat7552.put("$catObj.id", 1))
+				#end
+			#end
+		#end
+	#end
+	
+	#set($op7542 = $util.newArrayList) 
+	#foreach($item in $cat7542.keySet)
+		#set($o = $util.newOrderedPair()) 
+		#set($foo = $o.setX($item))
+		#set($foo = $o.setY($cat7542.get($item))) 
+		#set($foo = $op7542.add($o))
+	#end
+	
+	#set($op7547 = $util.newArrayList) 
+	#foreach($item in $cat7547.keySet)
+		#set($o = $util.newOrderedPair()) 
+		#set($foo = $o.setX($item))
+		#set($foo = $o.setY($cat7547.get($item))) 
+		#set($foo = $op7547.add($o))
+	#end
+	
+	#set($op7552 = $util.newArrayList) 
+	#foreach($item in $cat7552.keySet)
+		#set($o = $util.newOrderedPair()) 
+		#set($foo = $o.setX($item))
+		#set($foo = $o.setY($cat7552.get($item))) 
+		#set($foo = $op7552.add($o))
+	#end
+	
+		
+	#if($op7542.size() > 0)
+		<tr align="left" valign="top"><td><br /></td></tr>
+		<tr align="left" valign="top"><td class="GS_GuidedNav_Category">$cms.getCategorySet(7542).name</td></tr>
+		<tr align="left" valign="top">
+			<td align="left" valign="top">
+				<div style="padding: 0; line-height:15px; position:relative;">
+					#set($bqInputParams = $productParams)
+					
+					#if($req.param("7542"))
+						##set($bqExcludeArray = [$util.newParam("7542", $req.param("7542").toString())])
+					#end
+					$cms.template("Build Querystring")
+					
+					#foreach($item in $util.numericSort($op7542, "-y"))
+						<a href='/products?c=y&7542=$item.getX()&$bqOutputString' target='_top' class='GS_GuidedNav_Link'>$cms.getCategorySet(7542).getCategory($math.newInt($item.getX())).name</a>
+						<span class="GS_GuidedNav_Num"> ($item.getY())</span>
+						<br />
+					#end
+				</div>
+			</td>
+		</tr>
+
+		<tr><td>&nbsp;</td></tr>
+	#end
+	
+	#if($op7547.size() > 0)
+	<tr align="left" valign="top"><td class="GS_GuidedNav_Category">$cms.getCategorySet(7547).name</td></tr>
+
+
+		<tr align="left" valign="top"><td align="left" valign="top">
+			<div style="padding: 0; line-height:15px; position:relative;">
+				#set($histogram = $cms.newCategoryHistogram("Company"))
+				$histogram.addWSS("/products")
+
+				#set($bqInputParams = $productParams)
+				#if($req.param("7547"))
+					##set($bqExcludeArray = [$util.newParam("7547", $req.param("7547").toString())])
+				#end
+				$cms.template("Build Querystring")
+				
+				#foreach($item in $util.numericSort($op7547, "-y"))
+					<a href='/products?c=y&7547=$item.getX()&$bqOutputString' target='_top' class='GS_GuidedNav_Link'>$cms.getCategorySet(7547).getCategory($math.newInt($item.getX())).name</a>
+					<span class="GS_GuidedNav_Num"> ($item.getY())</span>
+					<br />
+				#end
+			</div>
+		</td></tr>
+
+		<tr><td>&nbsp;</td></tr>
+	#end
+	
+	#if($op7552.size() > 0)
+	<tr align="left" valign="top"><td class="GS_GuidedNav_Category">$cms.getCategorySet(7552).name</td></tr>
+
+
+		<tr align="left" valign="top"><td align="left" valign="top">
+			<div style="padding: 0; line-height:15px; position:relative;">
+				#set($histogram = $cms.newCategoryHistogram("Type"))
+				$histogram.addWSS("/products")
+
+				#set($bqInputParams = $productParams)
+				#if($req.param("7552"))
+					##set($bqExcludeArray = [$util.newParam("7552", $req.param("7552").toString())])
+				#end
+				$cms.template("Build Querystring")
+			
+				#foreach($item in $util.numericSort($op7552, "-y"))
+					<a href='/products?c=y&7552=$item.getX()&$bqOutputString' target='_top' class='GS_GuidedNav_Link'>$cms.getCategorySet(7552).getCategory($math.newInt($item.getX())).name</a>
+					<span class="GS_GuidedNav_Num"> ($item.getY())</span>
+					<br />
+				#end
+			</div>
+		</td></tr>
+
+		<tr><td>&nbsp;</td></tr>
+	#end
+</table><!-- End Transform -->
+
+				</div>

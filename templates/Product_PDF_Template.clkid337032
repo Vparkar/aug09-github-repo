@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE some_name [
+<!ENTITY nbsp "&#160;">
+<!ENTITY mdash "&#151;">
+<!ENTITY ndash "&#150;">
+]>
+
+<fo:root xmlns:fo="http://www.w3.org/1999/XSL/Format">
+    
+	<fo:layout-master-set>
+<!-- START OF  page master which defines the layout -->
+        <fo:simple-page-master master-name="first"
+                page-height="11in"
+                page-width="8.5in"
+                margin-top="1in"
+                margin-bottom="1in"
+                margin-left="1in"
+                margin-right="1in">
+            <fo:region-body margin-top=".7in"/>
+            <fo:region-before extent="0in"/>
+            <fo:region-after extent="0in"/>
+        </fo:simple-page-master>
+    
+        <fo:simple-page-master master-name="rest"
+                page-height="11in"
+                page-width="8.5in"
+                margin-top="0.3in"
+                margin-bottom="1in"
+                margin-left="1in"
+                margin-right="1in">
+            <fo:region-body margin-top=".7in"/>
+            <fo:region-before extent="0in"/>
+            <fo:region-after extent="0in"/>
+        </fo:simple-page-master>
+
+<!-- START OF page master sequence which specifies which simple-page-masters are to be used and in which order. -->
+        <fo:page-sequence-master master-name="basicPSM" >
+            <fo:repeatable-page-master-alternatives>
+            <fo:conditional-page-master-reference master-reference="first" page-position="first" />
+            <fo:conditional-page-master-reference master-reference="rest" page-position="rest" />
+            <!-- recommended fallback procedure -->
+            <fo:conditional-page-master-reference master-reference="rest" />
+            </fo:repeatable-page-master-alternatives>
+        </fo:page-sequence-master>
+<!-- END OF page master sequence which specifies which simple-page-masters are to be used and in which order. -->
+		
+    </fo:layout-master-set>
+<!-- END OF  page master which defines the layout -->
+	
+	
+    <!-- actual layout -->
+    <fo:page-sequence master-reference="basicPSM">
+
+        <!-- header -->
+        <fo:static-content flow-name="xsl-region-before">
+            <fo:block   text-align="end"
+                        font-size="10pt"
+                        font-family="serif"
+                        line-height="14pt" >
+                $cms.content.title - p. <fo:page-number/>
+            </fo:block>
+        </fo:static-content>
+
+
+#if($req.param("language") == "chinese")
+<fo:flow flow-name="xsl-region-body" font="14pt AR PL ZenKai Uni">
+
+#elseif($req.param("language") == "english")
+
+<fo:flow flow-name="xsl-region-body" font="5 4pt Courier New">
+
+#end
+
+      
+
+<!-- defines text   title level 1-->
+           
+<!--TITLE-->
+					
+          <fo:block   
+                        line-height="24pt"
+                        space-after.optimum="15pt"
+                        background-color="green"
+                        color="white"
+                        text-align="center"
+                        padding-top="3pt"
+                        >
+                $cms.content.title
+            </fo:block>
+    
+<!--PRICE-->
+
+                <fo:block   
+                            line-height="20pt"
+                            color="red"
+                            space-before.optimum="10pt"
+                            space-after.optimum="10pt"
+                            text-align="start"
+                            padding-top="3pt">
+                    Price: $cms.content.price
+                </fo:block>
+            			
+<!--Not grabbing .featuredImage-->	
+
+    
+<!--START of horizontal line-->
+<fo:block>
+         <fo:leader
+                         leader-length="100%"
+                         leader-pattern="rule"
+                        rule-style="solid"
+                        rule-thickness="0.1mm" color="black"/>
+DESCRIPTION (TINY MCE EDITOR)
+</fo:block>
+
+<!--END of horizontal line-->
+
+   <!-- TINY MCE-->
+                <fo:block   
+                            line-height="20pt"
+                            space-before.optimum="10pt"
+                            space-after.optimum="10pt"
+                            text-align="start"
+                            padding-top="3pt">
+
+
+##sets a variable to equal converting article body HTML Editor field into XHTML
+#set($bodyXhtml = "$cms.xhtml($cms.content.body)") 
+
+##uses the xstl template to covert xhtml into xsl-fo format
+$cms.xslt("html2xslfo","<div>$bodyXhtml</div>") 
+
+                </fo:block>
+
+<!--START of horizontal line-->
+<fo:block>
+         <fo:leader
+                         leader-length="100%"
+                         leader-pattern="rule"
+                        rule-style="solid"
+                        rule-thickness="0.1mm" color="black"/>
+&#169;  Property of animalbites.com All Rights Reserved
+</fo:block>
+
+<!--END of horizontal line-->
+
+           
+        </fo:flow>
+    </fo:page-sequence>
+</fo:root>

@@ -1,0 +1,61 @@
+#if($wma.isLoggedIn())
+    #set($curUser = $cms.subscriptionUser)
+    #if(!$content.hideComments && $curUser)
+    <a name="comments"></a>
+    <div id="comments" class="item" style="clear:both;">
+    	#if($req.param("commentsubmitted") && $req.param("commentsubmitted") == "true")
+    		<p><strong>Thank you for submitting your comment.</strong></p>
+    	#else
+    
+    		<a name="postComment"></a>
+    	
+    		<form id="commentform" onsubmit="insertComment(this);return false;" method="post">
+    			<input type="hidden" name="path" id="path" value="$req.fullURI?commentsubmitted=true#postComment">
+    			
+    			<h3 class="sub_head">Leave a Comment</h3>
+    			
+    			<label class="commentlabel">Email:</label>
+    			<label class="commenttextfield">$!curUser.email</label>
+    		
+    			<label class="commentlabel">Name:</label>
+    			<label class="commenttextfield">$!curUser.firstName $!curUser.lastName</label>
+    			<br/>	
+    			<label class="commentlabel">Comments:</label>
+    			<textarea id="field" name="field" maxlength="2000" class="commenttextbox"></textarea>
+    			<br/>
+    		
+    			<input type="submit" value="Post My Comment!" class="commentsubmit" />
+    		</form>
+    	
+    		<br/>
+    	
+    		<h3 class="sub_head">Comments</h3>
+		#end
+		#if($content.commentCount == 0)
+			<p>There are no comments at this time.   Be the first to post one!</p>
+		#else
+			<ol class="newslist">
+				#foreach($item in $util.sort($feedback.getAllFeedback($content.id), "commentDate"))
+					<li>
+						#if($item.name && $item.name != "")
+							<span class="comment_name">$item.name says...</span><br>
+						#end
+						
+						<span class="comment_name_date">
+							$util.date("MMM dd, yyyy h:mm:ss a", $item.commentDate)
+						</span>
+			
+						#if($item.comment && $item.comment != "")
+							<p class="comment">$item.comment</p>
+						#end
+					</li>
+				#end
+			</ol>
+		#end
+    </div>
+    #end
+#end
+
+
+
+

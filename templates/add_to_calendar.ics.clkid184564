@@ -1,0 +1,40 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//hacksw/handcal//NONSGML v1.0//EN
+BEGIN:VEVENT
+#set($content = $cms.content($req.intParam("contentid"),false))
+#foreach($i in $content.calendarSchedules)
+	#set($schedule = $i)
+#end
+
+#set($startTime = ${schedule.startTime})
+#if($startTime)
+	#set($startDate = "${schedule.startDate} ${startTime}")
+	#set($startDate = $util.parseDate($startDate,"yyyy-MM-dd H:m:s"))
+#else
+	#set($startDate = "${schedule.startDate}")
+	#set($startDate = $util.parseDate($startDate,"yyyy-MM-dd"))
+#end
+
+#set($endTime = ${schedule.endTime})
+
+#if($endTime)
+	#set($endDate = "${schedule.endDate} ${endTime}")
+	#set($endDate = $util.parseDate($endDate,"yyyy-MM-dd H:m:s"))
+#else
+	#set($endDate = "${schedule.endDate}")
+	#set($endDate = $util.parseDate($endDate,"yyyy-MM-dd"))
+#end
+
+##set($startDate = $util.add($startDate, "Hour",-17))
+##set($endDate = $util.add($endDate, "Hour",-17))
+DTSTART:$util.date("yyyyMMdd'T'HHmmss'Z'",$startDate)
+DTEND:$util.date("yyyyMMdd'T'HHmmss'Z'",$endDate)
+SUMMARY:$content.title
+LOCATION: $!schedule.location
+DESCRIPTION:$content.summary
+PRIORITY:3
+X-WR-TIMEZONE:US/Pacific
+END:VEVENT
+END:VCALENDAR
+

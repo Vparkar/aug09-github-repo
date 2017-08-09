@@ -1,0 +1,23 @@
+#set($gdtTargetedItem = false)
+#set($gdtMaxCount = 0)
+
+#foreach($gdtTarget in $gdtItem.contentTargets)
+	#if(!$gdtTarget.isDead() && $gdtTarget.path.indexOf("newswatch") == -1)
+		#set($gdtCount = 1)
+		#foreach($i in $gdtTarget.path.split("/"))
+			#set($gdtCount = $math.add($gdtCount, 1))			
+		#end
+		
+		#if($gdtCount > $gdtMaxCount)
+			#set($gdtMaxCount = $gdtCount)
+			#set($gdtOutputTarget = $gdtTarget)
+		#end
+	#end
+#end
+
+#if($gdtOutputTarget)
+	#set($gdtTargetedItem = $cms.content($gdtItem.id, $gdtOutputTarget.path))
+#end
+
+#set($gdtItem = false)
+#set($gdtOutputTarget = false)

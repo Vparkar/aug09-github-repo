@@ -1,0 +1,151 @@
+	<div class="clearb"></div>
+	<div id="w_footer">
+		<!-- Vignette V6 Fri Aug 28 14:34:44 2009 -->
+<!--WEB 5--><!-- being pcm footer module 405 -->
+
+<table border="0" cellpadding="0" cellspacing="0" width="">
+
+ <tr bgcolor="#92907D" align="left" valign="middle">
+  <td><img src="http://www.pcmag.com/images/pcm_footer_pcmag.gif" width="86" height="26"></td>
+  <td><p class="Footer_Pub"> 
+   <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,1329747,00.asp" class="Footer_Pub">Contact Us</a><!-- end ziffarticle //--> | 
+   <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,1329743,00.asp" class="Footer_Pub">About</a><!-- end ziffarticle //--> | 
+   <a href="http://www.pcmagnetwork.com" class="Footer_Pub">Advertise</a> | 
+   <a href="http://www.pcmag.com/site_map" class="Footer_Pub">Site Map</a></p></td>
+
+ </tr>
+
+ <!-- Ziff Davis Media Links -->
+ <tr valign="top" bgcolor="#ffffff">
+  <td valign="top" align="center" style="padding:7 10 7;"><a href="http://www.ziffdavis.com" name="Ziff Davis Media Inc." class="Footer_ZD"><!-- start ziffimage //--><img width="108" height="15" border="0" src="http://common.ziffdavisinternet.com/util_get_image/18/0,1425,i=186329,00.gif" alt="Ziff Davis Media"><!-- end ziffimage //--></a></td>
+  <td align="left"><p class="Footer_Text" style="margin:5 0 5 ;"><!-- BEGIN 2817 - CSB Contact Us Module for Footer -->
+<style type="text/css">
+p.Footer_Text a {white-space:nowrap;}
+</style>
+<a href="http://www.ziffdavis.com/" title="Ziff Davis Home">Ziff Davis Home</a>&nbsp;| 
+<a href="http://www.ziffdavis.com/about/contact" title="Contact Us">Contact Us</a>&nbsp;| 
+
+<a href="http://www.pcmagnetwork.com" title="Advertise">Advertise</a>&nbsp;| 
+<a href="http://www.ziffdavis.com/about/link-to-us" title="Link to Us">Link to Us</a>&nbsp;| 
+<a href="http://www.pcmag.com/newsletter_manage/" title="Newsletters">Newsletters</a>&nbsp;|
+<a href="http://www.pcmag.com/article2/0,1895,1329778,00.asp" title="RSS Feeds">RSS Feeds</a>&nbsp;| 
+<a href="http://www.ziffdavis.com/products/licensing/international">Ziff Davis Media International</a>
+
+<!-- END 2817 - CSB Contact Us Module for Footer--></ziffhtml></p></td>
+ </tr>
+ 
+ <!-- Subscription Links -->
+ <tr valign="top" bgcolor="#ffffff">
+
+  <td valign="top" align="center" style="padding:7 10 7;">&nbsp;</td>
+  <td align="left"><p class="Footer_Text" style="margin:5 0 5 ;"><a href="http://www.pcmag.com/previous_issues/" title="Issue Index">Issue Index</a>&nbsp;| 
+  <a href="http://go.pcmag.com/subscriberservices" title="Digital Edition Customer Service">Digital Edition Customer Service</a>&nbsp;| 
+  <a href="http://www.zdmcirc.com/index.html" title="Subscribe to PCMag Digital Edition">Subscribe to PCMag Digital Edition</a>&nbsp;| 
+  <a href="http://www.ziffdavis.com/about/contact">Reprints</a></p></td>
+ </tr>
+
+ <!-- Publication Links -->
+ <tr align="left" valign="top" bgcolor="#ffffff">
+
+  <td align="right" valign="top" style="padding:7 8;"><a href="http://www.pcmagnetwork.com/"><img src="http://www.pcmag.com/images/pcm_15_network.gif" width="63" height="23" border="0"></a></td>
+  <td><p class="Footer_Text" style="margin:5 0 5 0;"><!-- BEGIN 2816 - CSB Publication Module -->
+<a href="http://www.appscout.com">AppScout</a>&nbsp;|
+<a href="http://www.crankygeeks.com">Cranky Geeks</a>&nbsp;| 
+<a href="http://www.digitallife.com">DigitalLife</a>&nbsp;| 
+<a href="http://dl.tv">DL.TV</a>&nbsp;| 
+<a href="http://www.extremetech.com">ExtremeTech</a>&nbsp;| 
+<a href="http://www.gearlog.com">Gearlog</a>&nbsp;|
+<a href="http://www.goodcleantech.com">GoodCleanTech</a>&nbsp;| 
+
+<a href="http://www.pcmag.com">PCMag.com</a>&nbsp;| 
+<a href="http://www.pcmagcasts.com">PCMagCasts</a>&nbsp;| 
+<a href="http://blogs.pcmag.com/securitywatch">Security Watch</a>&nbsp;| 
+<a href="http://www.smartdevicecentral.com">Smart Device Central</a>&nbsp;|
+<a href="http://www.techsaver.com">TechSaver</a><br>
+<br>
+<a href="http://mobile.appscout.com">AppScout Mobile</a>&nbsp;| 
+<a href="http://mobile.gearlog.com">Gearlog Mobile</a>&nbsp;| 
+<a href="http://mobile.goodcleantech.com">GoodCleanTech Mobile</a>&nbsp;| 
+
+<a href="http://mobile.pcmag.com">PCMag.com Mobile</a>
+<br>
+<br>
+Use of this site is governed by our <a href="http://www.ziffdavis.com/about/terms">Terms of Use</a> and <a href="http://www.ziffdavis.com/about/privacy">Privacy Policy</a><br>
+Copyright &copy; 
+<!-- END 2816 - CSB Publication Module --></ziffhtml> 1996-2009 <a href="http://www.ziffdavis.com" name="Ziff Davis Publishing Holdings Inc." class="Footer_ZD">Ziff Davis Publishing Holdings Inc.</a> All Rights Reserved. PC Magazine is a registered trademark of Ziff Davis Publishing Holdings Inc. Reproduction in whole or in part in any form or medium without express written permission of Ziff Davis Media Inc. is prohibited.</p></td>
+
+ </tr>
+ 
+ </table>
+
+<!-- BEGIN CSB Footer Additions -->
+<!-- BEGIN CSB Common Footer Additions - Module 3058 -->
+<!-- BEGIN Module 3346 -->
+<!-- Start Quantcast tag -->
+<script type="text/javascript" src="http://edge.quantserve.com/quant.js"></script>
+<script type="text/javascript">_qacct="p-04uRKu2hEQDsw";quantserve();</script>
+<noscript>
+<a href="http://www.quantcast.com/p-04uRKu2hEQDsw" target="_blank"><img src="http://pixel.quantserve.com/pixel/p-04uRKu2hEQDsw.gif" style="display: none;" border="0" height="1" width="1" alt="Quantcast"http://www.pcmag.com/></a>
+</noscript>
+<!-- End Quantcast tag -->
+<!-- END Module 3346 -->
+
+<!-- END CSB Common Footer Additions - Module 3058 -->
+<!-- END CSB Footer Additions -->
+
+<!-- BEGIN PCMag Footer Additions -->
+<!-- BEGIN Module 3347 PCM Only Footer Additions -->
+<!-- BEGIN Module 3368 PCM Google Analytics Tag -->
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-3705233-1");
+pageTracker._setDomainName("pcmag.com");
+pageTracker._initData();
+pageTracker._trackPageview();
+</script>
+<!-- END Module 3368 PCM Google Analytics Tag -->
+
+<style type="text/css">
+div.articleCopy table {overflow:hidden;}
+div.articleCopy table td {font-family:verdana; font-size:12px;}
+div.articleCopy table td a img {display:block!important;}
+/*#homepageSubForm {display:none!important;}*/
+</style>
+
+<!-- BEGIN POPUNDER KILL -->
+<!-- <script type="text/javascript">
+ onunload=null;
+</script> -->
+
+<!-- END POPUNDER KILL -->
+
+<!-- BEGIN ComScore Broker Tag -->
+<script src="http://ar.voicefive.com/bmx/node.pli?pub=pcmag"></script>
+<!-- END ComScore Broker Tag -->
+
+<!-- BEGIN ContextWeb -->
+<img src="http://bh.contextweb.com/bh/set.aspx?action=add&advid=1311&token=ZIDM1" width="1" height="1" border="0">
+<!-- END ContextWeb -->
+
+<!-- BEGIN Crowd Science -->
+<script src="http://static.crowdscience.com/start-d55d8da76f.js"></script>
+<!-- END Crowd Science -->
+
+<!-- END Module 3347 PCM Only Footer Additions -->
+
+<!-- BEGIN comScore Brand Metrix - Mec Toshiba -- Control Strip Tag -->
+<script src="http://ar.voicefive.com/p38487866/ar.js?PRAd=4006&AR_C=1"></script> 
+<!-- END comScore Brand Metrix - Mec Toshiba -- Control Strip Tag -->
+<!-- END PCMag Footer Additions -->
+
+<!-- end pcm footer module 405 -->
+	</div>
+	</div>
+	</div>
+	</div>
+</body>
+
+</html>

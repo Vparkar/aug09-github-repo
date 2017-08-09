@@ -1,0 +1,402 @@
+// Check if the CLICK_CS global namespace object exists.  If not, create it.
+// Create The CLICK_CS object by creating a function and immediately invoking it.
+// This function will return an object with both public and private variables and methods.
+
+var CLICK_CS = CLICK_CS || function() {
+	// private variable. set this to the relatice location of the "determine login status" template
+	var loginStatusLoc = "/templates/determine_login_status.js",
+	/*
+	// private variable, set this to the relative location of your dashboard file.
+	 dashboardURL = '/templates/test_dashboard',
+	*/
+	
+	// establishes the logThis array, which will display any errors or debug messages
+	logArray = [],
+	
+	// logThis is a private function
+	logThis = function(text) {
+		logArray.push(text);
+	},
+	
+	// Creating cookiejar and subcookiejar as private functions so as not to have to change any of the code
+	// the private functions are later called as public methods of the CLICK_CS object.
+	
+	/**
+	 * Cookies.js, providing easy access to cookies thru the cookiejar object. Enabling so-called "subcookies" thru the subcookiejar 
+	 * object.
+	 * See this related blogpost for more information on how to use these objects:
+	 * 	<http://www.whatstyle.net/articles/28/subcookies>
+	 * Check out this other blogpost for information about the new version:
+	 *  <http://www.whatstyle.net/articles/46/subcookies_v2>
+	 * 
+	 * @author Harmen Janssen <http://www.whatstyle.net>
+	 * @version 2.0
+	 * 
+	 */
+
+	
+	/* based on http://www.quirksmode.org/js/cookies.html, by Peter-Paul Koch */
+	cookiejar = {
+		/* set a cookie */
+		bake: function(cookieName,cookieValue,days,path) {
+			var expires='';
+			if (days) {
+				var date = new Date();
+				date.setTime(date.getTime()+(days*24*60*60*1000));
+				expires = "; expires="+date.toGMTString();
+			}
+			var thePath = '; path=/';
+			if (path) {
+				thePath = '; path=' + path;
+			}
+			document.cookie = cookieName + '=' + escape(cookieValue)+expires+thePath;
+			return true;
+		},
+		/* get a cookie value */
+		fetch: function(cookieName) {
+			var i, c,
+			nameEQ = cookieName + '=',
+			ca = document.cookie.split(';');
+			for (i=0; i<ca.length; i++)	{
+				c = ca[i];
+				while (c.charAt(0) == ' ') {
+					c = c.substring(1, c.length);
+				}
+				if (c.indexOf(nameEQ) === 0) {
+					return unescape(c.substring(nameEQ.length, c.length));
+				}
+			}
+			return null;
+		},
+		/* delete a cookie */
+		crumble: function(cookieName) {
+			return cookiejar.bake(cookieName,'',-1);
+		}
+	},
+
+	/* circumventing browser restrictions on the number of cookies one can use */
+	subcookiejar = {
+		nameValueSeparator: '$$:$$',
+		subcookieSeparator: '$$/$$',
+		/* set a cookie. subcookieObj is a collection of cookies to be. Every member of subcookieObj is the name of the cookie, its value
+		 * the cookie value
+		 */
+		bake: function(cookieName,subcookieObj,days,path) {
+			var i, existingCookie;
+			/* check for existing cookie */
+			if (existingCookie == subcookiejar.fetch (cookieName)) {
+				/* if a cookie by the same name is found, 
+				 * append its values to the subcookieObj.
+				 */
+				for (i in existingCookie) {
+					if (!(i in subcookieObj)) {
+						subcookieObj[i] = existingCookie[i];
+					}
+				}
+			}
+			var cookieValue = '';
+			for (i in subcookieObj)	{
+				cookieValue += i + subcookiejar.nameValueSeparator;
+				cookieValue += subcookieObj[i];
+				cookieValue += subcookiejar.subcookieSeparator;
+			}
+			/* remove trailing subcookieSeparator */
+			cookieValue = cookieValue.substring(0,cookieValue.length-subcookiejar.subcookieSeparator.length);
+			return cookiejar.bake(cookieName,cookieValue,days,path);
+		},
+		/* get a subcookie */
+		fetch: function(cookieName,subcookieName) {
+			var i, sclen, cookieValue = cookiejar.fetch(cookieName);
+			/* proceed only if a cookie was found */
+			if (!cookieValue) {
+				return null;
+			}
+			var subcookies = cookieValue.split(subcookiejar.subcookieSeparator);
+			var cookieObj = {};
+			for (i=0,sclen=subcookies.length; i<sclen; i++)	{
+				var sc = subcookies[i].split(subcookiejar.nameValueSeparator);
+				cookieObj [sc[0]] = sc[1];
+			}
+			/* if subcookieName is given, return this subcookie if available, or null.
+			 * else, return the entire cookie as an object literal
+			 */
+			if (subcookieName !== undefined) {
+				if (subcookieName in cookieObj) {
+					return cookieObj[subcookieName];
+				}
+				return null;
+			}
+			return cookieObj;
+		},
+		/* delete a subcookie */
+		crumble: function(cookieName,subcookieName,days,path) {
+			var cookieValue = cookiejar.fetch(cookieName);
+			if (!cookieValue) {
+				return false;
+			}
+			var newCookieObj = {};
+			var subcookies = cookieValue.split(subcookiejar.subcookieSeparator);
+			for (var i=0, sclen=subcookies.length; i<sclen; i++)	{
+				var sc = subcookies[i].split(subcookiejar.nameValueSeparator);
+				if (sc[0] != subcookieName) {
+					newCookieObj[sc[0]] = sc[1];
+				}
+			}
+			return subcookiejar.bake(cookieName,newCookieObj,days,path);
+		}
+	};
+	
+	// This is the return object. The CLICK_CS namespace will have all of the properties listed below
+	// plus access to the private variables and functions mentioned above
+	return {
+		
+		//add cookiejar/subcookiejar
+		cookiejar : cookiejar,
+		subcookiejar : subcookiejar,
+		
+		// applies any given function to every node of the dom, 
+		// begining with the children of the specified node
+		traverseDOM: function (node, func) {
+		    func(node);
+		    node = node.firstChild;
+		    while (node) {
+		        CLICK_CS.traverseDOM(node, func);
+		        node = node.nextSibling;
+		    }
+		},
+		
+		// returns an array of elements containing the specified attribute with the specified value
+		getElementsByAttribute : function (att, value, topElement) {
+		    var results = [], startNode;
+			startNode = (topElement && topElement.nodeType === 1) ? topElement : document.body;
+		    CLICK_CS.traverseDOM(startNode, function (node) {
+		        var actual = node.nodeType === 1 && node.getAttribute(att);
+		        if (typeof actual === 'string' &&
+		                (actual === value || typeof value !== 'string')) {
+		            results.push(node);
+		        }
+		    });
+		    return results;
+		},
+		/*
+		// this is the clickability dashboard object.  define the location of the dashboard above.
+		// this will have two public functions: create() and destroy()
+		dashboard : function () {
+			var dashDiv = document.createElement("div");
+			var callback = function (text) {
+				dashDiv.innerHTML = text;
+			};
+			return {
+				create : function () {
+					var bodyEl = document.getElementsByTagName("body")[0];
+					CLICK_CS.getXMLDoc(dashboardURL, callback);
+					logThis("Dashboard Created.");
+					bodyEl.insertBefore(dashDiv, bodyEl.childNodes[0]);
+					return false;
+				},
+				destroy : function () {
+					var bodyEl = document.getElementsByTagName("body")[0];
+					if (dashDiv.parentNode == bodyEl) {
+						bodyEl.removeChild(dashDiv);
+						logThis("Dahsboard destroyed.");
+						return false;
+					}
+				}
+			};
+		}(),
+		*/
+		// toggles any number of elements on/off, based on ID(s) passed in
+		toggle : function() {
+			var el;
+			for (var i=0; i < arguments.length; i++) {
+				el = document.getElementById(arguments[i]);
+				if (el.style.display == 'none') {
+					el.style.display = '';
+				} else {
+					el.style.display = 'none';
+				}
+			}
+		},
+		
+		// dynamically append a Javascript file to the "head" element
+		loadJavascriptFile : function (fileSource, fileID) {
+			logThis("Loading javascript file.");
+			var fileref=document.createElement('script');
+			fileref.setAttribute("type","text/javascript");
+			fileref.setAttribute("src", fileSource);
+			if (fileID) {
+				fileref.setAttribute("id", fileID);
+			}
+			if (typeof fileref != "undefined") {
+				document.getElementsByTagName("head")[0].appendChild(fileref);
+			}
+			logThis("Javascript file " + fileSource + " loaded.");
+		},
+		
+		// dynamically append a CSS file to the "head" element
+		loadCssFile : function (fileSource, fileID) {
+			logThis("Loading CSS File.");
+			var fileref=document.createElement("link");
+			fileref.setAttribute("rel", "stylesheet");
+			fileref.setAttribute("type", "text/css");
+			fileref.setAttribute("href", fileSource);
+			if (fileID) {
+				fileref.setAttribute("id", fileID);
+			}
+			if (typeof fileref != "undefined") {
+				document.getElementsByTagName("head")[0].appendChild(fileref);
+			}
+			logThis("CSS File " + fileSource + " loaded.");
+		},
+		
+		// alter a CSS rule
+		// can be processed before loading the page, so it is quicker than toggling
+		changeCssRule : function (stylesheetID, selectorName, replacementRules) {
+			var i, theStylesheet = document.getElementById(stylesheetID).sheet;
+			var thecss = (theStylesheet.cssRules) ? theStylesheet.cssRules : theStylesheet.rules;
+			for(i=0; i < thecss.length; i++){
+				if(thecss[i].selectorText == selectorName) {
+					thecss[i].style.cssText = replacementRules;
+				}
+			}
+			logThis("CSS Rules changed");
+		},
+		
+		// alter a CSS rule
+		// can be processed before loading the page, so it is quicker than toggling
+		addCssRule : function (stylesheetID, selectorName, replacementRules) {
+			var i, theStylesheet = document.getElementById(stylesheetID).sheet;
+			var thecss = (theStylesheet.cssRules) ? theStylesheet.cssRules : theStylesheet.rules;
+			for(i=0; i < thecss.length; i++){
+				if(thecss[i].selectorText == selectorName) {
+					thecss[i].style.cssText = replacementRules;
+				}
+			}
+			logThis("CSS Rules changed");
+		},
+		
+		// automatically creates the stylesheet to add loggedin/loggedout classes
+		createLoginStyles : function () {
+			var ss1 = document.createElement('style');
+			ss1.setAttribute("type", "text/css");
+			
+			if(cookiejar.fetch("UID") && cookiejar.fetch("UID").length === 32) {
+				if(subcookiejar.fetch("curUserInfo", "cid") === null){
+					CLICK_CS.loadJavascriptFile(loginStatusLoc + "?c=n&pid=" + subcookiejar.fetch("pid", "pid") + "&ran=" + Math.floor(Math.random()*1000000));
+				}
+				
+				if (ss1.styleSheet) {   // IE
+				    ss1.styleSheet.cssText = ".loggedout{display:none}";
+				} else {                // the world
+				    var tt1 = document.createTextNode(".loggedout{display:none}");
+				    ss1.appendChild(tt1);
+				}
+				var hh1 = document.getElementsByTagName('head')[0];
+				hh1.appendChild(ss1);
+
+			}
+			else {
+				if (ss1.styleSheet) {   // IE
+				    ss1.styleSheet.cssText = ".loggedin{display:none}";
+				} else {                // the world
+				    var tt1 = document.createTextNode(".loggedin{display:none}");
+				    ss1.appendChild(tt1);
+				}
+				var hh1 = document.getElementsByTagName('head')[0];
+				hh1.appendChild(ss1);
+
+
+				cookiejar.crumble("pid");
+				cookiejar.crumble("curUserInfo");
+				cookiejar.crumble("UID");
+			}
+			
+			logThis("login styles created");
+		},
+		
+		updateUserName : function() {
+			if(cookiejar.fetch("curUserInfo")) {
+				var elCurUserName = document.createElement("a");
+				document.getElementById("curUserName").appendChild(elCurUserName);
+				
+				if(subcookiejar.fetch("curUserInfo", "url") === null){
+					elCurUserName.setAttribute("href", "/s?action=editReg&finishReg=y");
+				}else{
+					elCurUserName.setAttribute("href", subcookiejar.fetch("curUserInfo", "url") + "?c=n&ran=" + Math.floor(Math.random()*1000000));
+				}
+				elCurUserName.setAttribute("class", "headRightTopNav userName");
+				elCurUserName.innerHTML = "HI " + subcookiejar.fetch("curUserInfo", "firstName").toUpperCase();
+			}
+		},
+		
+		// a simple AJAX "GET" method
+		getXMLDoc : function (url, callback) {
+			logThis('calling getXMLDoc function');
+			var xmlhttp;
+			try {
+				// Firefox, Opera 8.0+, Safari
+				xmlhttp = new XMLHttpRequest();
+			} catch (e) {
+				// Internet Explorer
+				try {
+					xmlhttp=new ActiveXObject("Msxml2.XMLHTTP");
+				} catch (f) {
+					try {
+						xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+					} catch (g) {
+						alert("Your browser does not support AJAX");
+						return false;
+					}
+				}
+			}
+			xmlhttp.onreadystatechange = function () {
+				if(xmlhttp.readyState == 4) {
+					logThis('XML Http Status for ' + url + ' : ' + xmlhttp.status);
+					if (xmlhttp.status == 200) {
+						callback(xmlhttp.responseText);
+					} else {
+						alert("There was an error with your ajax request");
+					}
+				}
+			};
+			xmlhttp.open("GET",url,true);
+			xmlhttp.send(null);
+		},
+		
+		// call this whenever you want to see any debug or error messages generated within this code.
+		// example: in firebug console type: CLICK_CS.debug(); or write a script: alert(CLICK_CS.debug());
+		debug : function (joiner) {
+			if (!joiner || typeof joiner !== "string") {
+				joiner = "\n";
+			}
+			var debugText = logArray.join(joiner);
+			return debugText;
+		},
+		
+		// place all your functions you want to call immediately upon page load.
+		// remember to use this language: window.onload = CLICK_CS.init.call(CLICK_CS);
+		// in case there are any references to "this"
+		init : function () {
+			logThis('CLICK_CS Initialized.');
+			CLICK_CS.createLoginStyles();
+		},
+		addLoadEvent : function (func) {
+			if(typeof Prototype=='undefined') {
+				var oldonload = window.onload;
+				if (typeof window.onload != 'function') {
+				    window.onload = func;
+				}else {
+				    window.onload = function(){
+				        oldonload();
+				        func();
+				    };
+				};
+			}else{
+				Event.observe(window, 'load', func);
+			}
+		}
+	};
+}();
+CLICK_CS.addLoadEvent(CLICK_CS.updateUserName);
+CLICK_CS.init();
+

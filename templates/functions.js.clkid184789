@@ -1,0 +1,76 @@
+// clear form field
+function clearDefault(el) {
+  if (el.defaultValue==el.value) el.value = ""
+}
+
+
+var request;
+
+// the file to get
+function getArticle1()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article1.html", true);
+    request.send(null);
+}
+
+// the file to get
+function getArticle2()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article2.html", true);
+    request.send(null);
+}
+
+// the file to get
+function getArticle3()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article3.html", true);
+    request.send(null);
+}
+
+// the file to get
+function getArticle4()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article4.html", true);
+    request.send(null);
+}
+
+// the file to get
+function getArticle5()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article5.html", true);
+    request.send(null);
+}
+
+// the file to get
+function getArticle6()
+{
+    request = fetchData();
+    request.onreadystatechange = sendData;
+    request.open("POST", "documents/article6.html", true);
+    request.send(null);
+}
+
+
+// where to print it
+function sendData()
+{
+    var dC = document.getElementById("newsarticle");
+    if(request.readyState == 4)
+    {        
+        dC.innerHTML = request.responseText;
+    }
+//    else if(request.readyState == 1)
+//    {
+//        dC.innerHTML = "Requesting content...<img src='designimages/loading.gif' />"
+//    }
+}

@@ -1,0 +1,260 @@
+##set($content = $cms.content(37898564, false))
+
+<div id="contentOne">
+	<div id="trend" style="display:none;">
+		<div id="nextWrapper">
+			<div id="nextHeader">
+				<span class="nextsteps">On Target Reading</span>
+			</div>
+			
+			<div class="pullBody">
+				<div class="pullBodyWrapper">
+					<div id="trendItems"></div>
+					<div id="trendHeader"></div>
+				</div>
+			</div>
+			
+			<div class="thinBottom"></div>
+		</div>		
+	</div>
+	
+	
+	#set($quote = false)
+	
+	#set($glcInputItem = $content)
+	#set($glcTagName = "relatedQuotes")
+	#set($glcMaxItems = 1)
+	#set($returnUntargetedItems = true)
+	$cms.template("Get Linked Content")
+	#foreach($item in $glcOutputArray)
+		#set($quote = $item)
+	#end
+	
+	#if(!$quote)
+	#foreach($item in $cms.filteredLinks("Quote", "$topLevel.path/quotes", 1, $math.round($math.add($math.multiply(5, $math.random), 1))))
+			#set($quote = $item)
+		#end
+	#end
+	
+	#if($quote)
+		<div class="rightWrapper">
+			<div class="thinHeaderShort"></div>
+			<div class="pullBody">
+				<div class="pullquoteWrapper">
+					<span class="pullquote">$!quote.body</span>
+			
+					#set($quoteText = "")
+					#if($quote.name && $quote.name != "")
+						#set($quoteText = $quote.name)
+					#end
+					
+					#if($quote.company && $quote.company != "")
+						#if($quoteText != "")
+							#set($quoteText = "${quoteText}<br/> ")
+						#end
+						
+						#set($quoteText = "$quoteText$quote.company")
+					#end
+					
+					#if($quoteText != "")
+						<br/>
+						<br/>
+						<span class="pullquoteSub">$quoteText</span>
+					#end
+				</div>
+				
+				#set($grioInputImage = $quote.logo)
+				#set($grioMaxWidth = 179)
+				$cms.template("Get Resized Image Object")
+				#if($grio.imageTag && $grio.imageTag != "")
+					<br/>
+					$grio.imageTag
+				#end
+			</div>
+			<div class="thinBottom"></div>
+		</div>
+	#end
+	$codeDebug.log("Items Added by Visitor: $wma.getContentInPortfolio(false).size(), Items Added by Marketing: $wma.getContentInPortfolio(true).size(), websiteSection: $cms.websiteSection($resource.destId).path")
+	###############################
+	## Add in Related Links (search results by Interest)
+	###############################
+	## create a validation array
+	######################################
+	## Test new Interest Tags CMP-4231 and CMP-4232
+	<div id="nextWrapper">
+		<div id="nextHeader">
+			<span class="nextsteps">Visitor Interests</span>
+		</div>
+		<div class="pullBody">
+			<div class="pullBodyWrapper">
+#if($req.param("interests") && $req.param("interests") == "all")
+	#set($interestAll = false)
+#else
+	#set($interestAll = true)
+#end
+#if($wma.hasInterests($interestAll))
+		#if($req.param("interests") && $req.param("interests") == "all")
+			#foreach($intObj in $wma.getVisitorInterests(false))
+				&nbsp;&nbsp;<font size="2">$intObj.name ($intObj.score)</font><br>
+			#end
+		#else
+			&nbsp;&nbsp;<font size="2">To get ALL interests add "interests=all" to the URL.</font><br>
+			#foreach($intObj in $wma.getVisitorInterests())
+				&nbsp;&nbsp;<font size="2">$intObj.name ($intObj.score)</font><br>
+			#end
+		#end
+	#else
+		&nbsp;&nbsp;<font size="2">This visitor currently has no interests.</font><br>
+	#end 	
+	
+	
+			</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+	######################################
+	#set($messageArray = $util.newArrayList)
+	#if($req.param("viewed") && $req.param("viewed") == "y")
+		#set($exclude = false)
+	#else
+		#set($foo = $messageArray.add("To see related items you have viewed, add viewed=y to url."))
+		#set($exclude = true)
+	#end
+	#set($interests = $util.newArrayList)
+	#if($req.param("interests") && $req.param("interests") != "")
+		#set($foo = $interests.add($req.param("interests")))
+	#elseif($wma.getVisitorInterests().size() > 0)
+		#set($foo = $messageArray.add("To see specific interests, add interests=/interest tag/ to url."))
+		#foreach($intObj in $wma.getVisitorInterests())
+			#set($foo = $interests.add($intObj.tag))
+		#end
+	#else
+		#set($foo = $messageArray.add("To see specific interests, add interests=/interest tag/ to url."))
+		#set($interests = "")
+	#end
+	#if($req.param("numItems") && $req.param("numItems") != "")
+		#set($numItems = $req.param("numItems"))
+	#else
+		#set($foo = $messageArray.add("To see more items, add numItems=/int/ to url."))
+		#set($numItems = 10)
+	#end
+	$codeDebug.log("getSuggestedContent parameters: $interests, $exclude, $numItems")
+	#set($contentArray = $wma.getSuggestedContent($!interests, $!exclude, $!numItems))
+	#foreach($item in $contentArray)
+		#if($velocityCount == 1)
+			<div id="nextWrapper">
+				<div id="nextHeader">
+					<span class="nextsteps">You may also like...</span>
+				</div>
+				<div class="pullBody">
+					<div class="pullBodyWrapper">
+					#if($messageArray.size() > 0)
+						#foreach($msg in $messageArray)
+							&nbsp;&nbsp;<font size="1">$msg</font><br>
+						#end
+					#end
+		#end
+		&nbsp;&nbsp;<a href="$item.url">$item.title</a><br>
+		#if($velocityCount == $contentArray.size())
+					</div>
+				</div>
+				<div class="thinBottom"></div>
+			</div>
+		#end
+	#end
+	###############################
+	## Add in Resource Portfolio (from Visitor)
+	###############################
+	#if($wma.getContentInPortfolio(false).size() > 0)
+	<div id="nextWrapper">
+		<div id="nextHeader">
+			<span class="nextsteps">Resource Portfolio</span>
+		</div>
+		<div class="pullBody">
+			<div class="pullBodyWrapper">
+			#foreach($resource in $wma.getContentInPortfolio(false))
+				$codeDebug.log("Visitor Resources: $velocityCount. $resource.contentId, $resource.destId")
+				#set($resItem = $cms.content($resource.contentId, $cms.websiteSection($resource.destId).path))
+				&nbsp;&nbsp;<a href="$resItem.url">$resItem.title</a>&nbsp;<a href="$wma.getRemoveContentFromPortfolioUrl($resource.destId, $resource.contentId)&rurl=$req.fullURL"><font style="font-size: 10px; font-color: black;">-Remove</font></a><br>
+			#end
+			<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font style="font-size: 10px; font-color: black;"><a href="/templates/clearPortfolio">REMOVE ALL</a></font><br>
+			</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+	#end
+	###############################
+	## Add in Resource Portfolio (from Marketing)
+	###############################
+	#if($wma.getContentInPortfolio(true).size() > 0)
+	<div id="nextWrapper">
+		<div id="nextHeader">
+			<span class="nextsteps">Suggested Reading</span>
+		</div>
+		<div class="pullBody">
+			<div class="pullBodyWrapper">
+			#foreach($resource in $wma.getContentInPortfolio(true))
+				$codeDebug.log("CMS Resources: $velocityCount. $resource.contentId, $resource.dateAdded")
+				#set($resItem = $cms.getContent($resource.contentId))
+				&nbsp;&nbsp;<a href="$resItem.url">$resItem.title</a><br>
+			#end
+			</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+	#end
+	###############################
+	## Display AB Testing
+	###############################
+	<div id="nextWrapper">
+		<div id="nextHeader">
+			<span class="nextsteps">AB Testing Module</span>
+		</div>
+		<div class="pullBody">
+			<div class="pullBodyWrapper">
+	#set($test = $cms.content(186619045, true))
+	$!test.body
+	</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+		<div id="nextWrapper">
+		<div id="nextHeader">
+			<span class="nextsteps">AB Testing Module</span>
+		</div>
+		<div class="pullBody">
+			<div class="pullBodyWrapper">
+	#set($test = $cms.content(116939843 , true))
+	$!test.body
+	</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+	###############################
+	#set($moduleIB = $content.leftColumnModules)
+	$cms.template("Display Modules")
+
+	$cms.template("Mod - Highest Rated")
+	
+	#set($glcInputItem = $content)
+	#set($glcTagName = "relatedItems")
+	#set($glcContentTypeArray = ["Poll"])
+	#set($glcMaxItems = 1)
+	#set($returnUntargetedItems = true)
+	$cms.template("Get Linked Content")
+	#foreach($item in $glcOutputArray)
+		#set($module = $item)
+		<div class="rightWrapper">
+			<div class="thinHeaderShort"></div>
+			
+			<div class="pullBody">
+				<div class="pullquoteWrapper">
+					$cms.template("Display Poll Module")
+				</div>
+			</div>
+			<div class="thinBottom"></div>
+		</div>
+	#end
+
+
+</div>

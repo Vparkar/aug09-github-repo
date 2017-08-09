@@ -1,0 +1,47 @@
+## Set max heights or widths if none set
+#if($drpMaxWidth && !$drpMaxHeight)##
+	#set($drpMaxHeight = $drpMaxWidth * 2)##
+#elseif($drpMaxHeight && !$drpMaxWidth)##
+	#set($drpMaxWidth = $drpMaxHeight * 2)##
+#end##
+##
+#set($resizeHeight = false)##
+#set($resizeWidth = false)##
+##
+#set($drpOutputHeight = $drpInputImage.height)##
+#set($drpOutputWidth = $drpInputImage.width)##
+##
+## Check if either dimension exceeds the max.  If not, no resizing necessary.  If SO, resize that dimension
+#if($drpOutputWidth < $drpMaxWidth && $drpOutputHeight < $drpMaxHeight)##
+	## Do nothing
+#elseif($drpOutputWidth > $drpMaxWidth && $drpOutputHeight > $drpMaxHeight && !$drpBypassRatio)##
+	## If both dimensions are bigger than max allowed, resize the one with the largest difference
+	#set($drpWidthDiffRatio = $math.divide($math.subtract($drpOutputWidth,$drpMaxWidth),$drpMaxWidth))##
+	#set($drpHeightDiffRatio = $math.divide($math.subtract($drpOutputHeight,$drpMaxHeight),$drpMaxHeight))##
+	## Multiply by 1000, then round, since can't work effectively w/ Doubles
+	#set($drpOutputWidthDiffFactor = $math.newInt($math.multiply($drpWidthDiffRatio,1000)))##
+	#set($drpOutputHeightDiffFactor = $math.newInt($math.multiply($drpHeightDiffRatio,1000)))##
+	#if($drpOutputWidthDiffFactor > $drpOutputHeightDiffFactor)##
+		#set($drpRatio = $math.divide($drpMaxWidth,$drpOutputWidth))##
+		#set($drpOutputWidth = $drpMaxWidth)##
+		#set($drpOutputHeight = $math.round($math.multiply($drpRatio,$drpOutputHeight)))##
+		#set($resizeWidth = true)##
+	#else##
+		#set($drpRatio = $math.divide($drpMaxHeight,$drpOutputHeight))##
+		#set($drpOutputHeight = $drpMaxHeight)##
+		#set($drpOutputWidth = $math.round($math.multiply($drpRatio,$drpOutputWidth)))##
+		#set($resizeHeight = true)##
+	#end##
+	## If only one dimension is bigger, resize down to that dimension's allowed max	
+#elseif($drpOutputWidth > $drpMaxWidth)##
+	#set($drpRatio = $math.divide($drpMaxWidth,$drpOutputWidth))##
+	#set($drpOutputWidth = $drpMaxWidth)##
+	#set($drpOutputHeight = $math.round($math.multiply($drpRatio,$drpOutputHeight)))##
+	#set($resizeWidth = true)##
+#elseif($drpOutputHeight > $drpMaxHeight)##
+	#set($drpRatio = $math.divide($drpMaxHeight,$drpOutputHeight))##
+	#set($drpOutputHeight = $drpMaxHeight)##
+	#set($drpOutputWidth = $math.round($math.multiply($drpRatio,$drpOutputWidth)))##
+	#set($resizeHeight = true)##
+#end##
+#set($drpBypassRatio = false)

@@ -1,0 +1,6 @@
+#set($token = $req.param("token"))
+
+$wma.profile.setStringValue("email", $token)
+
+
+

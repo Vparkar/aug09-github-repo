@@ -1,0 +1,33 @@
+#set($isEditable = true)
+
+#set($content = $cms.content)
+
+#if(!$content || $content.typeName != "Survey")
+	#foreach($item in $cms.filteredLinks("Survey", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+$cms.template("Top")
+
+<div class="headline">$cms.edit($content, "title")</div>
+
+<div id="newsarticle">
+	$cms.template("Networking Tools")
+
+	<div class="bodyCopy ">
+		#if($req.param("responded") == "true")
+			#if($content.thankYouText && $content.thankYouText != "")
+				<p>$content.thankYouText</p>
+			#else
+				<p>Thank you for responding to the survey.</p>
+			#end
+		#else
+			$cms.edit($content, "body")
+			$cms.showSurvey($content, $content.surveyQuestions, 100, "click.sales@gmail.com", $content.url)
+		#end
+	</div>
+</div>
+
+$cms.template("Bottom")
+

@@ -1,0 +1,86 @@
+<script>
+	function cookiesJS(custForm){
+		createCookie('fName',custForm.first_name.value,365);
+		createCookie('lName',custForm.last_name.value,365);
+		createCookie('email',custForm.email.value,365);
+		createCookie('company',custForm.company.value,365);
+		createCookie('info','YES',365);
+	}
+	
+</script>
+
+<script type="text/javascript" charset="utf-8">
+	function isValidEmail(str) {
+		return (str.indexOf(".") > 1) && (str.indexOf("@") > 0);
+	}
+
+	function validateForm(form)
+	{
+
+		var errorMessage = "";
+		
+		if(form.first_name.value == ""){
+			errorMessage = errorMessage + "    Please enter your first name. \n";
+			form.first_name.setAttribute("style", "border: solid red 1px;");
+		}
+		else
+			form.first_name.setAttribute("style", "border: solid black 1px;");
+		
+			
+		if(form.last_name.value == ""){
+			errorMessage = errorMessage + "    Please enter your last name. \n";
+			form.last_name.setAttribute("style", "border: solid red 1px;");
+		}
+		else
+			form.last_name.setAttribute("style", "border: solid black 1px;");
+			
+		
+		if(!isValidEmail(form.email.value)){
+			errorMessage = errorMessage + "    Please enter a valid email. \n";
+			form.email.setAttribute("style", "border: solid red 1px;");
+		}
+		else
+			form.email.setAttribute("style", "border: solid black 1px;");
+		
+		
+		if(form.company.value == ""){
+			errorMessage = errorMessage + "    Please enter your company. \n";
+			form.company.setAttribute("style", "border: solid red 1px;");
+		}
+		else
+			form.company.setAttribute("style", "border: solid black 1px;");
+			
+		
+		if(errorMessage == ""){
+			return cookiesJS(form);
+		}		
+		else{
+			alert("The following errors were encountered: \n" + errorMessage);
+			return false;
+			
+		}
+		
+
+	}
+</script>
+<div id="my_form">
+	<form action="https://www.salesforce.com/servlet/servlet.WebToLead?encoding=UTF-8" method="post" id="customerForm" onsubmit="return validateForm(this)";>
+		<input type="hidden" name="oid" value="00D300000000bfy" />
+		<input type="hidden" name="retURL" value="http://${cms.envHost}${cms.domain}/company/contact/thankyou/" />
+		<label class="label" for="first_name">First Name *</label><input type="text" id="first_name" maxlength="40" name="first_name" size="20" /><br />
+		<label class="label" for="last_name">Last Name *</label><input type="text" id="last_name" maxlength="80" name="last_name" size="20" /><br />
+		<label class="label" for="email">Email *</label><input type="text" id="email" maxlength="80" name="email" size="20" /><br />
+		<label class="label" for="company">Company *</label><input type="text" id="company" maxlength="40" name="company" size="20" /><br />
+		<input type="hidden" name="lead_source" value="$leadSource" /> <div id="submit_btns" style="display:inline;"><input type="submit" name="submit" /></div>
+	</form>
+</div>
+
+<script>
+	if(readCookie(info) != null && readCookie(info).equals('YES')){
+		document.getElementById('customerForm').first_name.value = readCookie(fName);
+		document.getElementById('customerForm').last_name.value = readCookie(lName);
+		document.getElementById('customerForm').email.value = readCookie(email);
+		document.getElementById('customerForm').company.value = readCookie(company);
+	}
+</script>
+

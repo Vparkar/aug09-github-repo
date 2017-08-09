@@ -1,0 +1,68 @@
+#set($content = $cms.content(47172222, true))
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+<body>
+	<div id="userLoggedIn" style="display:none;">
+		<span><input type='button' onclick='submit_post();' value='Submit Comment'></span>
+	</div>
+
+
+	<div id="userLoggedOut" style="display:none;">
+		<span><fb:login-button length='long' onlogin='update_user_box();'></fb:login-button></span>
+	</div>
+
+	<script type="text/javascript">
+		function update_user_box() {
+			var user_loggedin_box = document.getElementById("userLoggedIn");
+			var user_loggedout_box = document.getElementById("userLoggedOut");
+
+			user_loggedout_box.style.display = "none";
+			user_loggedin_box.style.display = "block";
+			
+			//user_box.innerHTML =
+			//"<span><fb:login-button length='long' onlogin='update_user_box();'></fb:login-button></span>";
+			//+ "<fb:profile-pic uid='loggedinuser' facebook-logo='true'></fb:profile-pic>"
+			//+ "Welcome, <fb:name uid='loggedinuser' useyou='false'></fb:name>"
+			//+ "</span>";
+
+			FB.XFBML.Host.parseDomTree();
+		}
+
+		function update_user_not() {
+			var user_loggedin_box = document.getElementById("userLoggedIn");
+			var user_loggedout_box = document.getElementById("userLoggedOut");
+
+			user_loggedout_box.style.display = "block";
+			user_loggedin_box.style.display = "none";
+
+			FB.XFBML.Host.parseDomTree();
+		}
+
+		function submit_post() {
+			var template_var = {"bundleId": "262229145170",
+				"content.title": "$content.title",
+				"content.url": "$content.url",
+				"content.summary": "$!util.encode.html($content.summary)"
+		
+				#set($grioInputImage = $content.image)
+				#set($grioMaxWidth = 130)
+				$cms.template("Get Resized Image Object")
+				#if($grioOutputURL && $grioOutputURL != "")
+					,"images":[{"src":"$grioOutputURL", "href":"$content.url"}]
+				#end
+			};
+			
+			FB.Connect.showFeedDialog("262229145170", template_var);
+		}
+	</script>
+
+	<script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" mce_src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"> </script>
+
+	<script type="text/javascript">
+		var api_key = "7b575aa19cebad988e02f323358b1c32";
+		var channel_path = "/templates/xd_receiver.htm";
+		FB.init(api_key, channel_path, {"ifUserConnected": update_user_box, "ifUserNotConnected": update_user_not});
+	</script>
+</body>
+</html>

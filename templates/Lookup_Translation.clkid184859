@@ -1,0 +1,49 @@
+		#if(!$siteLanguageHash)
+			#set($languageHash = $util.newHashMap)
+
+			#set($lookup = $cms.content(36940664, false))
+
+			#foreach($row in $lookup.lookupItems)
+				#if($row.english && $row.english != "")
+					#set($english = $row.english)
+
+					#if(!$notFoundLanguage.containsKey($english))
+						#if($topLevel.path == "/fr")
+							#set($fieldName = $row.french)
+
+						#else
+							#set($fieldName = $row.english)
+						#end
+
+						#if($fieldName && $fieldName != "")
+							#set($otherLanguage = $fieldName)				
+						#else
+							#set($otherLanguage = $english)
+						#end
+
+						#set($foo = $languageHash.put($english.toLowerCase().trim(), $otherLanguage))
+					#end
+				#end
+			#end
+			
+			#set($siteLanguageHash = $util.newHashMap)
+			#set($foo = $siteLanguageHash.put("fr", "fr"))
+			#set($foo = $siteLanguageHash.put("en", "en"))
+
+			#set($siteLanguage = $siteLanguageHash.get($topLevel.path.substring(1)))
+		#end
+		
+		#set($outputString = "")
+
+		#if($siteLanguage = "en")
+			#set($outputString = $inputString)
+		#else
+			#set($outputString = $languageHash.get($inputString.toLowerCase().trim()))
+
+			#if(!$outputString || $outputString == "")
+				#set($outputString = $inputString)
+				#if(!$notFoundLanguage.containsKey($inputString.toLowerCase().trim()))
+					#set($foo = $notFoundLanguage.put($inputString, $curSection.path))
+				#end
+			#end
+		#end

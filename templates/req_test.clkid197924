@@ -1,0 +1,19 @@
+URL: www.animalbites.com/templates/req_test?a=why&b=47&c=47.32&d=25.525&e=47.478<br>
+Results:<br>
+
+#set($reg = $req.param("a", "what"))
+regular (a): $reg - $util.type($reg) - default=what<br>
+#set($int = $req.intParam("b", 5))
+integer (b) = $int - $util.type($int) - default=5<br>
+#set($long = $req.longParam("c", $math.newLong("10.25")))
+long (c) = $long - $util.type($long) - default=10.25<br>
+#set($floatA = $req.floatParam("d"))
+float (d) = $floatA - $util.type($floatA) - no default<br>
+#set($floatB = $req.floatParam("d", $math.newFloat("15.25")))
+float (d) = $floatB - $util.type($floatB) - default=15.25<br>
+#set($doubleA = $req.doubleParam("e"))
+double (e) = $doubleA - $util.type($doubleA) - no default<br>
+#set($doubleB = $req.doubleParam("e", $math.newDouble("19.75")))
+double (e) = $doubleB - $util.type($doubleB) - default=19.75<br>
+#set($lang = $req.acceptLanguage)
+language header: $lang<br>

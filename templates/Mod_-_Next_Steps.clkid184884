@@ -1,0 +1,71 @@
+$cms.template("Mod Recently Viewed")
+
+<div id="nextWrapper" class="loggedout">
+    <div id="nextHeader">
+        <span class="nextsteps">Next Steps</span>
+    </div>
+
+    <div id="nextBody">
+		<a class="locked" href="#" name="24431697" id="viewDemoLink"><img class="nextlinks" src="$cms.media("call_to_action_dwn.png", "designimages").url" alt="View Demo"  border="0" /></a>
+        <br/>
+        <a target="_blank" href="http://www.clickability.com/company/contact_us"><img class="nextlinks" src="$cms.media("call_to_action_email.png", "designimages").url" alt="Contact Us" border="0" /></a>
+        <br/>
+        <a target="_blank" href="http://www.clickability.com/company/contact_us"><img class="nextlinks" src="$cms.media("call_to_action_phone.png", "designimages").url" alt="866.276.4580" border="0" /></a>
+           <div class="dividers"></div>
+
+		<div id="nextNetTop">Network Us</div>
+
+		<div id="nextNetBottom">
+			<a href="http://www.facebook.com/sharer.php?u=$util.encode.url($req.url)&t=$util.encode.url($pageTitle)" target="_blank"><img src="$cms.media("net_icon1.gif", "designimages").url" border="0" /></a>
+			<a href="http://twitter.com/Suntilloinc" target="_blank"><img class="netImg" src="$cms.media("net_icon2.gif", "designimages").url" border="0" /></a>
+			<a href="http://www.linkedin.com/shareArticle?mini=true&url=$util.encode.url($req.url)&title=$util.encode.url($pageTitle)" target="_blank"><img class="netImg" src="$cms.media("net_icon4.gif", "designimages").url" border="0" /></a>
+			<a href="http://digg.com/submit?phase=2&url=$util.encode.url($req.url)&title=$util.encode.url($pageTitle)" target="_blank"><img class="netImg" src="$cms.media("net_icon5.gif", "designimages").url" border="0" /></a>
+			<a href="http://del.icio.us/post?v=4&partner=clickability&noui&jump=close&url=$util.encode.url($req.url)&title=$util.encode.url($pageTitle)" target="_blank"><img class="netImg" src="$cms.media("net_icon6.gif", "designimages").url" border="0" /></a>
+		</div>
+	</div>
+
+	<div class="nextBottom"></div>
+</div>
+
+#set($module = false)
+#foreach($item in $cms.filteredLinks("Mod - Promotion", 1, 1))
+	#set($module = $item)
+#end
+
+#if($module.image && $module.image.url != "")
+	<div id="$module.id" style="display:none;">
+		<div id="nextWrapper" >
+			#if($module.listHeader && $module.listHeader != "")
+				<div id="nextHeader">
+		        	<span class="nextsteps">$module.listHeader</span>
+		    	</div>
+			#end
+		
+			<div id="nextBody" class="ratedBody">
+				#set($grioInputImage = $module.image)
+				#set($grioMaxWidth = 160)
+				$cms.template("Get Resized Image Object")
+				$grioOutputString
+			
+				#if(!$module.hideCaption && $module.image.caption && $module.image.caption != "")
+					<span class="caption">$module.image.caption</span>
+				#end
+			
+				#if(!$module.hideCredit && $module.image.credit && $module.image.credit != "")
+					<span class="credit">Credit: $module.image.credit</span>
+				#end
+		    </div>
+			<div class="nextBottom"></div>
+		</div>
+	</div>
+	
+	<script>
+		if(JSON.parse(CLICK_CS.cookiejar.fetch("viewedItems")).numItems >= $math.newInt($module.pagesViewedThreshhold)){
+			document.getElementById("$module.id").style.display = "block";
+		}
+		
+		//alert(JSON.parse(CLICK_CS.cookiejar.fetch("viewedItems")).numItems + " " + $math.newInt($module.pagesViewedThreshhold));
+	</script>
+#else
+	$!cms.showAd("160 Wide", false, "<div id='nextWrapper'><div id='nextHeader'><span class='nextsteps'>Promotion</span></div><div id='nextBody'>", "</div><div class='nextBottom'></div></div>")
+#end

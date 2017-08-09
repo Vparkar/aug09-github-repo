@@ -1,0 +1,10 @@
+#if($isSubject)
+Thank you for registering!
+#else
+
+Your Clickability Demos registration is now complete.
+
+Email: $email
+Password: $password
+
+#end

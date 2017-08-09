@@ -1,0 +1,36 @@
+#if($GOT.getAuthenticationToken)
+	#set($client1= $httpClient.newHttpClient())
+	#set($foo = $client1.setUrl("https://www.google.com/accounts/ClientLogin"))
+	#set($foo = $client1.setRequestType("POST"))
+	##set($foo = $client1.addRequestHeader("requestHeader1","requestHeader1Value"))
+	##set($foo = $client1.addRequestHeader("requestHeader2","requestHeader2Value"))
+		
+	#set($foo = $client1.addRequestParameter("Email", "spindle79@gmail.com"))
+	#set($foo = $client1.addRequestParameter("Passwd", "sp79indle"))
+	#set($foo = $client1.addRequestParameter("accountType", "GOOGLE"))
+	#set($foo = $client1.addRequestParameter("source", "GWO-curl-example"))
+	#set($foo = $client1.addRequestParameter("service", "analytics"))
+
+	#set($foo = $client1.setTimeout(15))
+	#set($result = $client1.execute())
+
+	#set($returnString = $result.responseString)
+	#set($foo = $GOT.add("authenticationToken", $returnString.substring($math.add($returnString.indexOf("Auth="), 5))))
+	
+	#set($foo = $GOT.add("getAuthenticationToken", false))
+	
+#elseif($GOT.createABExperiment)
+
+#elseif($GOT.showTrackingScript)
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try{
+			var pageTracker = _gat._getTracker("$Google.trackingCode");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
+	#set($GOT.showTrackingScript = false)
+#end

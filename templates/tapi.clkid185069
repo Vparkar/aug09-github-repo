@@ -1,0 +1,466 @@
+#################################################################################
+## Verify User Email
+#################################################################################
+
+#if($req.param("subAction") == "verifyUserEmail")
+	#if(!$req.param("e") || $req.param("e") == "")
+		{"subAction":"verifyUserEmail","success":false,"errorMessage":"Error 101: The email address was not properly passed in to the function.", "errorNum":"101"}
+	
+	#else
+		#set($subscriptionUser = $!cms.getSubscriptionUser($req.param("e")))
+		
+		#if($subscriptionUser)
+			#set($curUserId = $subscriptionUser.custom6)
+
+			#set($gptItem = $cms.content($math.newInt($curUserId), false))
+			$cms.template("Get Primary Target")
+			#set($curUser = $gptTargetedItem)
+
+			#if(!$curUser)
+				#set($mySearch = $cms.newSearch)
+				$mySearch.addContentType("Profile")
+				$mySearch.addWSS("/en/profiles")
+				$mySearch.addKeywords($subscriptionUser.email)
+				$mySearch.setSearchFields("title")
+				#foreach($item in $mySearch.execute)
+					#set($gptItem = $item)
+					$cms.template("Get Primary Target")
+					#set($curUser = $gptTargetedItem)
+				#end
+
+				#if(!$curUser)
+					#foreach($i in [0..2])
+						#if(!$curUser)
+							#if($velocityCount <= 1)
+								#set($numToPull = 100)
+							#else
+								#set($numToPull = 3000)
+							#end
+
+							#foreach($item in $cms.filteredLinks("Profile", "/en/profiles", $math.add($math.multiply($i, 100), 1), $numToPull))
+								#if(!$curUser && $item.title == $subscriptionUser.email)
+									#set($curUser = $item)
+								#end
+							#end
+						#end
+					#end
+				#end
+			#end
+			
+			{"subAction":"verifyUserEmail","success":true, "cid":"$curUser.id", "userid":"$subscriptionUser.id"}
+		
+		#else
+			{"subAction":"verifyUserEmail","success":false}
+		#end
+	#end
+	
+#################################################################################
+## Available User Email
+#################################################################################
+	
+#elseif($req.param("subAction") == "availableUserEmail")
+		#if(!$req.param("e") || $req.param("e") == "")
+			{"subAction":"availableUserEmail","success":true,"errorMessage":"Error 101: The email address was not properly passed in to the function.", "errorNum":"101"}
+
+		#else
+			#if($cms.getSubscriptionUser($req.param("e")))
+				{"subAction":"availableUserEmail","success":false,"errorMessage":"This e-mail address is already in use, to log in click <a href='/s?action=login&rurl=$rurl'>here</a>.","errorNum":"301"}
+
+			#else
+				{"subAction":"availableUserEmail","success":true}
+			#end
+		#end
+		
+#################################################################################
+## Verify ID Inserted
+#################################################################################		
+
+#elseif($req.param("subAction") == "verifyIDInserted")
+	#if(!$req.param("e") || $req.param("e") == "")
+		{"subAction":"verifyIDInserted","success":false,"errorMessage":"Error 101: The email address was not properly passed in to the function.", "errorNum":"101"}
+
+	#elseif(!$req.param("cid") || $req.param("cid") == "")
+		{"subAction":"verifyIDInserted","success":false,"errorMessage":"Error 201: The cid was not properly passed in to the function.", "errorNum":"201"}
+	
+	#else
+		#set($curUser = $cms.getSubscriptionUser($req.param("e")))
+		#if(!$curUser)
+			{"subAction":"verifyIDInserted","success":false,"errorMessage":"Error 202: The user was not found in the system.", "errorNum":"202"}
+		
+		#elseif($curUser.username != "")
+		 	#if($math.newInt($curUser.username) > 0)
+				#if($req.param("cid") != $curUser.username)
+					{"subAction":"verifyIDInserted","success":false,"errorMessage":"Error 203: The cid and the id in the profile do not match.", "errorNum":"203"}
+				
+				#else
+					{"subAction":"verifyIDInserted","success":true,"contentID":"$curUser.username"}
+				#end
+			
+			#else
+				{"subAction":"verifyIDInserted","success":false,"errorMessage":"Error 204: No cid was found.", "errorNum":"204"}
+			#end
+		
+		#else
+			{"subAction":"verifyIDInserted","success":false}
+		#end
+	#end
+
+#################################################################################
+## Is Item Saved
+#################################################################################
+
+#elseif($req.param("subAction") == "isItemSaved")
+	#if(!$req.param("cid") || $req.intParam("cid") == 0)
+		{"subAction":"isItemSaved","success":false,"errorMessage":"Error 201: The cid was not properly passed in to the function.", "errorNum":"201"}
+	
+	#elseif(!$req.param("pid") || $req.intParam("pid") == 0)
+		{"subAction":"isItemSaved","success":false,"errorMessage":"Error 303: A valid pid was not properly passed in to the function.", "errorNum":"303"}
+		
+	#elseif(!$req.param("lcTag") || $req.param("lcTag") == "")
+			{"subAction":"isItemSaved","success":false,"errorMessage":"Error 302: A valid lcTag was not properly passed in to the function.", "errorNum":"302"}
+
+	#else
+		#set($curProfile = $cms.content($req.intParam("pid"), false))
+		#if(!$curProfile)
+			{"subAction":"isItemSaved","success":false,"errorMessage":"Error 301: A profile item could not be found for the pid passed in.", "errorNum":"301"}
+		#else
+			#set($cid = $req.intParam("cid"))
+			#foreach($id in $curProfile.linkedContent($req.param("lcTag")))
+				#if($id == $cid)
+					#set($found = true)
+				#end
+			#end
+			
+			#if($found)
+				{"subAction":"isItemSaved","success":true}
+			#else
+				{"subAction":"isItemSaved","success":false}
+			#end
+		#end
+	#end
+
+#################################################################################
+## Post Form
+#################################################################################
+
+#elseif($req.param("subAction") == "postForm")
+	#if($req.param("url") && $req.param("url") != "")
+		#*
+		#set($client1= $httpClient.newHttpClient())
+		#set($foo = $client1.setUrl("http://www.google.com"))
+		#set($foo = $client1.setRequestType("POST"))
+		#set($foo = $client1.addRequestHeader("requestHeader1","requestHeader1Value"))
+		#set($foo = $client1.addRequestHeader("requestHeader2","requestHeader2Value"))
+
+		#foreach($param in $req.params)
+			#set($foo = $client1.addRequestParameter($param, $req.param($param)))
+		#end
+
+		#set($foo = $client1.setTimeout(15))
+		#set($result = $client1.execute())
+
+		#set($returnString = $result.responseString)
+		*#
+		
+		
+		#set($params = $util.newList) 
+		#foreach($param in $req.params)
+			#set($foo = $params.add($util.newParam($param, $req.param($param)))) 
+		#end
+		#set($returnString = $util.postURL($req.param("url"), $params, 20))
+		#if($returnString)
+			{"subAction":"postForm","success":true}
+		#else
+			{"subAction":"postForm","success":false,"errorMessage":"Error 402: There was no response from the server.","errorNum":"402"}
+		#end
+	#else
+		{"subAction":"postForm", "success":false, "errorMessage": "Error 401: A valid url was not properly passed in.", "errorNum":"401"}
+	#end
+	
+#################################################################################
+## Send Email
+#################################################################################
+	
+#elseif($req.param("subAction") == "sendemail")
+	#set($rep = $cms.content($req.intParam("repId"), false))
+	#set($profile = $cms.content($req.intParam("pid"), "/en/profiles"))
+		
+	#if(!$req.param("repId") || $req.intParam("repId") == 0)
+		{"subAction":"sendemail","success":false,"errorMessage":"Error 501: The repId was not properly passed in to the function.", "errorNum":"501"}	
+	
+	#elseif(!$req.param("pid") || $req.intParam("pid") == 0)
+		{"subAction":"sendemail","success":false,"errorMessage":"Error 502: The pid was not properly passed in to the function.", "errorNum":"502"}
+	
+	#elseif(!$rep || $rep.typeName != "Sales Rep")
+		##Not a valid rep.  Generic error returned so users do not try and guess reps
+		{"subAction":"sendemail","success":false,"errorMessage":"Error 503: An error occurred.", "errorNum":"503"}		
+	
+	#elseif(!$profile || $profile.typeName != "Profile")
+		##Not a valid profile.  Generic error returned so users do not try and guess profiles
+		{"subAction":"sendemail","success":false,"errorMessage":"Error 504: An error occurred.", "errorNum":"504"}		
+	
+		
+	#elseif(!$req.param("ebody") || $req.param("ebody") == "")
+		{"subAction":"sendemail","success":false,"errorMessage":"Error 506: You must enter text to send.", "errorNum":"506"}
+			
+	#else
+		#set($myEmail = $util.newEmail)
+		$myEmail.setTo($rep.email)
+		$myEmail.setFrom($profile.email)
+		$myEmail.setSubject("A note from $!profile.firstName $!profile.lastName")
+		$myEmail.setBody("$req.param('ebody')")
+		$myEmail.send()
+		
+		{"subAction":"success","success":true}
+	#end
+	
+#################################################################################
+## Send Short Form Email
+#################################################################################
+
+#elseif($req.param("subAction") == "sendShortFormEmail")
+	#set($password = $req.param("p"))
+	#set($email = $req.param("e"))
+	#set($profileId = $req.param("pid"))
+	
+	#set($gptItem = $cms.content($math.newInt($profileId), false))
+	$cms.template("Get Primary Target")
+	#set($curUser = $gptTargetedItem)
+	
+	#set($glcInputItem = $curUser)
+	#set($glcTagName = "profileRep")
+	$cms.template("Get Linked Content")
+
+	#foreach($item in $glcOutputArray)
+		#set($salesRep = $item)
+	#end	
+	
+	#if($req.param("uid") && $req.intParam("uid") > 0)
+		#set($gptItem = $cms.content($req.intParam("uid"), false))
+		$cms.template("Get Primary Target")
+		#if($gptTargetedItem)
+			#set($reqItem = $gptTargetedItem)
+		#else
+			#set($reqItem = $cms.media($req.intParam("uid")))
+		#end
+	#end		
+	
+	#if(!$req.param("p") || $req.param("p") == "")
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The password was not properly passed in to the function. (Error 601)", "errorNum":"601"}
+		
+	#elseif(!$req.param("e") || $req.intParam("e") == 0)
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The email was not properly passed in to the function. (Error 602)", "errorNum":"602"}
+		
+	#elseif(!$req.param("uid") || $req.intParam("uid") == 0)
+			{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The uid was not properly passed in to the function. (Error 603)", "errorNum":"603"}
+
+	#elseif(!$reqItem && $pid && $pid > 0)
+				{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The pid was not properly passed in to the function. (Error 604)", "errorNum":"604"}
+	
+	
+	#elseif(!$reqItem)
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The item you requested is not valid. (Error 606)", "errorNum":"606"}
+
+	#else
+		#set($myEmail = $util.newEmail)
+		$myEmail.setTo($email)
+		$myEmail.setFrom($salesRep.email)
+		$myEmail.setBody("")
+		
+		#if($reqItem)
+			#if($reqItem.displayTitle && $reqItem.displayTitle != "")
+				#set($reqTitle = $reqItem.displayTitle)
+			#else
+				#set($reqTitle = $reqItem.title)
+			#end
+			
+			$myEmail.setSubject("A Note from Animal Bites: Access to '${reqTitle}'.")
+						
+			$myEmail.addLine("Thank you for your interest in Animal Bites.")
+			$myEmail.addLine("")
+			$myEmail.addLine("We are sending you this email to confirm your receipt of the item you requested: ${reqTitle}")
+			$myEmail.addLine("")
+			$myEmail.addLine("You can save this and other items our website in a personal resource portfolio by clicking this link or pasting it into a browser:  http://${cms.envHost}${cms.domain}/s?action=editReg&finishReg=y")
+			$myEmail.addLine("")
+			$myEmail.addLine("Use this password to complete your portfolio: $password.")
+			$myEmail.addLine("")
+			$myEmail.addLine("Regards,")
+			$myEmail.addLine("The Animal Bites Team")		
+			
+		#else
+			$myEmail.setSubject("A Note from Animal Bites.")
+			$myEmail.addLine("Thank you for your interest in Animal Bites.")
+			$myEmail.addLine("")
+			$myEmail.addLine("You can save this and other items our website in a personal resource portfolio by clicking this link or pasting it into a browser:  http://${cms.envHost}${cms.domain}/s?action=editReg&finishReg=y")
+			$myEmail.addLine("")
+			$myEmail.addLine("Use this password to complete your portfolio: $password.")
+			$myEmail.addLine("")
+			$myEmail.addLine("Regards,")
+			$myEmail.addLine("The Animal Bites Team")
+		#end
+		
+		$myEmail.send()
+
+		{"subAction":"success","success":true}
+	#end
+	
+#################################################################################
+## Send Long Form Email
+#################################################################################
+
+#elseif($req.param("subAction") == "sendLongFormEmail")
+	#set($password = $req.param("p"))
+	#set($email = $req.param("e"))
+	#set($profileId = $req.param("pid"))
+	
+	#set($gptItem = $cms.content($math.newInt($profileId), false))
+	$cms.template("Get Primary Target")
+	#set($curUser = $gptTargetedItem)
+	
+	#set($glcInputItem = $curUser)
+	#set($glcTagName = "profileRep")
+	$cms.template("Get Linked Content")
+
+	#foreach($item in $glcOutputArray)
+		#set($salesRep = $item)
+	#end
+	
+	#set($uid = $req.intParam("uid"))
+
+	#if($uid && $uid > 0)
+		#set($gptItem = $cms.content($uid, false))
+		$cms.template("Get Primary Target")
+		#if($gptTargetedItem)
+			#set($reqItem = $gptTargetedItem)
+		#else
+			#set($reqItem = $cms.media($uid))
+		#end
+	#end		
+
+	#if(!$req.param("p") || $req.param("p") == "")
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The password was not properly passed in to the function. (Error 701)", "errorNum":"701"}
+
+	#elseif(!$req.param("e") || $req.intParam("e") == 0)
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The email was not properly passed in to the function. (Error 702)", "errorNum":"702"}
+
+	#elseif(!$reqItem && $uid && $uid > 0)
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The item you requested is not valid. (Error 703)", "errorNum":"703"}
+
+	#elseif(!$reqItem && $pid && $pid > 0)
+		{"subAction":"sendShortFormEmail","success":false,"errorMessage":"The pid was not properly passed in to the function. (Error 704)", "errorNum":"704"}
+
+	#else
+		#set($myEmail = $util.newEmail)
+		$myEmail.setTo($email)
+		$myEmail.setFrom($salesRep.email)
+		$myEmail.setBody("")
+		
+		#if($reqItem)
+			#if($reqItem.displayTitle && $reqItem.displayTitle != "")
+				#set($reqTitle = $reqItem.displayTitle)
+			#else
+				#set($reqTitle = $reqItem.title)
+			#end
+			
+			$myEmail.setSubject("A Note from your Clickability Resource Portfolio: Access to '${reqTitle}'.")
+			
+			
+			$myEmail.addLine("Thank you for your interest in Clickability.  We have created a personal resource portfolio just for you.")
+			$myEmail.addLine("")
+			$myEmail.addLine("Your portfolio will grant you immediate access to '$reqTitle', present content in your area of interest, enable you to SAVE items as you browse our website and provide your with direct access to a Clickability Account manager.")			
+			
+		#else
+			$myEmail.setSubject("A Note from Clickability.")
+			$myEmail.addLine("Thank you for your interest in Clickability.  We have created a personal evaluation portfolio just for you.")
+			$myEmail.addLine("")
+			$myEmail.addLine("Your portfolio will present content in your area of interest, enable you to SAVE items as you browse our website and provide your with direct access to a Clickability Account manager.")  
+		#end
+		
+		$myEmail.addLine("")
+		$myEmail.addLine("Your password is $password")
+		$myEmail.addLine("")
+		$myEmail.addLine("Access your portfolio at any time here: http://$cms.envHost$cms.domain/en/profiles/${curUser.id}.html")
+		
+		$myEmail.send() 
+
+		{"subAction":"success","success":true}
+	#end
+	
+#################################################################################
+## Get Trend Items
+#################################################################################
+
+#elseif($req.param("subAction") == "getTrendItems")
+	$cms.template("Setup")
+
+#foreach($i in [1..3])
+	#if(!$searchResults || $searchResults.size() == 0)
+		#set($gsraSearchIncludeArray = ["Blog Post", "Event", "Products", "Bio", "White Paper", "Press Release", "General Page"])
+		#set($gsraPageSize = 3)
+		#set($gsraSortBy = "-contentLiveDate")
+		#set($gsraReturnContentItems = true)
+		#set($gsraSearchWSSHash = $util.newHashMap)
+		#set($foo = $gsraWSSHash.put($topLevel.path, false))
+		$cms.template("Get Search Results Array")
+		#set($searchResults = $gsraOutputArray)
+	#end
+#end
+
+#if($searchResults.size() == 0)
+	As you browse your trend items will appear here.
+#else
+	{"subAction":"getTrendItems","success":true,
+	
+	#foreach($param in $req.params)
+		#if($math.newInt($param) > 0 && $req.intParam($param) > 0)
+			"catSet":"$param", "catID":"$req.intParam($param)", "catName":"$cms.getCategorySet($math.newInt($param)).getCategory($req.intParam($param)).name",
+		#end
+	#end
+	
+	"items":[
+		#set($found = false)
+		#foreach($item in $searchResults)
+			#if($item.url && $item.url != "")
+				#if(!$found)
+					#set($found = true)
+				#else
+					,
+				#end
+				
+				#if($item.fileName && $item.fileName != "")
+					#set($itemTitle = $item.fileName)	
+	
+				#elseif($item.displayTitle && $item.displayTitle != "")
+					#set($itemTitle = $item.displayTitle)								
+	
+				#else
+					#set($itemTitle = $item.title)
+				#end
+
+				{"id":"$item.id", "url":"$util.encode.js($item.url)", "title":"$util.encode.js($itemTitle)"}
+			#end				
+		#end
+	]}
+#end
+
+#################################################################################
+## Generic Success Message
+#################################################################################
+
+#elseif($req.param("subAction") == "success")
+	{"subAction":"success","success":true}
+	
+#################################################################################
+## Generic Fail Message
+#################################################################################
+
+#elseif($req.param("subAction") == "fail")
+	{"subAction":"fail","success":false}
+	
+#################################################################################
+## NO Sub Action Message
+#################################################################################
+
+#else
+	{"success":false,"errorMessage":"Error 100: No action was defined.","errorNum", "100"}
+#end

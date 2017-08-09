@@ -1,0 +1,235 @@
+			<!-- TABS CONTENT -->
+
+<!-- call to Tabs JS & CSS files -->
+<!-- fileTabsJS -->
+<script type="text/javascript" src="https://www.53.com/wps/wcm/resources/file/eb2db50ea60f5e2/tabs-wcm.js"></script>
+
+<!-- fileTabsCSS -->
+<link rel="stylesheet" type="text/css" href="https://www.53.com/wps/wcm/resources/file/ebef7c443d2b756/tabs-wcm.css" />
+
+<style type="text/css"> 
+td#ptSecondaryPromo {
+  padding-top: 5px;
+}
+</style>
+
+<SCRIPT language=javascript src="https://www.53.com/common/leaving53.js" type=text/javascript></SCRIPT>
+
+<style type="text/css">
+
+.leftRailHolder { float: left; }
+
+#boxTop { background: url('https://www.53.com/wps/wcm/resources/file/ebca2508c62d150/bg_boxTop.gif') top left no-repeat transparent; margin: 0px; padding: 0px; }
+
+#boxContent { border-left: 1px solid #7299b9; border-right: 1px solid #7299b9; width: 547px; }
+
+#boxBottom { background: url('https://www.53.com/wps/wcm/resources/file/ebca2808c63259b/bg_boxBottom.gif') bottom left no-repeat; margin: 0px; padding: 11px 0; }
+
+.cardHolder { padding: 0 0 0 8px; float: left; }
+
+.card { float: left; }
+
+.icon, p.icon{ padding: 0px; margin: 10px 0 0 5px; float: left; font-family: verdana; font-size: 9px; float: left; }
+
+p.icon { padding: 0px; margin-top: 8px; }
+
+.clb { clear: both; height: 0px; padding: 0px; margin: 0px; }
+
+.cardImage { float: left; }
+
+h1.cardTitle { font-family: verdana; color: #1c4094; font-size: 17px; padding: 0px; margin: 0px; font-weight: bold; }
+
+.greenTitle { color: #5d9732; padding: 0px; margin: 0px; }
+
+.bigPercent { font-family: verdana; font-size: 24px; font-weight: bold; }
+
+.smallAPR { font-family: verdana; font-size: 11px; font-weight: bold; }
+
+.detailsBox, .detailsBox_description { padding: 5px 5px 15px 12px; width:105px; height: 70px; float: left; font-family: verdana; font-size: 10px; margin: 5px 0 5px 0px; border-right: 2px dotted #d7e2ec; }
+
+.detailsBox { padding-top: 0px; }
+
+.detailsBox_description { font-size: 13px; font-weight: bold; padding-left: 5px; }
+
+.applyCTA { margin: -13px 0 0 10px; float: left; }
+
+.applyCTA img { float: left; margin-top: 5px; }
+
+.applyCTA p { font-family: verdana; font-size: 10px; vertical-align: center; margin: 10px 0 0 5px; padding: 0px; float: left; }
+
+p.titleCTA { color: #5D9732; font-family: verdana; font-weight: bold; font-size: 13px;  margin: 0px; }
+
+.left { text-align: right; font-weight: bold; }
+
+.right { text-align: left; }
+
+#feesTable { margin: 0px; padding: 0px; border-top: 1px solid #d0d0d0; border-left: 1px solid #d0d0d0; border-spacing: 0px; margin: 10px 0; }
+
+#feesTable tr.odd td { background-color: #E7F2FB; }
+
+#feesTable tr td { border-right: 1px solid #d0d0d0; border-bottom: 1px solid #d0d0d0; width: 210px; padding: 5px; }
+
+.linkArrow { margin: 0 6px 0 20px; }
+
+</style>
+
+
+<div id="tabs">
+<ul class="ui-tabs-nav" id="tabNav">
+  <li class="ui-tabs-selected"><a id="0" href="javascript:changeTab('0')"><span>Overview</span></a></li>
+  <li><a id="1" href="javascript:changeTab('1')"><span>Benefits</span></a></li>
+  <li><a id="2" href="javascript:changeTab('2')"><span>Rewards</span></a></li>
+  <li><a id="3" href="javascript:changeTab('3')"><span>Rates & Fees†</span></a></li>
+
+</ul>
+<br class="clb"https://www.53.com/>
+	
+<div id="tabContent">
+  <div class="ui-tabs-panel" id="tab-0">
+
+
+    <h3 class="sectionhead">Benefits</h3>
+    <ul>
+    <li>No annual fee</li>
+    <li>Complimentary concierge service 24 hours a day – from last-minute dinner reservations to ordering flowers for a loved one</li>
+
+    <li>No preset spending limit for added purchasing power</li>
+    <li>Year-end summary statement makes budgeting easier</li>
+    </ul>
+
+    <h3 class="sectionhead">Rewards</h3>
+    <ul>
+    <li>Earn 2 rewards points per $1 spent on gas purchases<sup>2</sup></li>
+
+    <li>Earn 1 rewards point per $1 spent on all other net purchases<sup>3</sup></li>
+    <li>Rewards Accelerator – earn more points per dollar the more you use your card</li>
+    </ul>
+
+  </div>
+
+  <div class="ui-tabs-panel ui-tabs-hide" id="tab-1">
+
+    <h3 class="sectionhead"><a href="javascript:Leaving53('http://www.visa.com/signature/')">Concierge Service</a></h3>
+
+    <p>With a phone call, you can get dinner reservations, tickets to special events, tee times, gift recommendations, even help finding the nearest 24-hour pharmacy, or other everyday needs. Your concierge can help you with almost anything, including:</p>
+
+    <ul>
+    <li>Restaurant recommendations and dinner reservations </li>
+    <li>Securing tickets to sporting, entertainment, and special events </li>
+    <li>Reserving a tee time for a round of golf </li>
+    <li>Gift recommendations and location of hard-to-find items </li>
+
+    <li>Finding the nearest 24-hour pharmacy, locating a plumber, or other everyday needs </li>
+    </ul>
+
+    <h3 class="sectionhead"><a href="javascript:Leaving53('http://www.53SmartSavings.com')">SmartSavings</a><sup>sm</sup></h3>  
+
+    <p>Grants you access to a dedicated website providing discounts of up to 15% or more at thousands of retailers whenever you use your card.</p>
+
+    <h3 class="sectionhead">No Preset Spending Limit</h3>
+    <p>You have the flexibility to exceed your credit limit should you ever need the extra purchasing power to cover unexpected expenses. So you’ll have added peace of mind knowing that you'll have additional spending strength and flexibility.</p>
+
+    <h3 class="sectionhead">Year-End Summary Statement</h3>
+    <p>To make budgeting easier, you’ll receive a year-end statement summarizing your annual credit activity.  The report will outline transaction totals compiled in categories such as “travel” and “restaurants,” as well as provide a detailed transaction list highlighting every transaction made during the year.</p>
+
+    <h3 class="sectionhead">Warranty Manager Service</h3>
+    <p>This service will automatically double the original manufacturer's warranty or store-bought extended warranty of twelve months or less, and can even register your product as well.</p>
+
+    <h3 class="sectionhead">Purchase Security</h3>
+
+    <p>If something you bought with your Visa Signature Rewards Credit Card is damaged or stolen within ninety (90) days of purchase, you may be eligible to receive reimbursement for the cost to repair or replace the specific item. </p>
+
+    <h3 class="sectionhead">$1,000,000 Travel Accident Insurance</h3>
+    <p>Ensures that you and your dependents are covered on any trip you purchase with your card.</p>
+
+    <h3 class="sectionhead">Lost Luggage Reimbursement</h3>
+    <p>Protects your luggage in the event of loss or theft.</p>
+
+    <h3 class="sectionhead">Roadside Dispatch</h3>
+    <p>Get help 24 hours a day, seven days a week if you ever encounter a problem while driving.</p>
+
+    <h3 class="sectionhead">Auto Rental Collision Damage Waiver</h3>
+    <p>Get added protection when you rent a car.</p>
+
+    <h3 class="sectionhead">Additonal Benefits</h3>
+
+    <ul>
+    <li>Travel – room upgrades, free extra nights, rate discounts</li>
+    <li>Sports & Entertainment – exclusive access to presale tickets, VIP packages, and preferred seating</li>
+    <li>Fine Wine & Food – access to Zagat survey restaurant ratings and reviews</li>
+    <li>Shopping – exclusive in-store and online offers to your favorite retail brand names</li>
+    </ul>
+
+
+  </div>
+		
+
+
+  <div class="ui-tabs-panel ui-tabs-hide" id="tab-2">
+
+    <h3 class="sectionhead">Make using your Credit Card for everyday purchases more rewarding</h3>
+
+    <ul>
+      <li>2 rewards points for every $1 spent on gas purchases<sup>2</sup></li>
+
+      <li>1 rewards point for every $1 spent on everything else</li>
+      <li>Rewards Accelerator – earn more points per dollar the more you use your card</li>
+      <li>Combine points on multiple cards and redeem faster with 53PointShare<sup>sm</sup></li>
+      <li>More than 1,000 rewards, including name-brand merchandise, gift certificates to popular retailers, airline tickets, and more.</li>
+    </ul>
+
+
+    <p>
+    <img src='https://www.53.com/wps/wcm/resources/file/eb46fe056158971/greenArrow.gif' class="linkArrow"><a href="https://www.53.com/wps/portal/pv?New_WCM_Context=/wps/wcm/connect/FifthThirdSite/Personal/Credit+%26+Debit+Cards/Fifth+Third+Rewards/">Learn more about Fifth Third Rewards</a>
+    </p>
+
+<p align="center">
+<img src='https://www.53.com/wps/wcm/resources/file/eb61e20f4f4bc26/chart_logos_lockup_b.jpg'>
+</p>
+
+
+  </div>
+	
+
+	
+  <div class="ui-tabs-panel ui-tabs-hide" id="tab-3">
+
+<center>
+<table id="feesTable" cellspacing="0">
+<tr class="odd">
+  <td class="left">Annual Fee </td>
+  <td class="right">None</td>
+</tr>
+
+<tr class="even">
+  <td class="left">Introductory APR for Purchases </td>
+  <td class="right">0% Introductory APR for the first six billing cycles.</td>
+
+</tr>
+
+<tr class="odd">
+  <td class="left">APR for Purchases After Introductory Period </td>
+  <td class="right">Minimum of 10.99%, 13.99%, 15.99%, 19.99%, depending on a review of your application and credit history</td>
+</tr>
+
+<tr class="even">
+  <td class="left">Introductory APR for Balance Transfers </td>
+  <td class="right">3.9% Introductory APR for first 18 billing cycles</td>
+
+</tr>
+
+<tr class="odd">
+  <td class="left">APR for Balance Transfers After introductory Period </td>
+  <td class="right">Variable APR for purchases</td>
+</tr>
+
+</table>
+</center>
+<br/>
+<p>† Please see <a href="#schumer" onclick="javascript:showhide('view'); showhide('hide'); showhide('toggle');">Rate, Fee & other Cost information </a> for complete details.
+
+  </div>
+
+
+</div>
+</div>

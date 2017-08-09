@@ -1,0 +1,388 @@
+#set($gsraOutputParams = $util.newArrayList)##
+##
+#############################################################
+## Configure defaults##
+##
+	#set($gsraDefaultPage = 1)##
+	#set($gsraDefaultPageSize = 10)##
+##
+	#set($gsraNoValidKeyword = "You must enter a keyword!")##
+	#set($gsraShortKeyword = "No results were found for your search.")##
+	#set($gsraNoItemsFound = "No results were found for your search.")##
+##
+##############################################################
+##
+#set($gsraSearchObject = $cms.newSearch)##
+##
+##############################################################
+## Sets Page##
+##
+	#if(!$gsraPage)##
+		#if($req.intParam("page") > 0)##
+			#set($gsraPage = $req.intParam("page"))##
+		#else##
+			#set($gsraPage = $gsraDefaultPage)##
+		#end##
+	#end##
+	##
+	#if($gsraGetExactTotal)##
+		$gsraSearchObject.page(1)##
+	#else##
+		$gsraSearchObject.page($gsraPage)##
+	#end##
+	#set($gsraFoo = $gsraOutputParams.add($util.newParam("page", $gsraPage.toString())))##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Pagesize##
+##
+	#if(!$gsraPageSize)##
+		#if($req.intParam("pageSize") > 0)##
+			#set($gsraPageSize = $req.intParam("pageSize"))##
+		#else##
+			#set($gsraPageSize = $gsraDefaultPageSize)##
+		#end##
+	#end##
+##
+	#if($gsraGetExactTotal)##
+		$gsraSearchObject.pageSize(700000)##
+	#else##
+		$gsraSearchObject.pageSize($gsraPageSize)##
+	#end##
+	#set($gsraFoo = $gsraOutputParams.add($util.newParam("pageSize", $gsraPageSize.toString())))##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Keywords##
+	##
+	#if($gsraCheckKeyword)##
+		#set($gsraKeywords = $gsraKeywords.trim())##
+		#if(!$gsraKeywords || $gsraKeywords == "")##
+			#set($gsraErrorMessage = $gsraNoValidKeyword)##
+##
+		#elseif($gsraKeywords.length() <= 2)##
+			#set($gsraErrorMessage = $gsraShortKeyword)##
+##
+		#else##
+			$gsraSearchObject.addKeywords($gsraKeywords)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("keywords", $util.encode.url($gsraKeywords).toString())))##
+		#end##
+	#end##
+##
+##############################################################
+##
+##
+
+##############################################################
+## Sets Syonyms##
+	##
+	#if($gsraSearchSynonyms)##
+		$gsraSearchObject.setSearchSynonyms()
+	#end##
+##
+##############################################################
+##
+##
+	
+
+##############################################################
+## Sets Search Fields##
+	##
+	#if(!$gsraSearchFieldArray)##
+		#set($gsraSearchFieldArray = $util.newArrayList)##
+		#foreach($gsraParamValue in $req.paramValues("field"))##
+			#set($gsraFoo = $gsraSearchFieldArray.add($gsraParamValue))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("field", $util.encode.url($gsraParamValue).toString())))##
+		#end##
+	#end##
+	##
+	#if($gsraSearchFieldArray.size() > 0)##
+		#set($gsraTempFieldString = "")##
+		#foreach($gsraField in $gsraSearchFieldArray)##
+			#if($gsraVelocityCount != 1)##
+				#set($gsraTempFieldString = "$gsraTempFieldString, ")##
+			#end##
+			#set($gsraTempFieldString = "$gsraTempFieldString$gsraField")##
+		#end##
+		$gsraSearchObject.setSearchFields($gsraTempFieldString)##
+	#end##
+	##
+##############################################################
+##
+##############################################################
+## Sets Include Content Types##
+##
+	#foreach($gsraItem in $gsraSearchIncludeArray)##
+		$gsraSearchObject.addContentType($gsraItem)##
+##
+		#set($gsraFoo = $gsraOutputParams.add($util.newParam("contentType", $gsraItem.toString())))##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Exclude Content Types##
+##
+	#foreach($gsraItem in $gsraSearchExcludeArray)##
+		$gsraSearchObject.excludeContentType($gsraItem)##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Year search##
+##
+	#if($req.intParam("year") && $req.intParam("year") != 0)##
+		#set($gsraYear = $req.intParam("year"))##
+		$gsraSearchObject.setDateRange("startDate",$util.parseDate("01/01/$gsraYear", "MM/dd/yyyy"), $util.add($util.parseDate("01/01/$math.add($gsraYear, 1)", "MM/dd/yyyy"), "minute", -1))##
+		#set($gsraFoo = $gsraOutputParams.add($util.newParam("year", $gsraYear.toString())))##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Date Range search (param dates MUST be in format "MM-dd-yyyy")##
+##
+##
+	#if(!$gsraStartDate && $req.param("startDate") && $req.param("startDate") != "")##
+		#set($gsraStartDate = $util.parseDate($req.param("startDate"), "MM-dd-yyyy"))##
+	#end##
+	##
+	#if(!$gsraEndDate && $req.param("endDate") && $req.param("endDate") != "")##
+		#set($gsraEndDate = $util.add($util.add($util.parseDate($req.param("endDate"), "MM-dd-yyyy"), "day", 1), "minute", -1))##
+	#end##
+	##
+	#if($gsraStartDateField && $gsraEndDateField)##
+		#set($gsraRangeSearch = true)##
+	#elseif(!$gsraStartDateField && !$gsraEndDateField)##
+		#set($gsraStartDateField = "startDate")##
+	#end##
+##
+	## Checks for event search first##
+	#if($gsraEventSearch)##
+		## event searches use formatted dates instead of actual date objects "yyyy-MM-dd"##
+		##
+		#if($gsraStartDate && $gsraEndDate)##
+			$gsraSearchObject.setEventDateRange($util.date("yyyy-MM-dd", $gsraStartDate), $util.date("yyyy-MM-dd", $gsraEndDate))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		##
+		#elseif($gsraStartDate)##
+			## since open-ended searches are not allowed, we will go 5 years into the future for the endDate##
+			$gsraSearchObject.setEventDateRange($util.date("yyyy-MM-dd", $gsraStartDate), $util.date("yyyy-MM-dd", $util.add($gsraStartDate, "year", 5)))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+		##
+		#elseif($gsraEndDate)##
+			$gsraSearchObject.setEventDateRange($util.date("yyyy-MM-dd"), $util.date("yyyy-MM-dd", $gsraEndDate))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		#end##
+		##
+		## expand events##
+		#if($gsraExpandEvents)##
+			$gsraSearchObject.setExpandEvents(true)##
+		#end##
+		##
+	#elseif($gsraRangeSearch)	##
+		#if($gsraStartDate && $gsraEndDate)##
+			$gsraSearchObject.addBeforeDate($gsraStartDateField, $gsraEndDate)##
+			$gsraSearchObject.addAfterDate($gsraEndDateField, $gsraStartDate)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		##
+		#elseif($gsraStartDate)##
+			$gsraSearchObject.addAfterDate($gsraEndDateField, $gsraStartDate)##
+			$gsraSearchObject.addBeforeDate($gsraStartDateField, $gsraStartDate)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+		##
+		#elseif($gsraEndDate)##
+			$gsraSearchObject.addBeforeDate($gsraStartDateField, $gsraEndDate)##
+			$gsraSearchObject.addAfterDate($gsraStartDateField, $gsraCurDate)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		#end##
+	#else##
+		##
+		#if($gsraStartDate && $gsraEndDate)##
+			$gsraSearchObject.setDateRange($gsraStartDateField, $gsraStartDate, $gsraEndDate)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		##
+		#elseif($gsraStartDate)##
+			$gsraSearchObject.setAfterDate($gsraStartDateField, $gsraStartDate)##
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("startDate", $util.date("MM-dd-yyyy", $gsraStartDate).toString())))##
+		##
+		#elseif($gsraEndDate)##
+			$gsraSearchObject.setBeforeDate($gsraStartDateField, $gsraEndDate)##
+
+
+
+
+			#set($gsraFoo = $gsraOutputParams.add($util.newParam("endDate", $util.date("MM-dd-yyyy", $gsraEndDate).toString())))##
+		#end##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Category Params.   Params must have set id as name and cat id as value##
+##
+	#if(!$gsraCatSetArray && !$gsraCatIDArray)##
+		#set($gsraCatSetArray = $util.newArrayList)##
+		#set($gsraCatIDArray = $util.newArrayList)##
+		#foreach($gsraParam in $req.params)##
+##
+			#if($math.newInt($gsraParam) > 0 && $req.intParam($gsraParam) > 0)##
+				#set($gsraFoo = $gsraCatSetArray.add($math.newInt($gsraParam)))##
+				#set($gsraFoo = $gsraCatIDArray.add($req.intParam($gsraParam)))##
+##
+				#set($gsraFoo = $gsraOutputParams.add($util.newParam($gsraParam, $req.param($gsraParam).toString())))##
+			#end##
+		#end##
+	#end##
+##
+	#if($gsraCatSetArray.size() > 0)##
+		$gsraSearchObject.addCategorization($cms.getCategorization($gsraCatSetArray, $gsraCatIDArray))##
+##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Include WSS##
+##
+	#foreach($gsraKey in $gsraSearchWSSHash.keySet)##
+		#if($gsraSearchWSSHash.get($gsraKey) == "true")##
+			#set($gsraGetChildren = true)##
+		#else##
+			#set($gsraGetChildren = false)##
+		#end##
+##
+		$gsraSearchObject.addWSS($gsraKey, $gsraGetChildren)##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Sets Sort By##
+##
+	#if(!$gsraSortBy && $req.param("sortBy") && $req.param("sortBy") != "")##
+			#set($gsraSortBy = $req.param("sortBy"))##
+	#end##
+	##
+	#if($gsraSortBy && $gsraSortBy != "")##
+		$gsraSearchObject.setSortBy($gsraSortBy)##
+##
+		#set($gsraFoo = $gsraOutputParams.add($util.newParam("sortBy", $gsraSortBy.toString())))##
+	#end##
+##
+##############################################################
+##
+##
+##############################################################
+## Executes Search##
+##
+	#set($gsraSearchResultArray = $util.newArrayList)##
+	#set($gsraSearchResultArray = $gsraSearchObject.execute)##
+##
+	#if($gsraSearchResultArray.size() == 0)##
+		#set($gsraErrorMessage = $gsraNoItemsFound)##
+		#set($foo = $wma.trackSearch($gsraKeywords, false))
+		#set($searchTracked = true)
+	#else
+		#set($foo = $wma.trackSearch($gsraKeywords, true))
+		#set($searchTracked = true)
+	#end##
+##
+
+##
+##############################################################
+## Set Output Array##
+##
+#set($gsraOutputArray = $gsraSearchResultArray)##
+##
+##############################################################
+	#if($gsraGetExactTotal)
+		#set($gsraEstimatedPages = $gsraOutputArray.size() / $gsraPageSize)
+		#if($gsraOutputArray.size() % $gsraPageSize != 0)
+			#set($gsraEstimatedPages = $math.add($gsraEstimatedPages, 1))
+		#end
+		#set($gsraEstimatedItems = $gsraOutputArray.size())
+		#if($gsraEstimatedPages == 1)
+			#set($gsraBeginIndex = 1)
+			#set($gsraEndIndex = $gsraEstimatedItems)
+		#else
+			#set($gsraBeginIndex = $math.add($math.multiply($math.subtract($gsraPage, 1), $gsraPageSize), 1))
+			#set($gsraEndIndex = $math.subtract($math.add($gsraBeginIndex, $gsraPageSize), 1))
+			#if($gsraEndIndex > $gsraEstimatedItems)
+				#set($gsraEndIndex = $gsraEstimatedItems)
+			#end
+		#end
+		#set($gsraOutputArray = $gsraOutputArray.subList($math.subtract($gsraBeginIndex, 1), $gsraEndIndex))
+	#else
+		#set($gsraEstimatedPages = $gsraSearchObject.estimatedPages)
+		#if($gsraEstimatedPages == 1)
+			#set($gsraEstimatedItems = $gsraOutputArray.size())
+			#set($gsraBeginIndex = 1)
+			#set($gsraEndIndex = $gsraEstimatedItems)
+		#else
+			#set($gsraBeginIndex = $math.add($math.multiply($math.subtract($gsraPage, 1), $gsraPageSize), 1))
+			#set($gsraEndIndex = $math.subtract($math.add($gsraBeginIndex, $gsraOutputArray.size()), 1))
+		#end
+		#set($gsraEstimatedItems = $math.multiply($gsraEstimatedPages, $gsraPageSize))
+		#set($gsraEstimatedItems = $math.subtract($gsraEstimatedItems, $math.round($math.multiply($math.random, $gsraPageSize))))
+	#end
+	##############################################################
+	##
+	##
+	##############################################################
+	## Return actual content items (only for items on current page)
+	##
+	#if($gsraReturnContentItems || $gsraGroupBy)##
+		#set($gsraSearchResultContentArray = $util.newArrayList)##
+		##
+		#foreach($gsraItem in $gsraOutputArray)##
+			#set($gptItem = $gsraItem)##
+			$cms.template("Get Primary Target")##
+			#if($gptTargetedItem)##
+				#set($gsraFoo = $gsraSearchResultContentArray.add($gptTargetedItem))##
+			#end##
+		#end##
+		#set($gsraOutputArray = $gsraSearchResultContentArray)
+	#end##
+	##
+	#if($templateDebug)##
+		<div style="border: 2px solid red; padding:5px;">##
+			<h3 style="color:red; font-weight:bold;">Debug Code:</h3>##
+			keywords = $gsraKeywords<br>##
+			ErrorMessage = $gsraErrorMessage<br>##
+			estimatedPages = $gsraEstimatedPages<br>##
+			beginIndex = $gsraBeginIndex<br>##
+			endIndex = $gsraEndIndex<br>##
+			estimatedItems = $gsraEstimatedItems<br>##
+			sortBy = $gsraSortBy<br>##
+			startDate = $util.date("MM-dd-yyyy h:m z", $gsraStartDate)<br>##
+			endDate = $util.date("MM-dd-yyyy h:m z", $gsraEndDate)<br>##
+			startDateField = $gsraStartDateField<br>##
+			endDateField = $gsraEndDateField<br>##
+			page = $gsraPage<br>##
+			pageSize = $gsraPageSize<br>##
+			#set($bqInputParams = $gsraOutputParams)##
+			$cms.template("Build Querystring")##
+			queryString = $gsraQueryString<br>##
+		</div>##
+	#end##
+	##
+##############################################################
+## END##
+##
+##
+ 

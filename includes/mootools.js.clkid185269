@@ -1,0 +1,54 @@
+/*Save 08/01 6:11*/
+/* Get Page dimensions */
+function findLivePageWidth(){
+    if (window.innerWidth) 
+        return window.innerWidth;
+    if (document.body.clientWidth) 
+        return document.body.clientWidth;
+    return (null);
+}
+
+/* initialize */
+function initPopOvers(){
+    objectSlide = document.getElementById('slide');
+    objectCover = document.getElementById('cover');
+    objectHTMLBox = document.getElementById('mediaPlayer');
+}
+
+
+/* Hides expanded window */
+function hideMediaPlayer(){
+    objectSlide.style.display = 'none';
+    objectCover.style.display = 'none';
+}
+
+
+
+
+
+/* Pop a new window */
+function showMediaPlayerVid1(evt){
+    objectSlide.style.display = 'block';
+    objectCover.style.display = 'block';
+    objectHTMLBox.innerHTML = '<iframe src ="documents/videoplayer1.html" width="684px" height="600px" frameborder="0" scrolling="no"><p>Your browser does not support iframes.</p></iframe>';
+    
+    
+    // controls the left edge of the slide window
+    livePageWidth = findLivePageWidth();
+    newLeft = ((livePageWidth - 994) / 2) + (190);
+    objectSlide.style.left = newLeft + 'px';
+}
+
+
+/* Pop a new window */
+function showMediaPlayerSlShow1(evt){
+    objectSlide.style.display = 'block';
+    objectCover.style.display = 'block';
+    objectHTMLBox.innerHTML = '<iframe src ="documents/slideshow1.html" width="684px" height="600px" frameborder="0" scrolling="no"><p>Your browser does not support iframes.</p></iframe>';
+    
+    
+    // controls the left edge of the slide window
+    livePageWidth = findLivePageWidth();
+    newLeft = ((livePageWidth - 994) / 2) + (190);
+    objectSlide.style.left = newLeft + 'px';
+}

@@ -1,0 +1,277 @@
+#if(!$setupRan)
+	## Setup global variables and css/js arrays
+
+	##################################################################################
+	## Master Variables
+	
+		#set($showUserData = true)
+		
+	##################################################################################
+	
+	
+	##################################################################################
+	## Global Variables
+
+		#if($req.param("overPath") && $req.param("overPath") != "")
+			#set($curSection = $cms.websiteSection($req.param("overPath")))
+		#end
+
+		#if(!$curSection)
+			#set($curSection = $cms.websiteSection)
+		#end
+
+		#set($envHost = $cms.envHost)
+
+		#set($pathArray = $util.newArrayList)
+		
+		#set($tempPath = "")
+		#foreach($path in $curSection.path.split("/"))
+			#if($velocityCount > 1)
+				#set($foo = $pathArray.add("$tempPath/$path"))
+			#end
+		#end
+
+		#if($pathArray.size() == 0)
+			#set($topLevel = $cms.websiteSection("/en"))
+		#else
+			#set($topLevel = $cms.websiteSection($pathArray.get(0)))
+		#end
+		
+		#if($topLevel.path == $curSection.path)
+			#set($isTopLevel = true)
+		#end
+
+		#set($curDate = $util.now)
+
+		#set($params = $util.newArrayList)
+
+	##################################################################################
+
+
+	##################################################################################
+	## Sets current section name
+
+		#if($curSection.displayName && $curSection.displayName.trim() != "")
+			#set($curSectionName = $curSection.displayName)
+		#else
+			#set($curSectionName = $curSection.name)
+		#end
+
+	##################################################################################
+
+
+	##################################################################################
+	## BROWSER TITLE
+
+		## set main title
+		#set($mainTitle = "Clickability Corporate Demo")
+
+		## First set section title
+		#set($homeSection = $topLevel)
+
+		#if($curSection.displayName && $curSection.displayName != "")
+			#set($sectionName = $curSection.displayName)
+		#else
+			#set($sectionName = $curSection.name)
+		#end
+
+		#if(!$sectionTitle)
+			#set($sectionTitle = $sectionName)
+		#end
+
+		## $content will already be set, if on detail page
+
+		## Next set the meta title for content
+
+		#set($contentTitle = $content.title)
+		#if($content.typeName == "Profile")
+	#set($pageTitle = "$!content.firstName $!content.lastName")
+		
+		#else
+			#set($pageTitle = "$!content.title")
+		#end
+
+	##################################################################################
+
+
+	##################################################################################
+	## This creates the keywords and descriptions
+
+		##This decides the order of objects to check the fields to build the meta strings
+		#set($contentTypeArray = [$content, $curSection])
+
+
+		#foreach($item in $contentTypeArray)
+			#if(!$metaKeywords && $item.metaKeywords && $item.metaKeywords != "")
+				#set($metaKeywords = $item.metaKeywords)
+			#end
+
+			#if(!$metaDescription && $item.metaDescription && $item.metaDescription != "")
+				#set($metaDescription = $item.metaDescription)
+
+			#elseif(!$metaDescription && $item.summary && $item.summary != "")
+				#set($metaDescription = $item.summary)
+			#end
+		#end
+
+		##OPTIONAL to go through all sections
+		#if(!$metaKeywords)
+			#set($metaKeywords = $cms.hierarchyField("metaKeywords"))
+		#end
+
+		#if(!$metaDescription)
+			#set($metaDescription = $cms.hierarchyField("description"))
+		#end
+
+		#if($metaKeywords)
+			#set($metaKeywords = $util.text($metaKeywords.toString()))
+		#end
+
+		#if($metaDescription)
+			#set($metaDescription = $util.text($metaDescription.toString()))
+		#end
+
+
+	##################################################################################
+
+
+	##################################################################################
+	## This sets up all css includes.  If the include array is already created in the main template calling this than it will add it to the array
+
+		#if(!$cssArrayInc)
+			#set($cssArrayInc = $util.newArrayList)
+		#end
+
+
+		#set($foo = $cssArrayInc.add("accordion.css"))
+
+		
+	##################################################################################
+
+
+	##################################################################################
+	## This sets up all css templates.  If the include array is already created in the main template calling this than it will add it to the array
+
+		#if(!$cssArrayTemplates)
+			#set($cssArrayTemplates = $util.newArrayList)
+		#end
+
+		###set($foo = $cssArrayTemplates.add("clk_dbtemp_main.css"))
+ 
+
+	##################################################################################
+
+
+	##################################################################################
+	## This sets up all javascript includes.  If the include array is already created in the main template calling this than it will add it to the array
+
+		#if(!$jsArrayInc)
+			#set($jsArrayInc = $util.newArrayList)
+		#end
+		
+		#set($foo = $jsArrayInc.add("CLICK_CS.js"))
+		#set($foo = $jsArrayInc.add("json.js"))
+		#set($foo = $jsArrayInc.add("jquery.msaccordion.js"))
+
+	##################################################################################
+
+
+	##################################################################################
+	## This sets up all javascript templates.  If the template array is already created in the main template calling this than it will add it to the array
+
+		#if(!$jsArrayTemplates)
+			#set($jsArrayTemplates = $util.newArrayList)
+		#end
+		
+		#set($foo = $jsArrayTemplates.add("browser.js"))
+		#set($foo = $jsArrayTemplates.add("domrequest.js"))
+		#set($foo = $jsArrayTemplates.add("swfobject.js"))
+		###set($foo = $jsArrayTemplates.add("determine_login_status.js"))
+		##set($foo = $jsArrayTemplates.add("functions.js"))
+		##set($foo = $jsArrayTemplates.add("popovers.js"))
+
+	##################################################################################
+
+
+	##################################################################################
+	## These strings will be used to enter text at the top of the head and the bottom depending how necessary.
+
+		#set($preHeaderString = "")
+		#set($postHeaderString = "")
+
+	##################################################################################
+
+
+	##################################################################################
+	## Set up Template Debug
+
+		#if($cms.envHost == "dev." && $req.param("templateDebug").toLowerCase() == "y")
+			#set($templateDebug = true)
+		#end
+
+	##################################################################################
+	
+
+	##################################################################################
+	## Set up Recaptcha keys
+
+		#set($publicKey = "6LeFaAIAAAAAAJ1yaP5LZ3jAM3-XuZ5UX6FbVRaH")
+		#set($privateKey = "6LeFaAIAAAAAAHcYBtNL8M-KerSDYfic1PJlHdRb")
+
+	##################################################################################
+
+
+	##################################################################################
+	## Set up Site Config
+	
+		#foreach($item in $cms.filteredLinks("Site Configuration", $topLevel.path, 1, 1))
+			#set($siteConfig = $item)
+		#end
+		
+		#set($siteNav = $util.newArrayList)
+		#foreach($item in $siteConfig.navigation)
+			#set($foo = $siteNav.add($item))
+		#end
+
+		#set($footerNav = $util.newArrayList)
+		#foreach($item in $siteConfig.footerNavigation)
+			#set($foo = $footerNav.add($item))
+		#end
+
+	##################################################################################
+
+
+	##################################################################################
+	## Google Account Authentications
+
+	#set($GOT = $util.newObject)
+	#set($Google = $util.newObject)
+
+	#if($cms.envHost == "dev.")
+		#set($foo = $Google.add("googleSiteVerification", "LRTJT6D1gl_yRY07U2UInaPwH7bt1OaTwtsGZtK2xpU"))
+		#set($foo = $Google.add("oAuthoConsumerSecret", "Hmlk3iWwvvFw86MBzQFc4pT2"))
+		#set($foo = $Google.add("trackingCode", "UA-6469970-3"))
+		#set($foo = $Google.add("analyticsAccountId", "6469970"))
+
+	#elseif($cms.envHost == "")
+		#set($foo = $Google.add("googleSiteVerification", "8gr9QbhtOH2YsNUUj-5Eny0I-pV1Ufqqp1wt0C40cq4"))
+		#set($foo = $Google.add("oAuthoConsumerSecret", ""))
+		#set($foo = $Google.add("trackingCode", "UA-6469970-2"))
+		#set($foo = $Google.add("analyticsAccountId", "6469970"))
+	#end
+
+	##################################################################################
+
+
+	##################################################################################
+	## General Site Variables
+
+	#set($leadArrowURL = $cms.media("green_arrow.gif", "designimages").url)
+
+	##################################################################################
+
+	#set($setupRan = true)
+#end
+
+
+

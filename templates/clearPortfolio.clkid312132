@@ -1,0 +1,21 @@
+<html>
+
+<head>
+<title>Clear my Portfolio</title>
+<script type="text/javascript">
+function submitForm()
+{
+  document.clearForm.submit();
+}
+</script>
+</head>
+<body onload="submitForm()">
+<h3>Please wait while animals are being cleared from your portfolio</h3>
+<img src="$cms.media("pawAnimatedGif.gif", "designimages").url">
+<form method="post" name="clearForm" action="/s">
+<input type="hidden" name="action" value="clearPortfolio" /> 
+<input type="hidden" name="rurl" value="/en/vm" />
+</form>
+
+</body>
+</html>

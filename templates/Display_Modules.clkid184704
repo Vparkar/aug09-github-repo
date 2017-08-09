@@ -1,0 +1,97 @@
+#set($gibInputIB = $moduleIB)
+	#set($returnUntargetedItems = true)
+	$cms.template("Get IB Items")
+	#set($moduleArray = $gibOutputArray)
+
+	#foreach($module in $moduleArray)
+		DEBUG: $module.typeName<br>
+		#if($module.typeName == "Mod - List" && $cms.websiteSection($module.pullPath))
+			#set($gibInputIB = $module.manualItems)
+			#set($gibMaxItems = 5)
+			$cms.template("Get IB Items")
+
+			#set($moduleItems = $util.newArrayList)
+			#if($gibOutputArray.size() > 0)
+				#set($moduleItems = $gibOutputArray)
+			#else
+				#foreach($item in $cms.links($module.pullPath, 1, $math.newInt($module.numItems)))
+					#set($foo = $moduleItems.add($item))
+				#end
+			#end
+			
+			#if($moduleItems.size() > 0)
+				<div id="nextWrapper">
+					<div id="nextHeader">
+				        <span class="nextsteps">$module.listHeader</span>
+				    </div>
+
+				   <div id="nextBody" class="ratedBody">
+						#foreach($item in $moduleItems)
+							#if($velocityCount > 1)
+								<div class="mediaDivider" style="clear:both;width:160px;"></div>
+							#end
+
+							<div class="thinWrapperFull">
+								<p>
+									#set($grioInputImage = $item.image)
+									#set($grioMaxWidth = 53)
+									#set($grioInputAttributes = " style='float:left; padding:5px;'")
+									$cms.template("Get Resized Image Object")
+									$!grioOutputString
+
+									<a href="$item.url">$item.title</a>
+									<span>
+										$!item.summary
+									</span>
+								</p>
+							</div>
+						#end
+				    </div>
+					<div class="nextBottom"></div>
+				</div>
+			#else
+				
+			#end
+			
+		#elseif($module.typeName == "Mod - Image" && $module.image && $module.image.url != "")
+			<div id="nextWrapper">
+			#if($module.listHeader && $module.listHeader != "")
+				<div id="nextHeader">
+		        	<span class="nextsteps">$module.listHeader</span>
+		    	</div>
+			#end
+
+			   <div id="nextBody" class="ratedBody">
+					#set($grioInputImage = $module.image)
+					#set($grioMaxWidth = 160)
+					$cms.template("Get Resized Image Object")
+					$grioOutputString
+					
+					#if(!$module.hideCaption && $module.image.caption && $module.image.caption != "")
+						<span class="caption">$module.image.caption</span>
+					#end
+					
+					#if(!$module.hideCredit && $module.image.credit && $module.image.credit != "")
+						<span class="credit">Credit: $module.image.credit</span>
+					#end
+			    </div>
+				<div class="nextBottom"></div>
+			</div>
+			
+		#elseif($module.typeName == "Mod - HTML" && $module.body && $module.body != "")
+			<div id="nextWrapper">
+				<div id="nextBody" class="ratedBody">
+					$!module.body
+			    </div>
+				<div class="nextBottom"></div>
+			</div>
+			
+		#elseif($module.typeName == "Poll")
+			<div id="nextWrapper">
+				<div id="nextBody" class="ratedBody">
+					$cms.template("Display Poll Module")
+			    </div>
+				<div class="nextBottom"></div>
+			</div>
+		#end
+	#end

@@ -1,0 +1,34 @@
+.head{
+	font-size:24;
+}
+.copy{
+	font-size:12;     
+	color: #FFFFFF;	
+	
+}
+.cta{
+	font-size:14;
+	color: #FFFFFF;	
+}   
+
+.mainTitle{
+	font-size:42;
+	color: #FFFFFF;
+}
+
+.SubTitle{         	
+	font-size:14;     
+	color: #FFFFFF;
+}
+.tenPtBlack{         	
+	font-size:13; 
+	color: #FFFFFF;
+}
+.thumbHead{         	
+	font-size:12;     
+	color: #FFFFFF;
+}      
+.thumbSubHead{         	
+	font-size:10;     
+	color: #FFFFFF;
+}

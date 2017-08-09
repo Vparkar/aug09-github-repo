@@ -1,0 +1,71 @@
+<div class="customerWrapper">
+	<div class="customerHeadline">
+		$math.add($beginIndex, $math.subtract($velocityCount, 1)).
+		
+		#if($item.typeName == "Corp Bio")
+			#set($resultURL = "/company/management?c=y&bioID=$result.id")					
+		
+		#elseif($item.typeName == "Partners")
+			#set($resultURL = "$result.url.substring(0, $result.url.lastIndexOf('/'))#$item.id")
+		
+		#else
+			#set($resultURL = $result.url)						
+		#end					
+		
+		#if($item.typeName == "Corp Bio")
+			#set($resultTitle = "$item.firstName $item.lastName, $item.position")
+		
+		#elseif($item.displayTitle && $item.displayTitle != "")
+			#set($resultTitle = "$item.displayTitle")
+		
+		#else
+			#set($resultTitle = "$result.title")
+		#end
+			
+		$resultTitle
+	
+		#*
+		<!--RATING STARS-->
+		<div class="rating">
+			$result.stars("red")
+			<div class="clear"></div>
+		</div>
+		<!--END RATING STARS-->
+		*#
+	</div>
+	
+	
+	<div class="customerBodyWrapper">
+		#set($grioInputItem = $item)
+		#set($grioMaxWidth = 171)
+		$cms.template("Get Resized Image Object")
+		#if($grio.imageTag && $grio.imageTag != "")
+			<div class="customerLeft">
+				$grio.imageTag
+			</div>
+		#end
+		
+		#if($grio.imageTag && $grio.imageTag != "")
+			#set($class = "customerRight")
+		#else
+			#set($class = "customerWide")
+		#end
+		
+		<div class="$class">
+			#if($item.summary && $item.summary != "")
+				<p>$item.summary</p>
+			
+			#elseif($item.body && $item.body != "")
+				#set($numChars = 300)
+				#set($inputString = $item.body)
+				$cms.template("Get Shortened String")
+				<p>$outputString</p>
+			#end
+			
+			<p>
+				<img class="redArrow" src="$leadArrowURL" alt="" border="0" align="left" />&nbsp;&nbsp;&nbsp;<a class="more" href="$item.url">More</a> 
+			</p>
+
+		</div>
+	</div>
+</div>

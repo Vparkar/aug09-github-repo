@@ -1,0 +1,28 @@
+#set($gibCount = 0)##
+#set($gibOutputArray = $util.newArrayList)##
+##
+#foreach($gibID in $gibInputIB)##
+	#if(!$gibMaxItems || $gibCount < $gibMaxItems)##
+		#set($gibItem = false)##
+		#set($gibItem = $cms.content($gibID,false))##
+		##
+		#if($gibItem && !$gibContentTypeArray || $gibContentTypeArray.contains($gibItem.typeName))##
+			#if($returnUntargetedItems)##
+				#set($gibCount = $math.add($gibCount))##
+				#set($foo = $gibOutputArray.add($gibItem))##
+			#else##
+				#set($gptItem = $gibItem)##
+				$cms.template("Get Primary Target")##
+				#if($gptTargetedItem && $gptTargetedItem.url != "")##
+					#set($gibCount = $math.add($gibCount, 1))##
+					#set($foo = $gibOutputArray.add($gptTargetedItem))##
+				#end##
+			#end##
+		#end##
+	#end##
+#end##
+##
+#set($gibInputIB = false)##
+#set($returnUntargetedItems = false)##
+#set($gibContentTypeArray = false)##
+#set($gibItem = false)

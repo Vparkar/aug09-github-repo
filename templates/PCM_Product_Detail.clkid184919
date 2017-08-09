@@ -1,0 +1,1147 @@
+#set($gsraSearchWSSHash = $util.newHashMap)
+#set($foo = $gsraSearchWSSHash.put("/products", false))
+#set($gsraSearchIncludeArray = ["Product PCM"])
+#set($gsraSortBy = "-startDate")
+#set($gsraReturnContentItems = true)
+#set($gsraPageSize = 100)
+$cms.template("Get Search Results Array")
+#set($productArray = $gsraOutputArray)
+#set($productParams = $gsraOutputParams)
+
+#set($content = $cms.content)
+##set($content = $cms.content(59243877, false))
+
+#set($glcTagName = "productReview")
+#set($glcInputItem = $content)
+$cms.template("Get Linked Content")
+#if($glcOutputArray.size() > 0)
+	#set($review = $glcOutputArray.get(0))
+#end
+	
+<!-- Vignette V6 Thu Sep 10 16:41:28 2009 -->
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><!--"http://www.w3.org/TR/html4/loose.dtd"-->
+<head>
+<!--WEB 6-->
+<script language="JavaScript" type="text/javascript" src="http://common.ziffdavisinternet.com/js/common_util_js.js"></script>
+<script type="text/javascript" src="http://common.ziffdavisinternet.com/js/jquery-1.3.2.min.js"></script><script type="text/javascript" src="http://common.ziffdavisinternet.com/js/validate.min.js"></script>
+<script type="text/javascript" src="http://www.pcmag.com/js/pcmag_jquery_common/"></script>
+
+<link rel="stylesheet" href="http://www.pcmag.com/css/pgConfig.css" type="text/css" />
+<link rel="SHORTCUT ICON" href="http://www.pcmag.com/favicon.ico">
+<style type="text/css">
+@import url(http://www.pcmag.com/css/common_1024.css);
+@import url(http://www.pcmag.com/css/module_styles.css);
+@import url(http://www.pcmag.com/css/article_styles.css);
+
+</style>
+<script type="text/javascript">
+function insertNavLinks(){$("#memberArea").empty();var ck=getCookie("zm%5Fuser"),sPage=getCookie("successpage");
+var inLnk="http://www.pcmag.com/join/0,,,00.asp?success_page="+sPage,outLnk="javascript:zdjs.logout(function(){location.reload();});";
+var regLnk="http://www.pcmag.com/join/0,,,00.asp?join_page=2&join_type=1&success_page="+sPage, accLnk="http://www.pcmag.com/view_profile/0,,,00.asp",li=false,memName=null,m="";
+if(ck!=null){memName=getMemberName(ck);if(memName!=null&&memName!=""){li=true;}}
+if(li){m="<span>Signed in as: <span class=\"profile_user\">"+memName+"</span></span>|<span><a href=\""+outLnk+"\" target=\"_top\">Sign Out</a></span>|<span><a href=\""+accLnk+"\" target=\"_top\">My Account</a></span>";
+}else{m="<span><a href=\""+inLnk+"\" target=\"_top\">Sign In</a></span>|<span><a href=\""+regLnk+"\" target=\"_top\">Register</a></span>|<span><a href=\""+accLnk+"\" target=\"_top\">My Account</a></span>";}
+$("#memberArea").append(m);}</script>
+<!-- Vignette V6 Tue Sep 15 07:42:20 2009 -->
+
+<script type="text/javascript">
+var cookieEnabled = false;
+try {document.cookie="testcookie";cookieEnabled = (document.cookie.indexOf("testcookie")!=-1)? true : false;}
+catch (strError){cookieEnabled = false;}	
+var pcookie = "prestitial1309", ckRedirect = getCookie(pcookie);	
+if (cookieEnabled == true ){
+	if(ckRedirect != "1"){
+		var successPage = getCookie("successpage");
+		var expireTime = new Date();				
+		expireTime.setDate(expireTime.getDate() + 1);				
+		document.cookie = pcookie + "=1; expires=" + expireTime.toGMTString() + "; path=/";
+		document.location.href = "http://www.pcmag.com/prestitial/0,2906,s%253D1564%2526dz%253Dprestitial%2526pid%253D1309%2526rs%253D10,00.asp?success_page="+encodeURIComponent(successPage);
+		
+}}
+</script>
+<script type="text/javascript" language="javascript">function addLeadingZeros(numberString,maxLength) {	if (numberString.length < maxLength) {  return (addLeadingZeros('0'+numberString,maxLength));}else {  return (numberString); } }var x = Math.floor(Math.random()*1000000000);var mystring = x + '';var BIDARTORD = mystring;;</script><link rel="alternate" type="application/rss+xml" title="PC Magazine Desktops Product Guide" href="http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml" />	
+<script type="text/javascript">var jBreadcrumbTitle="Gateway DX4300-03";</script>
+<title>Gateway DX4300-03 - At A Glance - Reviews by PC Magazine</title>
+
+<script language="JavaScript" type="text/javascript">
+var userCookie = document.cookie;var userType = "Unregistered";if (userCookie != undefined){if (userCookie.indexOf("zm%5Fuser") > -1){	userType = "Registered";	}}
+var s_pageName="Gateway DX4300-03-Page001-243937";var s_server="";var s_channel="PC Magazine Home>Product Guides>Computer Systems>Desktops";var s_pageType="";var s_prop1="Gateway DX4300-03";
+var s_prop2="";var s_prop3="Joel Santo Domingo";var s_prop4="Review";
+var s_prop5="Online Article";var s_prop6="Article Page";var s_prop7=userType;var s_prop8="Gateway Inc";
+var s_prop9="";var s_prop11="2009-09";var s_prop12="pcm.dart/HW>Desktops/pg/desktops";var s_prop13="";var s_prop14="HW>Desktops";
+var s_campaign="";var s_state="";var s_zip="";var s_events="event4";var s_products="";var s_purchaseID="";var s_eVar1="";var s_eVar2="";
+var s_eVar3="";var s_eVar4="";var s_eVar5="";var s_hier1="PC Magazine Home>Product Guides>Computer Systems>Desktops>Gateway DX4300-03";var s_account="ziffdavisglobal,ziffdavisenthusiastglobal,ziffdavispcmag";</script>
+<script language="JavaScript" src="http://common.ziffdavisinternet.com/js/s_code_remote.js"></script>
+
+<script language="JavaScript" type="text/javascript">
+function sendAnalyticsEvent(accnt) {s_prop13 += " | " + getBrowserURL();accnt=accnt?accnt:s_account;void(s_gs(accnt));}
+function getBrowserURL(){urlelements = document.location.href.split("http://www.pcmag.com/");returnvalue = "";for (var i = 2;i<urlelements.length;i++) {
+if (i>1){subelements = urlelements[i].split(".");for (var u=0;u<subelements.length;u++){if (subelements[u]!="www"){returnvalue += subelements[u];if (u<subelements.length-1){returnvalue += ".";}
+}}if (i<urlelements.length-1){returnvalue += "http://www.pcmag.com/";}}}return returnvalue;}
+function sendLinkEvent(accnt,lnkname,type){accnt=accnt?accnt:s_account;s_linkType=type?type:"o";s_lnk=true;s_linkName=lnkname?lnkname:s_linkName?s_linkName:"Flash Link Event";void(s_gs(accnt))}</script>
+
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="expires" content="Thu, 01 Dec 1994 16:00:00 GMT" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta name="keywords" content="Gateway DX4300-03 Gateway Inc Desktops First Looks" lang="en-us" />
+<meta name="title" content="Gateway DX4300-03 - At A Glance - Reviews by PC Magazine" lang="en-us" />
+<meta name="description" content="The DX4300-03 is Gateway&#39;s mid-range multimedia desktop; it gets decent numbers for the entry-level enthusiast, but if you&#39;re looking for performance, look elsewhere." lang="en-us" />
+
+		<link rel="canonical" href="http://www.pcmag.com/article2/0,2817,2352692,00.asp" />		
+	
+ 
+	<div id="microAd" style="display:none;">
+  		<script src="http://ad.yieldmanager.com/pixel?id=121665&id=70017&id=70009&t=1" type="text/javascript"></script>
+<script language="javascript" type="text/javascript">
+var random_ord=Math.random()*10000000000000000;document.write("<scr" + "ipt type=\"text/javascript\" >var ord=" + random_ord + ";<" + "http://www.pcmag.com/script>");
+
+</script><script language="javascript" type="text/javascript">document.write("<!--" + BIDARTORD + "-->"); document.write('<img src="http://ad.doubleclick.net/activity;src=597074;dcnet=2204;boom=8278;sz=1x1;ord=' + BIDARTORD + '?" width="1" height="1" border="0" style="display:none;" alt=""http://www.pcmag.com/>');</script>
+<img src="http://bh.contextweb.com/bh/set.aspx?action=add&advid=1477&token=PCMG6" width="1" height="1" border="0" />
+<img src="http://view.atdmt.com/action/MSFT_PCMN_AE_ExtData/v3/[atc1.Desktops]" width="1" height="1" />
+
+	</div>	
+<script type="text/javascript" src="http://www.pcmag.com/js/talkback_js/0,,,00.asp"></script>
+<script type="text/javascript">
+function OpenMixxWindow(){
+settings = 'toolbar=yes,resizable=yes,width=1000,height=700,scrollbars=yes';
+parameters = "?page_url=http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle2%2F0%2C2817%2C2352692%2C00%2Easp&title=Gateway+DX4300%2D03&description=The+DX4300%2D03+is+Gateway%27s+mid%2Drange+multimedia+desktop%3B+it+gets+decent+numbers+for+the+entry%2Dlevel+enthusiast%2C+but+if+you%27re+looking+for+performance%2C+look+elsewhere%2E&tags=Gateway+DX4300%2D03%2CGateway+Inc%2CDesktops%2CFirst+Looks&partner=PC&partner_logo=%2Fimages%2Fpcm%5F15%5Fheader%2Egif&partner_url=http%3A%2F%2Fwww%2Epcmag%2Ecom%2F";
+hWin = window.open("http://www.mixx.com/submit/story" + parameters, "MixxIt", settings, true);
+hWin.focus();
+if (hWin.opener == null) hWin.opener = self;
+}
+function OpenCommunityShareWindow(sTitle,sURL,sParam){
+settings = 'toolbar=yes,resizable=yes,width=1000,height=700,scrollbars=yes';
+parameters = "?phase=2&url=http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle2%2F0%2C2817%2C2352692%2C00%2Easp&title=Gateway+DX4300%2D03&kc=PCMDIGPOST";
+if(sTitle == 'DiggIt'){hWin = window.open(sURL + parameters, sTitle, settings, true);}else{hWin = window.open(sURL + sParam, sTitle, settings, true);}
+hWin.focus();
+if (hWin.opener == null) hWin.opener = self;
+}		
+</script></head><body  id="glancePg" class="articleBase"><div id="w_rightfield"><div class="rightField"><script type="text/javascript" language="javascript">document.write("<scr");document.write("ipt language=\"Javascript1.1\" type=\"text/javascript\" src=\"http://ad.doubleclick.net/adj/pcm.dart/HW>Desktops/pg/desktops;pos=top;dcopt=ist;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=1;sz=160x600;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\"></scr");
+document.write("ipt>");
+if ((!document.images&&navigator.userAgent.indexOf("Mozilla/2.")>=0)||(navigator.userAgent.indexOf("WebTV")>=0)){
+document.write("<a href=\"http://ad.doubleclick.net/jump/pcm.dart/HW>Desktops/pg/desktops;pos=top;dcopt=ist;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=1;sz=160x600;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\">");
+document.write("<img src=\"http://ad.doubleclick.net/ad/pcm.dart/HW>Desktops/pg/desktops;pos=top;dcopt=ist;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=1;sz=160x600;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\" width=\"160\" height=\"600\" border=\"0\" /></a>");}</script></div></div><div id="wrapperPage"><div id="wrapperInner1"><div id="wrapperInner2"><div id="w_header"><table id="w_topHeader" cellspacing="0" cellpadding="0"><tr><td id="logo" class="gradient"><a href="http://www.pcmag.com/" target="_top"><img src="http://www.pcmag.com/images/pcm_15_header.gif" alt="PCMag.com"http://www.pcmag.com/></a></td><td class="gradient" id="menuRight">
+<!-- Vignette V6 Tue Apr 21 14:51:33 2009 -->
+<div id="secondaryNav"><ul id="productGuideNav"><li id="product_guide_link"><a href="http://www.pcmag.com/category2/0,2806,13,00.asp"><img src="http://www.pcmag.com/images/product_guides.gif" alt="product guides"http://www.pcmag.com/></a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,5,00.asp" target="_top" class="prodGuide">DIGITAL CAMERAS</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,9,00.asp" target="_top" class="prodGuide">LAPTOPS</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,2359,00.asp" target="_top" class="prodGuide">MP3 PLAYERS</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,2357,00.asp" target="_top" class="prodGuide">CELL PHONES</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,10,00.asp" target="_top" class="prodGuide">PRINTERS</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,4,00.asp" target="_top" class="prodGuide">DESKTOPS</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,1638887,00.asp" target="_top" class="prodGuide">HDTVs</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,2201,00.asp" target="_top" class="prodGuide">Software</a></li><li class="prodGuide"><a href="http://www.pcmag.com/category2/0,2806,13,00.asp" target="_top" class="prodGuide" onMouseOver="HeaderMoreLink_showAd()"  onMouseOut="HeaderMoreLink_hideAdSpace()" >MORE &gt;</a></li><li class="menuFill"><br clear="left" /></li></ul><div class="clearl"></div></div><div id="w_tagline"><div id="tagline"><a href="http://www.pcmag.com" target="_top"><img class="tagline" src="http://www.pcmag.com/images/pcm_15_tagline.gif" alt="PCMag.com" /></a></div><div class="profile"><div id="memberArea"></div><div id="w_networkImg"><table id="networkImg"><tr><td><!-- Vignette V6 Tue Sep 15 11:20:08 2009 -->
+
+<div class="adModule"><div id="headerAdText"><span class="ad">AD:</span><div class="outer"><div class="inner"><span class="buyHere"><a href="http://ad.doubleclick.net/clk;213889285;13401844;k?http://tracking.searchmarketing.com/click.asp?aid=350388451" target="_new">Dell Studio 14z Laptop-The Mobility You Need</a></span></div></div></div>
+</div></td><td><a class="networkImg" href="http://www.pcmagnetwork.com"><img class="pcm_networkLogo" src="http://www.pcmag.com/images/pcm_15_network.gif" alt="PCMag Network Logo" /></a></td></tr></table><div class="clearb"></div></div><div class="clearr"></div></div><div class="clearb"></div></div></td></tr></table><script type="text/javascript">insertNavLinks();</script>
+<div id="w_leaderboard"><script type="text/javascript" language="javascript">document.write("<scr");document.write("ipt language=\"Javascript1.1\" type=\"text/javascript\" src=\"http://ad.doubleclick.net/adj/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=2;sz=728x90;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\"></scr");
+document.write("ipt>");
+if ((!document.images&&navigator.userAgent.indexOf("Mozilla/2.")>=0)||(navigator.userAgent.indexOf("WebTV")>=0)){
+document.write("<a href=\"http://ad.doubleclick.net/jump/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=2;sz=728x90;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\">");
+document.write("<img src=\"http://ad.doubleclick.net/ad/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=2;sz=728x90;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\" width=\"728\" height=\"90\" border=\"0\" /></a>");}</script><a href="https://www.zdmcirc.com/zdmcirc/default.asp?LK=covertop&I=ibmp" target="_top" id="zdmCirc"><img src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=239825,00.gif" border="0" alt="Subscribe!" ></a></div>
+<!-- Vignette V6 Mon Sep 14 12:47:44 2009 -->
+<div id="mainnav"><ul><li><div><a href="http://www.pcmag.com" target="_top">HOME</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,2352214,00.asp" target="_top">REVIEWS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,23,00.asp" target="_top">DOWNLOADS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,28,00.asp" target="_top">SOLUTIONS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,24,00.asp" target="_top">NEWS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,30,00.asp" target="_top">COLUMNS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,37,00.asp" target="_top">COMPARE PRICES</a></div></li><li><div><a href="http://discuss.pcmag.com" target="_top">FORUMS</a></div></li><li><div><a href="http://blogs.pcmag.com/atwork/" target="_top">@WORK</a></div></li><li><div><a href="http://blogs.pcmag.com" target="_top">BLOGS</a></div></li><li><div><a href="http://www.pcmag.com/category2/0,2806,1896903,00.asp" target="_top">VIDEO</a></div></li><li><div><a href="https://www.zdmcirc.com/zdmcirc/default.asp?LK=pcmagdefault&I=ibmp" target="_top">SUBSCRIBE</a></div></li></ul><br clear="left" /></div><div id="headerBottom"><form name="form1" method="get" action="http://www.pcmag.com/search_redirect/" style="padding:0; margin:0;"><div id="searchbox"><span class="searchtextbold">&nbsp;Search</span><label><input type="radio" name="searchSection" value="0" checked="checked" />PCMAG.COM</label><label><input type="radio" name="searchSection" value="1473" />REVIEWS</label><input name="site" type="hidden" value="3"><input name="qry" type="text" id="search" size="20"><input type="image" src="http://www.pcmag.com/images/pcm_15_button_search.gif" style="width:82px;height:32px;border:none;vertical-align:middle;"></div></form><div id="w_hotTopics"><span id="hotTopicsTitle">Hot Topics</span> <ul id="hotTopics"><li><a href="http://www.pcmag.com/article2/0,2817,2352669,00.asp">The New iPod Touch</a></li><li><a href="http://www.pcmag.com/article2/0,2817,2352750,00.asp">Hands On: Motorola Cliq</a></li></ul><br clear="all" /></div> <div class="clearl"></div></div><div class="clearb"></div></div><!-- Vignette V6 Mon Apr 13 21:09:37 2009 -->
+
+<div nowrap="nowrap" id="HeaderMoreLink_AdSpace" class="more" onMouseOver="HeaderMoreLink_resetAdTimer()" onMouseOut="HeaderMoreLink_hideAdSpace()" ><div>Product Guides<br /><table cellspacing="0"><tr><td><a href="http://www.pcmag.com/category2/0,2806,1639157,00.asp" >Antispyware Software</a></td><td><a href="http://www.pcmag.com/products/0,,qn=All+Multi+Function+Printers,00.asp" >Multi-Function Printers</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,4796,00.asp" >Antivirus Software</a></td><td><a href="http://www.pcmag.com/category2/0,2806,2341732,00.asp" >Netbooks</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,1995378,00.asp" >Apple Coverage</a></td><td><a href="http://www.pcmag.com/category2/0,2806,1638916,00.asp" >PDAs</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,4798,00.asp" >Backup Software</a></td><td><a href="http://www.pcmag.com/products/0,,qn=All+Photo+Printers,00.asp" >Photo Printers</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,4838,00.asp" >Browsers</a></td><td><a href="http://www.pcmag.com/products/0,,qn=All+Plasmas,00.asp" >Plasma Displays</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,1916935,00.asp" >Cars</a></td><td><a href="http://www.pcmag.com/category2/0,2806,7496,00.asp" >Projectors</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,1638429,00.asp" >Computer & Console Gaming</a></td><td><a href="http://www.pcmag.com/category2/0,2806,28396,00.asp" >Robots</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,2347,00.asp" >Digital Camcorders</a></td><td><a href="http://www.pcmag.com/category2/0,2806,7497,00.asp" >Scanners</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,4440,00.asp" >Digital Imaging Software</a></td><td><a href="http://www.pcmag.com/category2/0,2806,4829,00.asp" >Security Software</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,582756,00.asp" >DVD Authoring Software</a></td><td><a href="http://blogs.pcmag.com/atwork/" >Small Business</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,4642,00.asp" >External Hard Drives</a></td><td><a href="http://www.pcmag.com/category2/0,2806,2201,00.asp" >Software</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,1060059,00.asp" >Flash Drives</a></td><td><a href="http://www.pcmag.com/category2/0,2806,7498,00.asp" >Speakers</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,2937,00.asp" >GPS</a></td><td><a href="http://www.pcmag.com/category2/0,2806,4833,00.asp" >Utilities</a></td></tr><tr><td><a href="http://www.pcmag.com/category2/0,2806,1966506,00.asp" >High-Definition Players</a></td><td><a href="http://www.pcmag.com/category2/0,2806,4835,00.asp" >Video Editing Software</a></td></tr><tr><td><a href="http://www.pcmag.com/products/0,,qn=All+HDTVs,00.asp" >HDTVs</a></td><td><a href="http://www.pcmag.com/category2/0,2806,2356,00.asp" >VoIP</a></td></tr><tr><td><a href="http://www.pcmag.com/products/0,,qn=All+Ink+Jet+Printers,00.asp" >Ink Jet Printers</a></td><td><a href="http://www.pcmag.com/category2/0,2806,1786052,00.asp" >Windows Vista</a></td></tr><tr><td><a href="http://www.pcmag.com/products/0,,qn=All+Laser+Printers,00.asp" >Laser Printers</a></td><td><a href="http://www.pcmag.com/category2/0,2806,2878,00.asp" >Windows XP</a></td></tr><tr><td><a href="http://www.pcmag.com/products/0,,qn=All+LCDs,00.asp" >LCDs</a></td><td><a href="http://www.pcmag.com/category2/0,2806,4236,00.asp" >Wireless Networking</a></td></tr><tr><td class="viewall" colspan="2"><a href="http://www.pcmag.com/category2/0,2806,13,00.asp">View All ></a></td></tr></table></div></div>		<div id="w_breadcrumb">
+
+			<ul>
+				<li><a href="http://www.pcmag.com">Home</a><span class="bcSpacer">&gt;</span></li><li><a href="http://www.pcmag.com/category2/0,2806,13,00.asp">Product Guides</a><span class="bcSpacer">&gt;</span></li><li><a href="http://www.pcmag.com/category2/0,2806,1638425,00.asp">Computer Systems</a><span class="bcSpacer">&gt;</span></li><li><a href="http://www.pcmag.com/category2/0,2806,4,00.asp">Desktops</a><span class="bcSpacer">&gt;</span></li><li class="thisPage">Gateway DX4300-03</li>
+			</ul>
+		</div>
+
+<div id="w_subHead"><span>Desktops</span></div>
+
+<div id="w_content3" class="bkwhite">
+	<div id="w_guidedNav" >
+		$cms.template("PCM Left Column Filters")
+	</div>
+	#*<div id="rssOptions">
+		<p>
+			<a href="http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml"><img src="http://www.pcmag.com/images/pcm_xml_orange.gif" width="36" height="14" border="0" alt="PC Magazine Desktops Product Guide"http://www.pcmag.com/></a>
+			Add <a href="http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml">PC Magazine Desktops Product Guide</a> RSS feed to your feed reader so that you don't miss another headline!
+		</p>
+
+		<ul class="rssReaders">
+			<li class="rssReaders"><a href="http://add.my.yahoo.com/rss?url=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml"><img src="http://www.pcmag.com/images/icon_my_yahoo.gif" width="91" height="17" border="0" alt="Add to My Yahoo!"http://www.pcmag.com/></a></li>
+			<li class="rssReaders"><a href="http://fusion.google.com/add?feedurl=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml"><img src="http://www.pcmag.com/images/icon_google.gif" width="104" height="17" border="0" alt="Add to Google"http://www.pcmag.com/></a></li>
+			<li class="rssReaders"><a href="http://my.msn.com/addtomymsn.aspx?id=rss&ut=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml"><img src="http://www.pcmag.com/images/icon_my_msn.gif" width="71" height="14" border="0" alt="Add to My MSN"http://www.pcmag.com/></a></li>
+			<li class="rssReaders">
+				<form name="jumpRSS">
+					<select name="myjumpbox" OnChange="location.href=jumpRSS.myjumpbox.options[selectedIndex].value">
+					    <option selected>More Readers</option>
+					    <option value="http://www.bloglines.com/sub/http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml">Bloglines</option>
+		    			<option value="http://www.rojo.com/add-subscription/?resource=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml">Rojo</option>
+						<option value="http://www.newsgator.com/ngs/subscriber/subext.aspx?url=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml">Newsgator</option>
+						<option value="http://client.pluck.com/pluckit/prompt.aspx?GCID=C12286x053&amp;a=http://rssnewsapps.ziffdavis.com/pcmagdesktops.xml">Pluck</option>
+					</select>
+				</form>
+			</li>
+		</ul>
+					
+		<ul class="rssInfo">
+			<li class="rssInfo"><a href="http://www.pcmag.com/article2/0,1895,1329778,00.asp">What is this?</a></li>
+			<li class="rssInfo"><a href="http://www.pcmag.com/article2/0,4149,816548,00.asp#3">See all tech RSS feeds</a></li>
+		</ul>
+	</div> <!-- /rssOptions -->
+					  
+	<div class="clearl"></div>
+	*#
+</div>
+
+<div id="w_contentGroup"> 
+	<div id="w_contentCol1">
+		<h1 class="articleTitle">$content.title</h1>
+		<div id="articleContent">
+			<div id="summaryData">
+				<div id="glanceProdImage">
+					#if($review)
+						<p class="articleDate"><span class="articleDateLabel">review DATE:</span>$util.date("MM.dd.yy", $review.startDate)</p>
+					#end
+					
+					<script>
+						function OpenImageWindow(querystring, winWidth, winHeight)
+						{
+						  LeftPosition = (winWidth) ? (winWidth) : 0;
+						  TopPosition = (winHeight) ? (winHeight): 0;
+						  NewWinWidth = LeftPosition;
+						  NewWinHeight = TopPosition;
+						  NewWinWidth = (NewWinWidth > screen.availWidth - 60) ? screen.availWidth - 60: NewWinWidth;
+						  NewWinWidth = 750;
+						  NewWinHeight = (NewWinHeight > screen.availHeight - 60) ? screen.availHeight - 60: NewWinHeight;
+
+						  settings = 'menubar=no,scrollbars=yes,resizable,height=' + NewWinHeight + ',width=' + NewWinWidth;
+  
+						  hWin = window.open(querystring, "ImagePopup", settings, false);
+						  hWin.focus();
+						  if (hWin.opener == null) hWin.opener = self;
+						}
+					</script>
+					
+					#foreach($image in $content.images)
+						#if($velocityCount == 1)
+							#set($grioInputImage = $image)
+							#set($grioMaxWidth = 275)
+							$cms.template("Get Resized Image Object")
+							$grioOutputString
+							<div class="startSlideShow">
+						#else
+							#set($grioInputImage = $image)
+							#set($grioMaxWidth = 85)
+							#set($grioMaxHeight = 85)
+							$cms.template("Get Resized Image Object")
+							$grioOutputString
+						#end
+					#end
+					
+					#if($content.images > 0)
+						</div>
+					#end
+					
+					<div class="clearl"></div>
+				</div>
+				
+				<div class="adModule"><!--no ads exist for region: 409 --></div><!-- Vignette V6 Tue Sep 08 11:27:48 2009 -->
+		</div>
+		<div class="clearb"></div> 
+	</div>
+	
+	#if($review.summary && $review.summary != "")
+		<h3 class="execSumheader">review</h3>
+		<span id="intellitxt"><p>$review.summary</p></span>
+	#elseif($content.body && $content.body != "")
+		<h3 class="execSumheader">summary</h3>
+		<span id="intellitxt"><p>$content.body</p></span>
+	#end
+
+	#if($review)
+		<p class="glanceRedArrow"><img src="http://www.pcmag.com/images/red_arrow.gif" alt="red arrow" width="7" height="14" /><a href="$review.url"> Read the $content.title full review</a></p>
+	#end
+		
+	<div id="specsData">
+	<div id="productSpecs">
+		<img src="http://www.pcmag.com/images/company_bar.gif" width="222" height="13" alt="Company" />
+		<p class="specs">Gateway Inc</p>
+		<p class="specs">http://www.gateway.com</p>
+
+		<img class="bar" src="http://www.pcmag.com/images/spec_data_bar.gif" width="223" height="13" alt="Spec Data" />
+		<div class="clearl"></div>
+
+		<ul class="specsList">
+			<li class="specs"><span class="specsLabel">Price as Tested:&nbsp;</span>$749.99 List</li>
+			<li class="specs"><span class="specsLabel">Type:&nbsp;</span>General Purpose, Media</li>
+			<li class="specs"><span class="specsLabel">Processor Family:&nbsp;</span>AMD Phenom</li>
+			<li class="specs"><span class="specsLabel">RAM:&nbsp;</span>8 GB</li>
+			<li class="specs"><span class="specsLabel">Storage Capacity:&nbsp;</span>1000 GB</li>
+			<li class="specs"><span class="specsLabel">RAID:&nbsp;</span>No</li>
+			<li class="specs"><span class="specsLabel">Graphics Card:&nbsp;</span>ATI Radeon HD 4650</li>
+			<li class="specs"><span class="specsLabel">Primary Optical Drive:&nbsp;</span>Dual-Layer DVD+/-RW</li>
+		</ul>
+	</div>
+
+	<div id="moreProdSpecs">
+		<table width="100%" border="0" cellspacing="0" cellpadding="0">
+			<tr><td colspan="2"><!-- start ziffimage //--><img width="223" height="13" border="0" src="http://common.ziffdavisinternet.com/util_get_image/19/0,1425,i=191742,00.gif" alt="Top Companies"><!-- end ziffimage //--></td></tr>
+			<tr>
+				<td class=summary_data width="50%">
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+Dell,00.asp">Dell</a><br>
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+Gateway,00.asp">Gateway</a><br>
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+HP,00.asp">HP</a><br>
+				</td>
+				<td class=summary_data width="50%">
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+Lenovo,00.asp">Lenovo</a><br>
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+Sony,00.asp">Sony</a><br>
+					&#149; <a class="summary_data" href="http://www.pcmag.com/products/0,,qn=Desktops+Apple,00.asp">Apple</a><br>
+				</td>
+			</tr>
+
+			<tr><td colspan="2">&nbsp;</td></tr>
+			
+			<tr><td colspan="2"><!-- start ziffimage //--><img width="223" height="13" border="0" src="http://common.ziffdavisinternet.com/util_get_image/19/0,1425,i=191741,00.gif" alt="Top-Rated Products"><!-- end ziffimage //--></td></tr>
+			
+			#set($glcInputItem = $content)
+			#set($glcTagName = "relatedItems")
+			$cms.template("Get Linked Content")
+			
+			<tr><td class=summary_data colspan="2">
+				#foreach($item in $glcOutputArray)
+					<span class="summary_data">
+						&#149; <a href="$item.url" class="summary_data">$item.title</a>
+					</span>
+					<br>
+				#end
+			</td></tr>
+
+			<tr><td colspan="2">&nbsp;</td></tr>
+
+			<tr><td class=summary_data colspan="2"><!-- start ziffimage //--><img width="223" height="13" border="0" src="http://common.ziffdavisinternet.com/util_get_image/19/0,1425,i=191743,00.gif" alt="PC Labs"><!-- end ziffimage //--></td></tr>
+
+			<tr><td class=summary_data colspan="2">&#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,1623917,00.asp" class="summary_data">How we test desktops</a><!-- end ziffarticle //--></td></tr>
+
+			<tr><td colspan="2">&nbsp;</td></tr>
+
+			<tr><td class=summary_data colspan="2"><!-- start ziffimage //--><img width="223" height="13" border="0" src="http://common.ziffdavisinternet.com/util_get_image/19/0,1425,i=191740,00.gif" alt="New Product & Review Alerts"><!-- end ziffimage //--></td></tr>
+
+			<tr><td class=summary_data colspan="2">&#149; <a class="summary_data" href="http://www.pcmag.com/newsletter_manage/" target="_blank">ProductWire Newsletter</a><br>
+			&#149; <a class="summary_data" href="http://rssnewsapps.ziffdavis.com/pcmag.xml" target="_blank">New Reviews RSS Feed</a>&nbsp;&nbsp;<!-- start ziffimage //--><img width="36" height="14" border="0" src="http://common.ziffdavisinternet.com/util_get_image/1/0,1425,i=19420,00.gif" alt="XML" align="MIDDLE"></td></tr>
+		</table>
+	</div>
+	<div class="clearr"></div>
+</div>
+
+<div class="clearl"></div>
+	</div>
+	<div class="clearl"></div>
+	</div>
+	<div id="w_contentCol2">
+	<div id="w_execSummary">
+
+		#if($review.bottomLine && $review.bottomLine != "")
+			<div class="summaryCategory">
+				<h3 class="execSumHeader">Bottom Line</h3>
+				<p class="summaryData">$review.bottomLine</p>
+			</div>
+		#end
+		
+		#if($review.pros && $review.pros != "")
+			<div class="summaryCategory">
+				<h3 class="execSumHeader">Pros</h3>
+				<p class="summaryData">$review.pros</p>
+			</div>
+		#end
+		
+		#if($review.cons && $review.cons != "")
+			<div class="summaryCategory">
+				<h3 class="execSumHeader">Cons</h3>
+				<p class="summaryData">$review.cons</p>
+			</div>
+		#end
+</div>	</div>		<div id="w_adModule">
+<div class="adModule"><script type="text/javascript" language="javascript">document.write("<scr");document.write("ipt language=\"Javascript1.1\" type=\"text/javascript\" src=\"http://ad.doubleclick.net/adj/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=3;sz=336x280;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\"></scr");
+document.write("ipt>");
+if ((!document.images&&navigator.userAgent.indexOf("Mozilla/2.")>=0)||(navigator.userAgent.indexOf("WebTV")>=0)){
+document.write("<a href=\"http://ad.doubleclick.net/jump/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=3;sz=336x280;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\">");
+document.write("<img src=\"http://ad.doubleclick.net/ad/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=3;sz=336x280;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\" width=\"336\" height=\"280\" border=\"0\" /></a>");}</script></div><div class="adModule"><script type="text/javascript" language="javascript">document.write("<scr");document.write("ipt language=\"Javascript1.1\" type=\"text/javascript\" src=\"http://ad.doubleclick.net/adj/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=4;sz=336x250;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\"></scr");
+document.write("ipt>");
+if ((!document.images&&navigator.userAgent.indexOf("Mozilla/2.")>=0)||(navigator.userAgent.indexOf("WebTV")>=0)){
+document.write("<a href=\"http://ad.doubleclick.net/jump/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=4;sz=336x250;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\">");
+document.write("<img src=\"http://ad.doubleclick.net/ad/pcm.dart/HW>Desktops/pg/desktops;pos=top;zdid=a243937;zdtype=standardreview;zdaudience=consumer;zdproduct=gatewaydx430003;zdcompany=gatewayinc;pagetype=article2;tile=4;sz=336x250;ord="+BIDARTORD+";zdtopic=pgdesktops;zdtopic=firstlooks\" width=\"336\" height=\"250\" border=\"0\" /></a>");}</script></div><!-- Vignette V6 Mon Sep 14 05:00:33 2009 -->
+
+<div class="adModule"><!-- BEGIN SafeCount Node - Desktops Run of Desktops Module 3441 -->
+<script src="http://content.dl-rms.com/rms/18792/nodetag.js"></script>
+<!-- END SafeCount Node - Desktops Run of Desktops Module 3441 --></div><div class="adModule"><!-- BEGIN MODULE 2541 -->
+<style type="text/css">
+
+.articleBase * #roadBlockBanner {padding-top:5px; padding-right:1px;}
+
+div.spotlightlinks div {padding: 3px 0px 3px 7px; background-image:url('http://common.ziffdavisinternet.com/util_get_image/19/0,,i=198309,00.gif'); background-repeat:no-repeat; background-position:0 9; line-height:13px;}
+div.spotlightlinks div a {font-size:12px; font-family:arial, sans-serif; text-decoration:none!important;}
+div.spotlightlinks div a:hover {text-decoration:underline;}
+div.spotlight_hdr {padding-bottom:2px; border-bottom:1px solid #000!important; height:15px; vertical-align:middle; font-family:arial, sans-serif !important; font-size:14px !important; font-weight:bold;}
+div.spotlight_hdr_plus {margin-top:3px; height:2px; line-height:2px; background-image:url('http://common.ziffdavisinternet.com/util_get_image/19/0,,i=198313,00.gif'); background-repeat:repeat-x;}
+div#w_colRight {overflow:hidden;}
+
+/* FOR WHITEPAPERS */
+div.whitepapershdr {border-bottom:1px solid #000000!important;font-family:arial,sans-serif!important;font-size:14px!important;font-weight:bold;height:15px;vertical-align:middle;}
+div.whitepaperlinks {margin-bottom:7px;}
+div.whitepaperlinks div {background-image:url(http://common.ziffdavisinternet.com/util_get_image/21/0,,i=215297,00.gif); background-position:1px 5px; background-repeat:no-repeat; line-height:13px; padding:4px 0 5px 17px;}
+div.whitepaperlinks div a:hover {text-decoration:underline;}
+div.whitepaperlinks div a {font-family:arial,sans-serif; font-size:12px; text-decoration:none!important;}
+div.whitepaperlinks table tbody tr td div a {text-decoration:none!important;}
+div.whitepapersmore {font-family:verdana,sans-serif;font-size:10px;font-weight:bold;line-height:12px;padding-bottom:2px;text-align:right;}
+div.whitepapersmore a {text-decoration:none!important;}
+div.whitepapersmore a:hover {text-decoration:underline;}
+div.whitepapersmore a:visited {font-weight:bold!important;}
+
+</style>
+
+<div style="background-color:#fff; margin-left:2px; padding-left:2px;">
+
+<div style="height:15px; line-height:15px;"></div>
+
+<div class="spotlight_hdr">Info Centers</div>
+<div class="spotlightlinks">
+
+<div><a href="http://ad.doubleclick.net/clk;216239603;13401844;w?http://shop.pcmag.com/shop/aisle/CDW/36.aspx"><b>CDW Small Business Solutions Center</b></a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;217489521;13401844;d?http://shop.pcmag.com/pages/shop_aisle.aspx?aisleid=4&sb=2&so=1"><b>Dell Home Shopping &#38; Solutions Center  </b></a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;215678618;13401844;i?http://www.pcmag.com/category2/0,2806,2346839,00.asp"><b>HP Printing Center</b></a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;208761536;30812902;c"><b>Lenovo ThinkPad & IdeaPad Notebook Store</b></a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;214270055;13401844;q?http://www.pcmag.com/category2/0,2806,2345809,00.asp"><b>Linksys by Cisco Networking Info Center</b></a></div>
+
+
+</div>
+
+<div style="height:10px; line-height:10px;">&nbsp;</div>
+
+<div class="spotlight_hdr">Special Offers</div>
+<div class="spotlightlinks">
+
+
+
+<div><a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=287&tgt=211&tstamp=20090824T160337&ast=5374&cmp=800&crv=4012&pos=2&frm=236&yld=0">
+Download this free white paper to learn how Software-as-a-Service (SaaS) security solutions can save your small business money</a></div>
+
+<div><a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=235&tgt=198&tstamp=20090908T145234&ast=6317&cmp=1191&crv=4878&pos=0&frm=236&yld=0">
+Learn about the growing significance of database security in this free white paper  
+</a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;217286185;13401844;e?http://www.infohub.ziffdavis.com/survey/0,,surveyId=470,00.asp">
+Enter the <i>Back-to-School Extreme Tech Makeover Sweepstakes</i>, brought to you by Pricespider.com! </a></div>
+
+<div><a href="http://ad.doubleclick.net/clk;213751708;13401844;y?http://mozy.com?ref=e9c30af1&utm_source=pcmag&utm_medium=banner&utm_content=contextual&utm_campaign=pcmag">
+Simple, Automatic, Secure Online Backup with Mozy - Only $4.95/Month!</a></div>
+
+
+<div><a href="http://ad.doubleclick.net/clk;210577214;13401844;t?http://www.kqzyfj.com/click-3284802-10594194">
+Switching to Mac? The Apple Online Store answers some of the most common PC-to-Mac questions here.     </a></div>
+
+
+</div>
+
+</div>
+
+<!-- END MODULE 2541 --></div><div class="adModule">
+		<div class="whitepapershdr">Free White Papers</div>
+			<div class="whitepaperlinks">
+				<script src="http://dinclinx.com/?s=127&t=28&e=0&f=javascript" type="text/javascript"></script>
+
+			</div>
+		<div class="whitepapersmore"><a href="http://whitepapers.pcmag.com">View all White Papers ></a></div>
+
+		<div class="whitepapersmore"><a href="http://whitepapers.pcmag.com/index.php?option=com_contact&task=view&pathway=no&step=3">Click here to list your White Papers ></a></div>
+</div><div class="adModule"><style type="text/css">
+#featured_video {width: 336px; margin: 10px 0px 0px 0px; background-color: #E4E4DC;}
+#featured_video_header {width: 100%;}
+#featured_video_img {padding: 0px 0px 5px 0px;}
+#featured_video_content {width: 100%; border-bottom: 1px dotted #000000;} 
+.featured_video_table {width: 100%; vertical-align: top; padding:0px; margin:0px;}
+.featured_video_table td {vertical-align: top; padding:10px; margin:0px;}
+#featured_video_linklist ul {font-family: Arial, Helvetica, sans-serif;  font-size: 11px; margin: 0px 0px 0px 15px; line-height: 15px;}
+#featured_video_linklist li {color: #666666;}
+#featured_video_linklist ul a {color: #003bb0;}	
+#featured_video_padlist ul {font-family: Arial, Helvetica, sans-serif;  font-size: 11px; margin: 0px 0px 0px 30px; line-height: 15px;}
+#featured_video_padlist li {color: #666666;}
+#featured_video_padlist ul a {color: #003bb0;}	
+#featured_video_headline {padding: 0px; c}
+#featured_video_headline a {font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 11px; color: #003bb0;}
+#featured_video_headline a:link, #featured_video_headline a:visited {text-decoration: none;}
+#featured_video_headline a:hover, #featured_video_headline a:active {text-decoration: none;}
+#featured_video_text {font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; padding: 0px 0px 5px 0px;}
+#featured_video_popular {width: 100%; padding: 10px 0px 5px 10px; font-family: Arial, Helvetica, sans-serif; font-weight: bold; font-size: 11px; color: #000000;} 
+#featured_video_contlink {text-align:right; font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10px; font-weight: bold; padding: 10px 5px 10px 0px;}
+#featured_video_contlink a {color: #003bb0; text-decoration: none;}
+
+.Highlights_Content {FONT-WEIGHT: normal;FONT-SIZE: 11px;COLOR: #666666;FONT-FAMILY: Verdana, Arial;}
+span.Highlights_Content a:link, span.Highlights_Content a:visited  { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #003bb0; text-decoration: none; font-weight: normal; }
+span.Highlights_Content a:hover, span.Highlights_Content a:active { font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 11px; color: #003bb0; text-decoration: underline; font-weight: normal; } 
+a.Highlights_Content:link	{FONT-WEIGHT: normal;FONT-SIZE: 11px;color: #003bb0;FONT-FAMILY: Verdana, Arial; text-decoration:none;}
+a.Highlights_Content:visited	{FONT-WEIGHT: normal;FONT-SIZE: 11px;color: #003bb0;FONT-FAMILY: Verdana, Arial; text-decoration:none;}
+a.Highlights_Content:hover	{FONT-WEIGHT: normal;FONT-SIZE: 11px;color: #003bb0;FONT-FAMILY: Verdana, Arial; text-decoration:underline;}
+</style>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr>
+<td>
+<div id="featured_video">
+<div id="featured_video_header"><!-- start ziffimage //--><img width="336" height="28" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234799,00.gif" alt="HP Header: Featured Video"><!-- end ziffimage //--></div>
+<div id="featured_video_content">
+<table border="0" cellspacing="0" class="featured_video_table">
+
+<tr>
+<!-- VIDEO IMAGE -->
+<td><a href="http://www.pcmag.com/article2/0,2817,2351646,00.asp#Dell_Studio_14z"><!-- start ziffimage //--><img width="103" height="110" border="0" src="http://common.ziffdavisinternet.com/util_get_image/24/0,1425,i=245272,00.gif" alt="Dell Studio 14z"><!-- end ziffimage //--></a></td>
+<td style="padding-left:0px; padding-right:7px;">
+
+<!-- SHOW LOGO IMAGE -->					
+<div id="featured_video_img"><ZIFFSECTION ID=""><!-- start ziffimage //--><img width="180" height="15" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234797,00.jpg" alt="Product Reviews"><!-- end ziffimage //--></ZIFFSECTION></div>
+<!-- END LOGO IMAGE -->
+<div id="featured_video_headline"> <a href="http://www.pcmag.com/article2/0,2817,2351646,00.asp#Dell_Studio_14z">Dell Studio 14z</a></div>
+<div id="featured_video_text">The Dell Studio 14z is slightly ahead of its time, but it packs a performance punch and many future-proofed parts.</div>
+<div id="featured_video_linklist"><span class="highlights_content">
+&#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2351644,00.asp" >Full Review of Dell Studio 14z</a><!-- end ziffarticle //--><br></span> 
+</div>				    
+</td>
+</tr>
+
+<tr>
+
+<!-- VIDEO IMAGE -->
+<td><a href="http://www.pcmag.com/article2/0,2817,2350264,00.asp#Alienware_M17x"><!-- start ziffimage //--><img width="103" height="110" border="0" src="http://common.ziffdavisinternet.com/util_get_image/24/0,1425,i=245271,00.gif" alt="Alienware M17x"><!-- end ziffimage //--></a></td>
+<td style="padding-left:0px; padding-right:7px;">
+<!-- SHOW LOGO IMAGE -->					
+<div id="featured_video_img"><ZIFFSECTION ID=""><!-- start ziffimage //--><img width="180" height="15" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234797,00.jpg" alt="Product Reviews"><!-- end ziffimage //--></ZIFFSECTION></div>
+<!-- END LOGO IMAGE -->
+<div id="featured_video_headline"> <a href="http://www.pcmag.com/article2/0,2817,2350264,00.asp#Alienware_M17x">Alienware M17x</a></div>
+<div id="featured_video_text">The Alienware M17x is the complete mobile gaming package, as its all-metallic look can stand in the spotlight with its parts.</div>
+<div id="featured_video_linklist"><span class="highlights_content">
+&#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2350263,00.asp" >Full Review of Alienware M17x</a><!-- end ziffarticle //--><br></span> 
+</div>				    
+</td>
+
+</tr>
+
+</table>
+</div>
+<div id="featured_video_popular">Recent Product Review Videos</div> 
+<div id="featured_video_padlist"><span class="highlights_content">
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <a href="http://www.pcmag.com/article2/0,2817,2351310,00.asp#ASUS_EeePC_1101HA">ASUS EeePC 1101HA</a><br>
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <a href="http://www.pcmag.com/article2/0,2817,2340861,00.asp#Dell_Wasabi_PZ310">Dell Wasabi PZ310</a><br>
+
+<div id="featured_video_popular">Most Popular Videos</div> 
+
+<div id="featured_video_padlist"><span class="highlights_content">
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2176489,00.asp" >Tech Tip: Speed Up Windows XP</a><!-- end ziffarticle //--><br>
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2325473,00.asp" >Product Review: Apple iPhone 3G</a><!-- end ziffarticle //--><br>
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2273960,00.asp" >Tech Tip: HDTV Must Have Accessories</a><!-- end ziffarticle //--><br>
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2270397,00.asp" >DL.TV: Firefox Extensions</a><!-- end ziffarticle //--><br>
+
+&nbsp; <!-- start ziffimage //--><img width="18" height="10" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234801,00.gif" alt="Video Icon"><!-- end ziffimage //--> <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2280739,00.asp" >Feature: How To Overclock Your PC</a><!-- end ziffarticle //--><br></span>
+</div>
+<div id="featured_video_contlink"><!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,1896903,00.asp" >All Videos <font size="1">&gt;</font></a><!-- end ziffsection //--></div>
+</div>		
+</td></tr></table>
+
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td>
+<div id="featured_video">
+<div id="featured_video_header"><!-- start ziffimage //--><img width="336" height="20" border="0" src="http://common.ziffdavisinternet.com/util_get_image/22/0,1425,i=221175,00.gif" alt="PCMag Radio Podcast"><!-- end ziffimage //--></div>
+<div id="featured_video_content">
+<table border="0" cellspacing="0" class="featured_video_table">
+
+<tr>
+<!-- AUDIO IMAGE -->
+<td><!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2352602,00.asp" ><!-- start ziffimage //--><img width="103" height="110" border="0" src="http://common.ziffdavisinternet.com/util_get_image/24/0,1425,i=246453,00.gif" alt="PCMag Radio: Intel&#39;s Lynnfield: More Intelligent?"><!-- end ziffimage //--></a><!-- end ziffarticle //--></td>
+<td style="padding-left:0px; padding-right:7px;">
+<!-- SHOW LOGO IMAGE -->
+<div id="featured_video_img"><!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,2007098,00.asp" ><!-- start ziffimage //--><img width="121" height="24" border="0" src="http://common.ziffdavisinternet.com/util_get_image/23/0,1425,i=234802,00.gif" alt="PCMag Radio Logo"><!-- end ziffimage //--></a><!-- end ziffsection //--></div>
+<!-- END LOGO IMAGE -->
+<div id="featured_video_headline"><!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2352602,00.asp" >Intel's Lynnfield: More Intelligent?</a><!-- end ziffarticle //--></div>
+<div id="featured_video_text">We explain what Intel's new processor line means to you, guess what Apple and Motorola are releasing this week, and have an actual rock musician discuss The Beatles: Rock Band. Also, listener mail and Dan's Power Tool.</div>
+<div id="featured_video_linklist"><span class="highlights_content">
+<!-- start ziffimage //--><img width="20" height="20" border="0" src="http://common.ziffdavisinternet.com/util_get_image/14/0,1425,i=144857,00.gif" alt="Podcast Radio Icon"><!-- end ziffimage //--> <!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,2007098,00.asp" >PCMag Radio Archives</a><!-- end ziffsection //--><br></span>
+</div>					
+</td>
+
+</tr>
+</table>
+</div>
+<div id="featured_video_popular">Most Recent Podcast</div>
+<div id="featured_video_padlist"><span class="highlights_content">
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2352291,00.asp" >Snow Leopard Roars</a><!-- end ziffarticle //--><br>
+<div id="featured_video_popular">Most Popular Podcasts</div>
+<div id="featured_video_padlist"><span class="highlights_content">
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2334512,00.asp" >The Future of Windows PCs</a><!-- end ziffarticle //--><br>
+
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2337515,00.asp" >Our Predictions For 2009</a><!-- end ziffarticle //--><br>
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2338957,00.asp" >Does Windows 7's Wow Start Now?</a><!-- end ziffarticle //--><br>
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2304730,00.asp" >iPhone vs. Blackberry Bold</a><!-- end ziffarticle //--><br>
+&nbsp; &#149; <!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2087557,00.asp" >Windows Vista Headaches</a><!-- end ziffarticle //--><br>
+</span>
+
+</div>
+<div id="featured_video_contlink"><!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,2007098,00.asp" >All PCMag Radio Podcasts <font size="1">&gt;</font></a><!-- end ziffsection //--></div>
+</div>		
+</td></tr></table>
+
+<div style="height:15px; line-height:15px; clear:both;">&nbsp;</div></div>
+		<div class="adModule">
+
+	 		<script language="JavaScript" type="text/javascript"><!--
+			
+			  function google_ad_request_done(ads) {}
+					
+			  function google_radlink_request_done(radlinks) {
+				if (radlinks.length > 0) {
+					document.write('<div id="GooSDC">');
+					document.write('<ul>');
+					document.write('<li class="HdrGoo_story">RELATED ADS</li>');
+										
+			   		for(i = 0; i < radlinks.length; ++i) {
+		   				document.write('<li><a target="_top" href="http://www.pcmag.com/ad_links/0,,,00.asp?google_kw=' + escape(radlinks[i].term) + '&google_rt=' + radlinks[i].radlink_token +
+	   					'&google_page_url=' + escape(window.location) + '" onMouseOver="return GOOGLEShowStatusInfo(\'' + escape(radlinks[i].term) + '\')">' + radlinks[i].term + '</a></li>');
+		   			}
+					document.write('</ul>');
+					document.write('</div>');		
+				}
+			  }
+			  // -->	  
+			  </script>
+	  
+			  <!--pcmag_laptops--><!-- d_page_location: related_ads -->		
+<script type="text/javascript" language="JavaScript"><!--
+	function GOOGLEShowStatusInfo(w){
+		setTimeout("window.status = \'" + unescape(w) + "\';", 0);		
+		return true;
+	}	
+	google_ad_client = 'ca-ziffdavis_radlinks_consumer_js';         
+	google_ad_channel = 'pcmag_laptops';			 
+	google_ad_output = 'js';      			    
+			 
+	google_num_radlinks = '7';
+	google_max_num_ads = '0'; 
+	google_contents = ''; 			 
+
+	google_safe = 'high';
+-->
+</script><!--related_ads-->
+
+<script type="text/javascript" language="JavaScript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+		</div><!-- Vignette V6 Fri Aug 28 12:09:56 2009 -->
+		</div>	<div class="clearl"></div>
+
+	 <div id="w_contentGroup2"> 
+<div id="underArticleLinks"><div class="articleNav"><p class="next">&nbsp;<a href="$review.url">Next &gt;</a></p></div>
+<div id="articleOptions">
+
+<script language="JavaScript">
+function OpenSaveArticleWindow(querystring)
+{
+LeftPosition = (screen.width) ? (screen.width)/10 : 0;
+TopPosition = (screen.height) ? (screen.height)/10 : 0;
+settings = 'menubar=no,height=400,width=500'
+hWin = window.open("http://www.pcmag.com/save_article/" + querystring, "SaveArticle", settings, false);
+hWin.focus();
+if (hWin.opener == null) hWin.opener = self;
+}
+
+function OpenEmailArticleWindow(querystring)
+{
+	LeftPosition = (screen.width) ? (screen.width)/10 : 0;
+	TopPosition = (screen.height) ? (screen.height)/10 : 0;
+	settings = 'menubar=no,height=575,width=365,resizable=yes,scrollbars=yes'
+	hWin = window.open("http://www.pcmag.com/email_article/" + querystring, "SaveArticle", settings, true);
+	hWin.focus();
+	if (hWin.opener == null) hWin.opener = self;
+}
+
+
+function OpenReprintArticleEmailWindow(querystring)
+{
+	LeftPosition = (screen.width) ? (screen.width)/10 : 0;
+	TopPosition = (screen.height) ? (screen.height)/10 : 0;
+	settingsReprint = 'menubar=no,height=500,width=650,resizable=yes,scrollbars=no'
+	hWin = window.open("http://www.pcmag.com/reprint_article_email/" + querystring, "SaveArticle", settingsReprint, true);
+	hWin.focus();
+	if (hWin.opener == null) hWin.opener = self;
+}
+
+
+
+</script>
+
+
+	<form id="article_icons" 
+			action="http://www.pcmag.com/print_article2/0,1217,a%253D243937,00.asp" 
+			method="POST" 
+			name="article_icons">
+		<input type="hidden" name="hidPrint" value="true">
+		<input type="image" src="http://www.pcmag.com/images/print_icon.gif" alt="Print">
+		<a href="JavaScript:OpenEmailArticleWindow('?a=243937&s=1564');"><img src="http://www.pcmag.com/images/email_icon.gif" alt="Email"></a>
+
+		   
+			<!-- <a href=""><img src="http://www.pcmag.com/images/save_icon.gif" alt="Save"></a> -->
+			
+				<a href="http://www.pcmag.com/join/0,2949,,00.asp?success_page=http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle2%2F0,2817,2352692,00%2Easp?save=1&success_title=Article&failure_page=http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle2%2F0,2817,2352692,00%2Easp"><img src="http://www.pcmag.com/images/save_icon.gif" alt="Save"></a>
+			
+				 <a href="http://www.pcmag.com/review_article/0,1875,ss%253D0%2526s%253D1564%2526a%253D243937,00.asp"><img src="http://www.pcmag.com/images/rateit_icon.gif" alt="Rate It"></a> 
+			
+
+	<!--Reprint Links-->
+
+	<a href="JavaScript:OpenReprintArticleEmailWindow('?a=243937&s=1564');"><img src="http://www.pcmag.com/images/reprint_icon.gif" alt="Order Reprints of this Article."></a>
+
+</form>
+</div>
+<div id="communityShare">
+<script src="http://commonzips.ziffdavisinternet.com/pages/yahoo_buzz.aspx" badgetype="text"	showbranding="0"> pc_magazine512:http://www.pcmag.com/article2/0,2817,2352692,00.asp </script> 
+<a href="javascript:OpenMixxWindow()"><img src="http://www.pcmag.com/images/icon_mixx_button.png" width="16" height="14" alt="Mixx It" />&nbsp;Mixx It</a>	
+<a href="javascript:OpenCommunityShareWindow('DiggIt','http://digg.com/submit','NULL')"><img src="http://www.pcmag.com/images/icon_digg.gif" width="16" height="14" alt="Digg It" />&nbsp;Digg It</a>
+<script src="http://www.stumbleupon.com/js/partner/pcmag.com/badge.js" type="text/javascript"></script>
+<script type="text/javascript">
+var addthis_pub="pcmag",addthis_brand = "PCMag",addthis_offset_top = 7,addthis_offset_left = 7,addthis_options = "email, aim, facebook, delicious,google, myspace, slashdot, technorati, twitter, more";
+</script>
+<a href="http://www.addthis.com/bookmark.php" 
+onmouseover="return addthis_open(this, '', 'http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle2%2F0%2C2817%2C2352692%2C00%2Easp', 'Gateway+DX4300%2D03');" 
+onmouseout="addthis_close();" 
+onclick="return addthis_sendto();">
+
+	<img src="http://s7.addthis.com/static/btn/sm-plus.gif" width="16" height="16" border="0" alt="Share" /> More...</a>	
+<script type="text/javascript" src="http://s7.addthis.com/js/200/addthis_widget.js"></script>
+</div></div><!-- Vignette V6 Tue Sep 15 08:14:46 2009 -->
+
+
+<!-- Begin T5832 -->
+<!--WEB 6--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><?xml version="1.0" encoding="UTF-16"?><SCRIPT LANGUAGE="javascript" DEFER="true"><!--
+	function redirect()
+ 	 {
+ 	  
+ 	   var url;
+ 	   var zipcode;
+ 	   
+ 	   zipcode = frmZipCode.txtZipCode.value;
+ 	   if (zipcode.length != 5){
+ 			alert('Please enter a valid 5 digit zipcode');
+ 			return false;
+ 	   }
+ 	   for (var i=0; i < zipcode.length; i++)
+		if ((zipcode.charAt(i) < '0' || zipcode.charAt(zipcode) > '9')){
+			alert('Please enter a valid 5 digit zipcode');
+			return false;
+ 	   }
+ 	   //url = frmZipCode.url.value + "~ZC-" + zipcode + "~Z-" + zipcode;	
+ 	   url = "http://www.pcmag.com/shopping_redirect/?P=" + frmZipCode.url.value + "&Q=ZC-" + zipcode;
+	   window.location.href = url;
+	 }
+   	  --></SCRIPT><table border="0" cellpadding="0" cellspacing="0" width="100%" class="buy_it_here_table"><tr><td colspan="7" class="table_header"><img src="http://www.pcmag.com/images/pcm_buyithereheader.gif" border="0" alt="Buy It Here" title="Buy It Here" /></td></tr><tr><td width="1%"></td><td width="24%" class="col_header"><img src="http://www.pcmag.com/images/pcm_buyitstore.gif" border="0" width="38px" height="20px" alt="Store" title="Store" /></td><td width="29%" class="col_header"><img src="http://www.pcmag.com/images/pcm_buyitstorerating.gif" border="0" width="78px" height="20px" alt="Store Raing" title="Store Rating" /></td><td width="22%" class="col_header"><a href="http://www.pcmag.com/shopping_redirect/?P=87006588&amp;Q=SB-6xOB-1"><img src="http://www.pcmag.com/images/pcm_buyitbaseprice.gif" border="0" width="62px" height="20px" alt="Base Price" title="Base Price" /></a></td><td width="23%" class="col_header"><a href="http://www.pcmag.com/shopping_redirect/?P=87006588&amp;Q=SB-6xOB-1"><img src="http://www.pcmag.com/images/pcm_buyitprice.gif" border="0" width="32px" height="20px" alt="Price" title="Price" /></a></td><td width="1%"></td></tr><tr><td></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=139&amp;BEFID=451&amp;acode=219&amp;code=219&amp;aon=^158&amp;crawler_id=443156&amp;dealId=CLhr3KWX5ZQQoEtRjF0aRw==&amp;prjID=ds&amp;url=http%3A%2F%2Fbestbuy.rdr.channelintelligence.com%2Fgo.asp%3FfVhzOGNRAAQIASNiE1pYRRBuFnE4YRlOAgRKbWZfV1oPESJDKzAnXQgfH0AoJUEBDgBVPEpdEUcsKXxeW0RVFzA%2AHBMKFERwTjA0bF5ZRXldYmtcVVpDE2wZNz0jSA9AQ187JwwXTRpFYw4WDhxzfWIcCwQFAW50KyAmIxwVagBpB2FxFkJTOW9dVk0fTj0CEAwDC0FCU1QwNgpeCBpIAQNHU00mKidEVh8OHjwiAQAEF0RjGCAoOk5ZWVQWYQ%3D%3D%26nAID%3D13736960&amp;DealName=Gateway%20Desktop%20with%20AMD%20Phenom%20X4%20Quad-Core%20Processor&amp;MerchantID=443156&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=1&amp;RR=1&amp;NG=4&amp;GR=1&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=729.98&amp;brnId=14305"><img src="http://img.shopping.com/cctool/merch_logos/443156.gif" border="0" alt="Best Buy ®" title="Best Buy ®" /></a></td><td align="center" class="&#xA;					border&#xA;					"><img src="http://img.shopping.com/sc/mr/sdc_checks_4.gif" alt="Rating: 4.00" title="Rating: 4.00" /><br /></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=139&amp;BEFID=451&amp;acode=219&amp;code=219&amp;aon=^158&amp;crawler_id=443156&amp;dealId=CLhr3KWX5ZQQoEtRjF0aRw==&amp;prjID=ds&amp;url=http%3A%2F%2Fbestbuy.rdr.channelintelligence.com%2Fgo.asp%3FfVhzOGNRAAQIASNiE1pYRRBuFnE4YRlOAgRKbWZfV1oPESJDKzAnXQgfH0AoJUEBDgBVPEpdEUcsKXxeW0RVFzA%2AHBMKFERwTjA0bF5ZRXldYmtcVVpDE2wZNz0jSA9AQ187JwwXTRpFYw4WDhxzfWIcCwQFAW50KyAmIxwVagBpB2FxFkJTOW9dVk0fTj0CEAwDC0FCU1QwNgpeCBpIAQNHU00mKidEVh8OHjwiAQAEF0RjGCAoOk5ZWVQWYQ%3D%3D%26nAID%3D13736960&amp;DealName=Gateway%20Desktop%20with%20AMD%20Phenom%20X4%20Quad-Core%20Processor&amp;MerchantID=443156&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=1&amp;RR=1&amp;NG=4&amp;GR=1&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=729.98&amp;brnId=14305" class="base_price">
+					$699.99</a></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=139&amp;BEFID=451&amp;acode=219&amp;code=219&amp;aon=^158&amp;crawler_id=443156&amp;dealId=CLhr3KWX5ZQQoEtRjF0aRw==&amp;prjID=ds&amp;url=http%3A%2F%2Fbestbuy.rdr.channelintelligence.com%2Fgo.asp%3FfVhzOGNRAAQIASNiE1pYRRBuFnE4YRlOAgRKbWZfV1oPESJDKzAnXQgfH0AoJUEBDgBVPEpdEUcsKXxeW0RVFzA%2AHBMKFERwTjA0bF5ZRXldYmtcVVpDE2wZNz0jSA9AQ187JwwXTRpFYw4WDhxzfWIcCwQFAW50KyAmIxwVagBpB2FxFkJTOW9dVk0fTj0CEAwDC0FCU1QwNgpeCBpIAQNHU00mKidEVh8OHjwiAQAEF0RjGCAoOk5ZWVQWYQ%3D%3D%26nAID%3D13736960&amp;DealName=Gateway%20Desktop%20with%20AMD%20Phenom%20X4%20Quad-Core%20Processor&amp;MerchantID=443156&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=1&amp;RR=1&amp;NG=4&amp;GR=1&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=729.98&amp;brnId=14305"><img src="http://www.pcmag.com/images/pcm_buyitbutton.gif" border="0" width="75px" height="23px" alt="Buy It" title="Buy It" /></a></td><td></td></tr><tr><td></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=113&amp;BEFID=451&amp;acode=32&amp;code=32&amp;aon=^&amp;crawler_id=1908809&amp;dealId=Hsn8r5d3NqzsznpouRFATw==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.bhphotovideo.com%2Fc%2Fproduct%2F631146-REG%2FGateway_PT_G830X_003_DX4300_03_Desktop_Computer.html%2FBI%2F81%2Fkw%2FGADX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20Computer&amp;MerchantID=300102&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=2&amp;RR=1&amp;NG=4&amp;GR=2&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.95&amp;brnId=14305"><img src="http://img.shopping.com/cctool/merch_logos/300102.gif" border="0" alt="B&amp;H Photo-Video-Pro Audio" title="B&amp;H Photo-Video-Pro Audio" /></a></td><td align="center" class="&#xA;					border&#xA;					"><img src="http://img.shopping.com/sc/mr/sdc_checks_45.gif" alt="Rating: 4.50" title="Rating: 4.50" /><br /></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=113&amp;BEFID=451&amp;acode=32&amp;code=32&amp;aon=^&amp;crawler_id=1908809&amp;dealId=Hsn8r5d3NqzsznpouRFATw==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.bhphotovideo.com%2Fc%2Fproduct%2F631146-REG%2FGateway_PT_G830X_003_DX4300_03_Desktop_Computer.html%2FBI%2F81%2Fkw%2FGADX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20Computer&amp;MerchantID=300102&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=2&amp;RR=1&amp;NG=4&amp;GR=2&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.95&amp;brnId=14305" class="base_price">
+					$699.95</a></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=113&amp;BEFID=451&amp;acode=32&amp;code=32&amp;aon=^&amp;crawler_id=1908809&amp;dealId=Hsn8r5d3NqzsznpouRFATw==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.bhphotovideo.com%2Fc%2Fproduct%2F631146-REG%2FGateway_PT_G830X_003_DX4300_03_Desktop_Computer.html%2FBI%2F81%2Fkw%2FGADX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20Computer&amp;MerchantID=300102&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=2&amp;RR=1&amp;NG=4&amp;GR=2&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.95&amp;brnId=14305"><img src="http://www.pcmag.com/images/pcm_buyitbutton.gif" border="0" width="75px" height="23px" alt="Buy It" title="Buy It" /></a></td><td></td></tr><tr><td></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=516&amp;BEFID=451&amp;acode=522&amp;code=522&amp;aon=^529&amp;crawler_id=1901322&amp;dealId=ixJaufoSXQ7gxyoNWZYcJQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.amazon.com%2Fdp%2FB002AUSZOQ%2Fref%3Dasc_df_B002AUSZOQ909123%3Fsmid%3DA3LJ5WMKNRFKQS%26tag%3Ddealtime-pc-mp01-20%26linkCode%3Dasn%26creative%3D380341%26creativeASIN%3DB002AUSZOQ&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=301531&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=3&amp;RR=1&amp;NG=4&amp;GR=3&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305"><img src="http://img.shopping.com/cctool/merch_logos/301531.gif" border="0" alt="Amazon Marketplace" title="Amazon Marketplace" /></a></td><td align="center" class="&#xA;					border&#xA;					"><img src="http://img.shopping.com/sc/mr/sdc_checks_3.gif" alt="Rating: 3.00" title="Rating: 3.00" /><br /></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=516&amp;BEFID=451&amp;acode=522&amp;code=522&amp;aon=^529&amp;crawler_id=1901322&amp;dealId=ixJaufoSXQ7gxyoNWZYcJQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.amazon.com%2Fdp%2FB002AUSZOQ%2Fref%3Dasc_df_B002AUSZOQ909123%3Fsmid%3DA3LJ5WMKNRFKQS%26tag%3Ddealtime-pc-mp01-20%26linkCode%3Dasn%26creative%3D380341%26creativeASIN%3DB002AUSZOQ&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=301531&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=3&amp;RR=1&amp;NG=4&amp;GR=3&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305" class="base_price">
+
+					$699.99</a></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=516&amp;BEFID=451&amp;acode=522&amp;code=522&amp;aon=^529&amp;crawler_id=1901322&amp;dealId=ixJaufoSXQ7gxyoNWZYcJQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.amazon.com%2Fdp%2FB002AUSZOQ%2Fref%3Dasc_df_B002AUSZOQ909123%3Fsmid%3DA3LJ5WMKNRFKQS%26tag%3Ddealtime-pc-mp01-20%26linkCode%3Dasn%26creative%3D380341%26creativeASIN%3DB002AUSZOQ&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=301531&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=3&amp;RR=1&amp;NG=4&amp;GR=3&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=1&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305"><img src="http://www.pcmag.com/images/pcm_buyitbutton.gif" border="0" width="75px" height="23px" alt="Buy It" title="Buy It" /></a></td><td></td></tr><tr><td></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=9&amp;BEFID=451&amp;acode=22&amp;code=22&amp;aon=^28&amp;crawler_id=812041&amp;dealId=FPW2owE_qsjPEKa6mHV5uQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.jr.com%2FJRProductPage.process%3FProduct_Code%3DGTW%2BDX430003%26JRSource%3DDealTime.datafeed.GTW%2BDX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=90030&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=4&amp;RR=1&amp;NG=4&amp;GR=4&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=0&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305"><img src="http://img.shopping.com/cctool/merch_logos/90030.gif" border="0" alt="J&amp;R Music and Computer World" title="J&amp;R Music and Computer World" /></a></td><td align="center" class="&#xA;					border&#xA;					"><img src="http://img.shopping.com/sc/mr/sdc_checks_45.gif" alt="Rating: 4.50" title="Rating: 4.50" /><br /></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=9&amp;BEFID=451&amp;acode=22&amp;code=22&amp;aon=^28&amp;crawler_id=812041&amp;dealId=FPW2owE_qsjPEKa6mHV5uQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.jr.com%2FJRProductPage.process%3FProduct_Code%3DGTW%2BDX430003%26JRSource%3DDealTime.datafeed.GTW%2BDX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=90030&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=4&amp;RR=1&amp;NG=4&amp;GR=4&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=0&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305" class="base_price">
+					$699.99</a></td><td align="center" class="&#xA;					border&#xA;					"><a href="http://stat.dealtime.com/DealFrame/DealFrame.cmp?bm=9&amp;BEFID=451&amp;acode=22&amp;code=22&amp;aon=^28&amp;crawler_id=812041&amp;dealId=FPW2owE_qsjPEKa6mHV5uQ==&amp;prjID=ds&amp;url=http%3A%2F%2Fwww.jr.com%2FJRProductPage.process%3FProduct_Code%3DGTW%2BDX430003%26JRSource%3DDealTime.datafeed.GTW%2BDX430003&amp;DealName=Gateway%20DX4300-03%20Desktop%20PC&amp;MerchantID=90030&amp;category=77&amp;MT=wcb-pmt4-3&amp;DB=sdcprod&amp;MN=MT&amp;HasLink=yes&amp;frameId=0&amp;AR=4&amp;RR=1&amp;NG=4&amp;GR=4&amp;ND=1&amp;FPT=DSP&amp;NDS=4&amp;NMS=4&amp;NDP=4&amp;MRS=4&amp;CT=6&amp;linkin_id=3063762&amp;DMT=1&amp;VK=&amp;searchID=71edb20df092ad12b8dce7a8&amp;PD=87006588&amp;IsFtr=0&amp;IsSmart=0&amp;crn=USD&amp;istrsmrc=1&amp;isathrsl=0&amp;dlprc=699.99&amp;brnId=14305"><img src="http://www.pcmag.com/images/pcm_buyitbutton.gif" border="0" width="75px" height="23px" alt="Buy It" title="Buy It" /></a></td><td></td></tr><tr><td colspan="7" width="100%" align="right"><a href="http://www.pcmag.com/shopping_redirect/?P=87006588" class="buy_link">
+					Check Prices From All Stores
+				</a></td></tr><tr><td colspan="3" class="zipcode" align="left"><span class="buy_large_text">Enter your zip for prices with tax and shipping.</span><br /><span class="buy_small_text">Your zipcode will only be used to calculate applicable state tax and ground shipping charges.</span></td><td colspan="4" class="zipcode" align="right"><span class="buy_large_text">Enter your ZIP code:</span><br /><form name="frmZipCode" class="frmZip"><input type="text" name="txtZipCode" maxlength="5" size="5" /><input type="hidden" value="87006588" name="url" /> <button onclick="redirect(); return false;">Calculate</button></form></td></tr></table></td></tr></table>
+<!-- End T5832 -->
+
+<script language="JavaScript">
+function google_ad_request_done(google_ads)
+{var i, number_google_ads=google_ads.length;	
+if (google_ads.length > 0){
+document.write('<div id="marketplace">');		
+document.write('<div class="hdr"><h3>&nbsp;</h3></div>');
+if ( number_google_ads <=1 ){document.write('<ul id="sponsor_partner_single">');}
+else{document.write('<ul id="sponsor_partner">');}		
+for(i = 0; i < google_ads.length; ++i){
+tempvar = google_ads[i].line1;			
+document.write('<li><p class="sponsor_header"><a href="'+google_ads[i].url+'" onMouseOver="return GOOGLEShowStatusInfo(\'' + escape(google_ads[i].visible_url) + '\')">'+google_ads[i].line1+'</a></p>');
+document.write('<p class="sponsor_text">' +  google_ads[i].line2 + ' ' + google_ads[i].line3 +  '</p>');
+document.write('<p class="sponsor_footer"><a href="' +  google_ads[i].url + '" onMouseOver="return GOOGLEShowStatusInfo(\'' + escape(google_ads[i].visible_url) + '\')">' + google_ads[i].visible_url +  '</a></p>');
+document.write('</li>');}	
+document.write('</ul></div>');}}</script>
+
+<!--pcmag_laptops--><!-- d_page_location: marketplace -->		
+<script type="text/javascript" language="JavaScript"><!--
+	function GOOGLEShowStatusInfo(w){
+		setTimeout("window.status = \'" + unescape(w) + "\';", 0);		
+		return true;
+	}	
+	google_ad_client = 'ca-ziffdavis_consumer_js';         
+	google_ad_channel = 'pcmag_laptops';			 
+	google_ad_output = 'js';      			    
+	
+	google_max_num_ads = '5';                 
+	google_ad_width = 300;
+	google_ad_height = 250;
+	google_ad_type = "text";
+	google_color_border = "FFFFFF";
+	google_color_bg = "FFFFFF";
+	google_color_link = "003bb0";
+	google_color_text = "000000";
+	google_color_url = "003bb0";
+
+	google_safe = 'high';
+-->
+</script><!--marketplace-->
+<script type="text/javascript" language="JavaScript" src="http://pagead2.googlesyndication.com/pagead/show_ads.js"></script>
+
+
+<div id="newsletters">	
+	<div id="newsletterContent">
+	<h5>newsletters</h5>
+	<form action="http://www.pcmag.com/data_process_newsletter_manage/" name="newslettersForm" method="get">
+	<div class="colText">
+		<p>Get PCMag.com's <b>FREE</b> email newsletters delivered to your inbox.</p>
+
+		<p>It's easy, just follow the steps.</p>		
+		<p>Want more? Check out our other newsletters 
+			<a href="http://www.pcmag.com/newsletter_manage/0,1887,,00.asp">here</a>.</p>
+		<p> Manage your newsletter 
+			subscriptions <a href="http://www.pcmag.com/newsletter_manage/0,1887,,00.asp">here</a>.
+		</p>
+		<input type="hidden" name="hidSource" value=" Newsletter Module">		
+		<div class="clearl"></div> 
+	</div>		
+	<div class="colSelect">
+
+			<h2>1. Make your selections:</h2>
+			<dl>
+				<dt><input type="checkbox" name="31" value="1" checked></dt><dd>Daily News Alert</dd>
+		   
+				<dt><input type="checkbox" name="75" value="1" checked></dt><dd>PCMag.com Small Business Update</dd>
+		   
+				<dt><input type="checkbox" name="133" value="1" checked></dt><dd>PCMagCast Update</dd>
+		   
+				<dt><input type="checkbox" name="2" value="1" checked></dt><dd>Productwire: First Looks Update</dd>
+
+		   
+				<dt><input type="checkbox" name="71" value="1" checked></dt><dd>Security Watch</dd>
+		   
+				<dt><input type="checkbox" name="46" value="1" checked></dt><dd>TechSaver</dd>
+		   
+				<dt><input type="checkbox" name="69" value="1" checked></dt><dd>Utility Library Update</dd>
+		   
+				<dt><input type="checkbox" name="45" value="1" checked></dt><dd>What's New Now</dd>
+		   
+				<dt><input type="checkbox" name="143" value="1" checked></dt><dd>PCMag Announcements</dd>
+		   			</dl>
+
+		    <div class="clearl"></div>
+		</div>
+		<div class="colEmail">		
+			<h2>2. Select email format:</h2>
+			<SELECT name="SelFormat"><OPTION value="1" selected> HTML </OPTION><OPTION value="2">Text only</OPTION></SELECT>			
+			<div id="w_emailBox">
+				<h2>3. Enter email address:</h2>
+
+				<input id="emailBox" type="text" size="15" name="email" maxlength="64">
+				<a href="JavaScript: document.newslettersForm.submit();"><img src="http://www.pcmag.com/images/newsletter_arrow.gif" alt="" border="0"></a>
+				<div class="clearl"></div>
+			</div> <!-- /#w_emailBox -->	
+			<div class="clearl"></div>
+		</div>
+	</form>
+	<div class="clearl"></div>	
+	</div>
+
+</div>
+
+		<div id="w_graveyard"><!-- Vignette V6 Tue Sep 15 02:01:03 2009 -->
+<div class="adModule"><!-- BEGIN Subscription Module 2427 --> 
+
+<div style="height:10px; line-height:10px;"></div>
+
+<table id="subscribe_gutter" width="100%" border="0" cellspacing="0" cellpadding="0" align="center" style="border: solid 1px #000;"> 
+ <tr style="background-color:#ffffff;"> 
+  <td align="center"><a style="display:block; height:100%; width:100%;" href="https://www.zdmcirc.com/zdmcirc/default.asp?LK=banbttm&I=ibmp"><!-- start ziffimage //--><img width="440" height="56" border="0" src="http://common.ziffdavisinternet.com/util_get_image/22/0,1425,i=225063,00.gif" alt="Subscribe to PC Mag"><!-- end ziffimage //--></a></td>
+ </tr>
+</table>
+
+<table width="95%" border="0" cellspacing="0" cellpadding="0"> 
+ <tr> 
+  <td align="center" valign="top" style="font-size:10px;"><a style="color:red;" href="http://go.pcmag.com/subscriberservices">Subscription Help</a> | 
+
+<!--<a style="color:red;" href="http://www.neodata.com/ITPS2.cgi?ordertype=Reply+Only&ItemCode=IBMP&iResponse=IBMP.2FOR1">-->
+<a style="color:red;" href="https://www.neodata.com/ITPS2.cgi?ItemCode=IBMP&OrderType=Reply+Only&iResponse=IBMP.INQUIRY">
+Renew</a> | <a style="color:red;" href="https://www.zdmcirc.com/zdmcirc/default.asp?LK=GIVE&I=IBMP">Give a Gift</a></td>
+ </tr> 
+</table>
+
+<div style="height:15px; line-height:15px;"></div>
+
+<!-- END Subscription Module 2427 --></div><div class="adModule"><style type="text/css">
+.mrktstyle1 {width:100%; color:#000000; font-weight:bold; font-family: Arial, Helvetica, sans-serif; font-size: 13px;}
+.mrktstyle2 {padding-bottom:20px!important; vertical-align:top!important; font-family:Arial, Helvetica, sans-serif!important; font-size: 11px!important; color: #000000!important; font-weight:normal!important; border-bottom:solid 1px #999!important;}
+.mrktstyle3 {padding-top:20px!important; vertical-align:top; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height:11px; color: #000000; font-weight:normal}
+.mrktstyle4 {vertical-align:top; font-family: Arial, Helvetica, sans-serif; font-size: 11px; line-height:11px; color: #000000; font-weight:normal}
+.mrktcell1 {vertical-align:top; width:50%; background-color:#cccccc; border: solid 1px #666;}
+.mrktcell2 {vertical-align:top; width:50%; background-color:#E5E5E5; border: solid 1px #666}
+.mrkt_featured_header {vertical-align:top; width:50%; background-color:#CC0000; color:#fff; font-family:lucida sans, arial, sans-serif; font-size:13px; font-weight:bold; line-height:13px; padding:5px!important; border-bottom:solid 5px #000; white-space:nowrap;}
+.mrkt_featured_copy {padding-top:5px!important; padding-bottom:5px!important; text-decoration:none!important;}
+.mrkt_featured_item {padding-left:23px!important; text-decoration:none!important;}
+.mrkt_featured_link a {font-weight:bold!important; text-decoration:none!important;}
+.mrktlist {padding-left:11px!important; line-height:11px; text-decoration:none!important;}
+.mrktlist div {text-indent:-7px; line-height:13px; padding-bottom:4px!important;}
+.mrkt_utility_header {vertical-align:top; width:50%; background-color:#000; color:#fff; font-family:lucida sans, arial, sans-serif; font-size:13px; font-weight:bold; line-height:13px; padding:5px!important; border-bottom:solid 5px #CC0000!important; /*white-space:nowrap;*/}
+.mrkt_utility_attn {font-size:12px; font-weight:bold; text-decoration:none!important;}
+</style>
+
+
+<table width="100%" border="0" cellpadding="0" cellspacing="5">
+  <tr>
+ 
+ <!-- BEGIN LEFT CELL -- FEATURED OFFERS -->
+  <td class="mrktcell1">
+   <table width="100%" cellspacing="0" cellpadding="5" border="0">
+    <tr>
+     <td class="mrkt_featured_header">Featured Offers</td>
+    </tr>
+    
+ 
+    <tr>
+
+     <td class="mrktstyle2">
+	 <div class="et_sidebyside">
+     <div style="float:left;"><img src="http://enewsletters.ziffdavisinternet.com/pcm/featured_bullet.gif"></div>
+     
+     <!-- BEGIN FIRST FEATURED OFFER after arrow bullet -->
+     <div class="mrkt_featured_link">
+<b>FREE WHITE PAPER:</a></b> <Br>
+<Br><div class="mrkt_featured_item">
+<a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=1853&tgt=301&tstamp=20090824T163751&ast=5871&cmp=935&crv=4457&pos=6&frm=236&yld=0"> The Easy Way To Keep Track Of Your Computers  </a> <Br><BR>
+
+No matter how large or small your business is, you are constantly faced with the challenged of keeping all your computer systems up and running, upgraded and updated. You can try to do it yourself, or you can hand off the work to a distributed device management system that can provide remote Web-based system management, software distribution, and patch management while also protecting your systems from viruses and malware. <br><br>
+<a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=1853&tgt=301&tstamp=20090824T163751&ast=5871&cmp=935&crv=4457&pos=6&frm=236&yld=0">Learn the simple practices to keep track of your computers in this free white paper.</A><br>
+
+    <div align="right"> </div>
+
+    </div>
+	</div>
+    <!-- END FIRST FEATURED OFFER -->
+    </td>
+
+    </tr>
+    
+    <tr>
+     <td class="mrktstyle3">
+     <div style="float:left;"><img src="http://enewsletters.ziffdavisinternet.com/pcm/featured_bullet.gif"></div>
+     
+     <!-- BEGIN SECOND FEATURED OFFER after arrow bullet -->
+          <div class="mrkt_featured_link">
+<b>FREE 'MUST-HAVE' RESOURCES:</a></b> <Br><Br>
+ <Br><div class="mrktlist">
+
+	 <div><strong>&bull;</strong> <a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=287&tgt=211&tstamp=20090824T160337&ast=5155&cmp=800&crv=3823&pos=1&frm=236&yld=0">The Benefits Of Switching From Antivirus To Security Software-as-a-Service (SaaS)</A></div>	
+
+ <div><strong>&bull;</strong> <a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=235&tgt=207&tstamp=20090908T204109&ast=6317&cmp=1191&crv=4878&pos=0&frm=236&yld=0
+">Database Security: An Area of Growing Concern
+</A></div>	
+	
+ <div><strong>&bull;</strong> <a href="http://clk.madisonlogic.com/clk?pub=19&pgr=11&src=1853&tgt=301&tstamp=20090824T163751&ast=5661&cmp=935&crv=4268&pos=4&frm=236&yld=0">Should Your E-Mail Live in the Cloud? </A></div>	
+
+
+ 
+
+
+
+<br>
+<br>
+
+
+    <div align="right"> </div>
+
+    </div>
+	</div>
+
+     <!-- END SECOND FEATURED OFFER -->
+     
+     </td>
+    </tr>
+
+ 
+   </table>
+  </td>
+
+  <!-- END LEFT CELL -- FEATURED OFFERS -->
+ 
+ 
+ 
+  <!-- BEGIN RIGHT CELL -- UTILITY LIBRARY -->
+  <td class="mrktcell2">
+  <div>
+    <table width="100%" cellspacing="0" cellpadding="7" border="0">
+      <tr>
+        <td class="mrkt_utility_header">NoteWhen 3: Clear the Clutter. Version 3 </td>
+      </tr>
+
+      <tr>
+        <td class="mrktstyle4"><!-- BEGIN HYPERLINK; set up so it only has to be replaced in one place
+      <a style="display:block; text-decoration:none;" href="http://www.pcmag.com/article2/0,1895,2162882,00.asp"> --->
+	  <div class="et_sidebyside">
+            <div style=" padding:0 10 10 0!important;"><a href="http://www.pcmag.com/article2/0,2817,2320249,00.asp"><img src="http://common.ziffdavisinternet.com/util_get_image/16/0,1425,i=165718,00.jpg" width="120" height="70" border="0"></a><br>
+              <br><br><br>
+                <div class="mrktlist">
+                 <strong><a href="http://www.pcmag.com/article2/0,2817,2320249,00.asp" style="text-decoration:none;">NoteWhen 3: Clear the Clutter.</a></strong>  Version 3 adds many features that you, our subscribers, have been asking for. You can now:  <br><br>
+
+                  <div><strong>&bull;</strong> Send notes by e-mail, including Gmail or secure servers</div>
+                  <div><strong>&bull;</strong> Synchronize notes with notes from other machines</div>
+                  <div><strong>&bull;</strong> Lock notes to prevent further editing</div>
+                  <div><strong>&bull;</strong> Archive notes, taking them out of the list without deleting them
+</div>
+                  <div><strong>&bull;</strong> View scheduled events on a bigger calendar showing note titles</div>
+
+                  <div><strong>&bull;</strong> Make NoteWhen portable for flash drives</div>
+                  <div><strong>&bull;</strong> Export notes to HTML, RTF, Text, or CSV </div>
+                  <div><strong>&bull;</strong> Print a list of notes</div>
+                </span></div>
+            </div>
+          <br>
+
+          
+            <span class="mrkt_utility_attn"><a href="http://www.pcmag.com/data_process_yaga_module/0,1320,,00.asp?dr=1&content_id=3715&success_page=http%3A%2F%2Fwww%2Epcmag%2Ecom%2Farticle%5Fdetail%5F1024%2F0,2710,a%3D228688%26ap%3D1,00%2Easp&success_title=&failure_page=&discuss=" style="text-decoration:none;"> Download Now:&nbsp;NoteWhen3Setup.zip</a></span>
+	</div>
+            <!-- END HYPERLINK; set up so it only has to be replaced in one place at top of cell -->        </td>
+      </tr>
+    </table>
+  </div>
+  </td>
+
+  <!-- END RIGHT CELL -- UTILITY LIBRARY -->
+ </tr>
+
+</table></div><div class="adModule"><table width="100%" border="0" cellpadding="0" cellspacing="0" style="border: 1px solid black"> 
+<tr class="AdModule_BG"><td colspan="2" bgcolor="#D11B1B"><!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,1937275,00.asp" ><!-- start ziffimage //--><img width="429" height="32" border="0" src="http://common.ziffdavisinternet.com/util_get_image/16/0,1425,i=162962,00.gif" alt="PCMagCast"><!-- end ziffimage //--></a><!-- end ziffsection //--></td></tr>
+<tr><td width="" valign="top" bordercolor="#000000" bgcolor="#eeeeee" style="padding:4px;">
+<div style="; border-right: thin solid silver;">
+<div class="AdModule_Content">
+
+<em>PCMag.com's live, online events make you more productive at work, home, and on the go. Best of all, they're FREE!</em><br />
+<br />
+
+<strong>Featured Event:</strong><br />
+
+<br />
+<!-- start ziffarticle //--><a href="http://www.pcmag.com/article2/0,2817,2351089,00.asp" >Lower Your Costs and Improve Your Security with Network Consolidation </a><!-- end ziffarticle //--></strong><br>
+<em>View on Demand!<br>Sponsored by SonicWALL</em><br>
+With the ever-increasing pressure of budget reductions and the ongoing need to do more with less, IT is looking at the long term costs of owning solutions. Optimizing resources, driving efficiency and lowering total cost of ownership are critical strategies for the survival of any business. Security Consolidation does just this.  <a href="http://event.on24.com/eventRegistration/prereg/register.jsp?eventid=158048&sessionid=1&key=2CC97EF2E7B87B31A2F241630126B9CC&partnerref=pcmagadmodule"><strong>View now!</strong></a>
+<br /> 
+<br />
+<strong><!-- start ziffsection //--><a href="http://www.pcmag.com/category2/0,2806,1937275,00.asp" >See all PCMagCasts >></a><!-- end ziffsection //--></strong>
+
+<br />&nbsp;<br />
+
+</td>
+
+<td width="50%" valign="top" bgcolor="#eeeeee" style="padding:4px;">
+                                
+<div class="AdModule_Content">
+<b>Free Learning Center:</b>
+ <Br>
+ 
+<br>
+<strong><a href="http://event.on24.com/eventRegistration/prereg/register.jsp?eventid=128995&sessionid=1&key=FDB133BA9F8C193F1E126CD85C9C3493&partnerref=pcmagadmodule">Centralize! Deploying Your First Small Business Server</ziffarticle> <Br>
+ 
+<br>
+</a></strong><br>
+<em>Available on Demand - Sponsored by Dell SB360 </em><br>
+
+Now, more than ever, your business can reap big benefits from centralizing on a server-based network. And, with the recently introduction of Small Business Server 2008 operating system from Microsoft you can automate key network tasks more efficiently. <br><br>
+<a href="http://event.on24.com/eventRegistration/prereg/register.jsp?eventid=128995&sessionid=1&key=FDB133BA9F8C193F1E126CD85C9C3493&partnerref=pcmagadmodule"><strong>Register now</strong></a>.
+<br />
+&nbsp;<br />
+
+</td>
+</tr>
+</table><br></div><!-- Vignette V6 Tue Sep 15 10:05:04 2009 -->
+<div class="adModule"><div class="sponsors_container">
+<div class="sponsors"><img src="http://www.pcmag.com/images/pcm_sponsors_header.gif" class="left_ad_type_image">				
+<ul class="sponsor_links">
+
+
+<!--Microsoft Springboard--6/30/10--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;217979633;13401844;l?http://clk.atdmt.com/MRT/go/174135323/direct/01/">Explore the new & updated features of Microsoft Windows 7 today.
+
+</a></li>
+
+
+
+<!--Panasonic--9/30/09--McDonnell-->
+<li><A HREF="http://ad.doubleclick.net/clk;214467833;36306583;l?http://www.panasonic.com/business/toughbook/proserv-mobile-computer-financing.asp?cm_mmc=Sigma-_-TextLinks-Horizontal-_-PCMag-ROS-FinancingPage-_-Text-Financing">Panasonic Toughbook&reg; computers---0% financing until next year. panasonic.com/toughbook
+</a></li>
+
+
+<!--Intel ZT Systems--9/30/09--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;217594630;13401844;b?http://www.ztsystems.com/Default.aspx?tabid=1202">Get a ZT Affinity PC with Intel&reg; Core&trade;2 Quad for $599 with free Windows 7 upgrade
+</a></li>
+
+<!--TechSmith--9/30/09--Davenport-->
+<li><A HREF="http://ad.doubleclick.net/clk;217708981;13401844;h?http://www.techsmith.com/snagit.asp?utm_source=PCMag_SI91&utm_medium=TextPCMagROS_Text&utm_campaign=SI91">Capture anything on your PC Screen with Snagit.<a></li>
+
+
+<!--Trend Micro--9/30/09--Davenport-->
+<li><A HREF="http://ad.doubleclick.net/clk;216839328;13401844;g?http://altfarm.mediaplex.com/ad/ck/9966-81621-3601-13">Security Essentials by Trend Micro. Download Now. 30 Day Free Trial.</a></li>
+
+
+<!--Fujitsu Online--9/30/09--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;216763825;13401844;e?http://ad.doubleclick.net/clk;216456400;38552003;t?http://www.shopfujitsu.com/Consumer.php?WT.mc_id=Ad_Q2FY09_LaptopMagazine_Textlink-070109">Free 2 Year Warranty with coupon code BACKTOSCHOL
+</a></li>
+
+<!--Nuance--10/31/09--Loria-->
+<li><A HREF="http://ad.doubleclick.net/clk;217642479;13401844;g?http://ad.doubleclick.net/clk;214824772;13401844;b?http://www.nushield.com/dayvue">NuShield Protects Your LCD Display from Glare and Scratches
+
+</a></li>
+
+
+<!--Kaspersky--9/30/09--Loria-->
+<li><A HREF="http://ad.doubleclick.net/clk;217595913;13401844;g?http://s0b.bluestreak.com/ix.e?hy&s=7976954&a=7418481
+">Be first to try Kaspersky Internet Security 2010!
+</a></li>
+
+
+<!--Crucial--9/30/09--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;217632663;13401844;a?http://altfarm.mediaplex.com/ad/ck/3992-84384-3981-5?mpt=&#91;CACHEBUSTER&#93;"> Memory Upgrades from Crucial Affordable, compatible, and easy to install. Free shipping. 
+</a></li>
+
+
+<!--eSet--9/30/09--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;216971790;13401844;g?http://www.eset.com/download/free_trial_download.php?BAC-RPCU-sale&attr=PCMag_eset09_Textlink">Try ESET antivirus software free for 30 days!
+</a></li>
+
+<!--Mozy--9/30/09--Narta-->
+<li><A HREF="http://ad.doubleclick.net/clk;213751708;13401844;y?http://mozy.com?ref=e9c30af1&utm_source=pcmag&utm_medium=banner&utm_content=contextual&utm_campaign=pcmag">Mozy Online Backup - Unlimited Space - Only $4.95/Month!
+</a></li>
+
+
+<!--Iomega--11/15/09--Narta-->
+<li><A HREF="http://ad.doubleclick.net/clk;216763510;13401844;v?http://ad.doubleclick.net/clk;217191225;39347044;d?http://www.iomega.com/NAS">Store, manage and protect your files&#133;Iomega Kicks NAS!</a></li>
+
+
+<!--Projector People--11/15/09--Loria-->
+<li><A HREF="http://ad.doubleclick.net/clk;217117393;13401844;y?http://www.projectorpeople.com/projectors/nec-projectors.asp?sid=PCMG">NEC Projectors on sale. Low prices on all models.
+</a></li>
+
+
+<!--Microsoft--10/9/09--Clemetson-->
+<li><A HREF="http://ad.doubleclick.net/clk;217153165;13401844;v?http://clk.atdmt.com/MRT/go/166807396/direct/01/">Search Server Express: Free RTM Software. Search Doesn't Have to Be Complicated. 
+</a></li>
+
+
+<!--Citrix--9/30/09--Davenport-->
+<li><A HREF="http://ad.doubleclick.net/clk;216247298;13401844;f?http://altfarm.mediaplex.com/ad/ck/9710-80916-3601-0?mpt=&#91;CACHEBUSTER&#93;
+">Solve technical issues faster with GoToAssist Express. Try it FREE for 30 days.  
+</a></li>
+
+<!--Panda--9/30/09--Davenport-->
+<li><A HREF="http://ad.doubleclick.net/clk;215823730;13401844;v?http://www.pandasecurity.com/usa/homeusers/downloads/">
+Panda Security's Antivirus Pro 2010 offers maximum protection with minimum resource consumption.
+</a></li>
+
+
+
+
+
+
+
+
+
+
+</ul>
+</div>	
+</div></div>		<div class="clearl"></div>
+		</div></div><div class="clearl"></div></div>$cms.template("PCM Bottom")

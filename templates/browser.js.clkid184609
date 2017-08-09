@@ -1,0 +1,13 @@
+var browser_version = parseFloat(navigator.appVersion.replace(/^.*MSIE /, ''))
+var browser_type = navigator.appName;
+
+if (browser_type == "Microsoft Internet Explorer" && (browser_version <= 6)) {
+document.write("<link rel='stylesheet' href='http://$cms.envHost${cms.domain}/templates/clk_dbtemp_ie6.css' type='text/css'>");
+}
+
+else if (browser_type == "Microsoft Internet Explorer" && (browser_version >= 7)) {
+document.write("<link rel='stylesheet' href='http://$cms.envHost${cms.domain}/templates/clk_dbtemp_ie7.css' type='text/css'>");
+}
+
+else document.write("<link rel='stylesheet' href='http://$cms.envHost${cms.domain}/templates/clk_dbtemp_main.css' type='text/css'>");
+    

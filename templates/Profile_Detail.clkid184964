@@ -1,0 +1,253 @@
+#set($content = $cms.content)
+
+#if($cms.subscriptionUser.email != $content.title)
+	$cms.template("Error")
+#else
+	#set($glcInputItem = $content)
+	#set($glcTagName = "profileRep")
+	$cms.template("Get Linked Content")
+		
+	#foreach($item in $glcOutputArray)
+		#set($salesRep = $item)
+	#end
+
+	#set($catSetIDArray = $util.newArrayList)
+	#set($catIDArray = $util.newArrayList)
+
+	#foreach($catObj in $content.getCategorization().getCategories(7062))
+		#if($catObj.name != "Uncategorized")
+			#set($foo = $catSetIDArray.add(7062))
+			#set($foo = $catIDArray.add($catObj.id))
+		
+			#if(!$profileRegion)
+				#set($profileRegion = $catObj.name)
+			#end
+		#end
+	#end
+
+	#foreach($catObj in $content.getCategorization().getCategories(7067))
+		#if($catObj.name != "Uncategorized")
+			#set($foo = $catSetIDArray.add(7067))
+			#set($foo = $catIDArray.add($catObj.id))
+		
+			#if(!$profilePersona)
+				#set($profilePersona = $catObj.name)
+			#end			
+		#end
+	#end
+
+	#set($sectionTitle = "")
+
+	$cms.template("Top")
+
+	<div id="newsarticle">
+		<div class="bodyCopy">
+			<h2>Resources Portfolio</h2>
+			
+			#if($req.param("uid") && $req.intParam("uid") > 0)
+				#set($gptItem = $cms.content($req.intParam("uid"), false))
+				$cms.template("Get Primary Target")
+				#if($gptTargetedItem)
+					#set($reqItem = $gptTargetedItem)
+					#if($reqItem.displayTitle && $reqItem.displayTitle != "")
+						#set($reqItemTitle = $reqItem.displayTitle)
+					#else
+						#set($reqItemTitle = $reqItem.title)
+					#end
+				#else
+					#set($reqItem = $cms.media($req.intParam("uid")))
+					#set($reqItemTitle = $reqItem.fileName)
+					#set($isMedia = true)
+				#end
+			#end
+			
+			#set($vowelArray = ["a", "e", "i", "o", "u"])
+			
+			#if($req.param("fv") == "y")
+				<p class="proPara">
+					$content.firstName, welcome to your Resources Portfolio, with content selected for you based on your interest in 
+					the $profileRegion region and your 
+					
+					##if($vowelArray.contains($string.charAt($profilePersona.toLowerCase(), 0))) an #else a #end 
+					
+					$profilePersona.toLowerCase() role in your organization.
+				</p>
+			#end
+
+			#if($reqItemTitle)
+				<a href="$reqItem.url" #if($isMedia) onclick="window.open(this.href,'resizable,scrollbars'); return false;" #end>
+					<img src="$cms.media("file_document_paper_green_g18359.png", "designimages").url" align="left" border="0"/>
+				</a>
+				
+				<p>
+					Requested: <a href="$reqItem.url" #if($isMedia) onclick="window.open(this.href,'resizable,scrollbars'); return false;" #end>$reqItemTitle</a>
+					
+					<br/><br/>
+					
+					URL: $reqItem.url
+					
+					<br/><br/>
+					
+					<span id="saveToFavorites" onclick="SMActions.addToFavorites($reqItem.id)" class="fakeLink">SAVE</span>
+				</p>
+				<br clear="all" />
+			#end
+			
+			#if($req.param("fv") == "y")
+				<p>
+					You have been emailed a password and a link to your profile (should you want to access it later).  Please check your email shortly.  If you do not see the email, please also check your junk mail or spam folder.
+				</p>
+			#end
+			
+
+			<br clear="all" />
+			
+		
+			#set($myLinks = $cms.newLinks())
+			$myLinks.addContentType("Blog Post")
+			$myLinks.setDestination("$topLevel.path/blogs")
+			$myLinks.setCategorization($cms.getCategorization($catSetIDArray, $catIDArray))
+			#set($myBlogs = $myLinks.links)
+		
+		
+			#set($myLinks = $cms.newLinks())
+			$myLinks.addContentType("Events")
+			$myLinks.setDestination("$topLevel.path/events")
+			$myLinks.setCategorization($cms.getCategorization($catSetIDArray, $catIDArray))
+			#set($myEvents = $myLinks.links)
+			
+			
+			#set($myLinks = $cms.newLinks())
+			$myLinks.addContentType("Products")
+			$myLinks.setDestination("$topLevel.path/products")
+			$myLinks.setCategorization($cms.getCategorization($catSetIDArray, $catIDArray))
+			#set($myProducts = $myLinks.links)
+		
+		
+			#set($myLinks = $cms.newLinks())
+			$myLinks.addContentType("Press Release")
+			$myLinks.setDestination("$topLevel.path/press-releases")
+			$myLinks.setCategorization($cms.getCategorization($catSetIDArray, $catIDArray))
+			#set($myPressReleases = $myLinks.links)
+		
+		
+			#set($myLinks = $cms.newLinks())
+			$myLinks.addContentType("White Paper")
+			$myLinks.setDestination("$topLevel.path/white-papers")
+			$myLinks.setCategorization($cms.getCategorization($catSetIDArray, $catIDArray))
+			#set($myWhitePapers = $myLinks.links)
+			
+			
+			#if($myBlogs.size() > 0)
+				#set($found = true)
+				<div>
+					<div class="infoHeaderWide">Blogs</div>
+					<div id="proBodBody" class="ratedBody">
+						<ul>
+							#foreach($item in $myBlogs)
+								#if($item.displayTitle && $item.displayTitle != "")
+									#set($itemTitle = $item.displayTitle)								
+								#else
+									#set($itemTitle = $item.title)
+								#end
+								
+								<li><a href="$item.url">$itemTitle</a></li>						
+							#end	
+						</ul>
+					</div>
+					<div class="proBodBottom"></div>
+				</div>
+			#end
+		
+			#if($myEvents.size() > 0)
+				#set($found = true)
+				<div id="proBodWrapper">
+					<div class="infoHeaderWide">Events</div>
+					<div id="proBodBody" class="ratedBody">
+						<ul>
+							#foreach($item in $myEvents)
+								#if($item.displayTitle && $item.displayTitle != "")
+									#set($itemTitle = $item.displayTitle)								
+								#else
+									#set($itemTitle = $item.title)
+								#end
+							
+								<li><a href="$item.url">$itemTitle</a></li>						
+							#end	
+						</ul>
+					</div>
+					<div class="proBodBottom"></div>
+				</div>
+			#end
+						
+			#if($myProducts.size() > 0)
+				#set($found = true)
+				<div id="proBodWrapper">
+					<div class="infoHeaderWide">Products</div>
+					<div id="proBodBody" class="ratedBody">
+						<ul>
+							#foreach($item in $myProducts)
+								#if($item.displayTitle && $item.displayTitle != "")
+									#set($itemTitle = $item.displayTitle)								
+								#else
+									#set($itemTitle = $item.title)
+								#end
+							
+								<li><a href="$item.url">$itemTitle</a></li>						
+							#end	
+						</ul>
+					</div>
+					<div class="proBodBottom"></div>
+				</div>
+			#end
+		
+			#if($myPressReleases.size() > 0)
+				#set($found = true)
+				<div id="proBodWrapper">
+					<div class="infoHeaderWide">Press Releases</div>
+					<div id="proBodBody" class="ratedBody">
+						<ul>
+							#foreach($item in $myPressReleases)
+								#if($item.displayTitle && $item.displayTitle != "")
+									#set($itemTitle = $item.displayTitle)								
+								#else
+									#set($itemTitle = $item.title)
+								#end
+							
+								<li><a href="$item.url">$itemTitle</a></li>					
+							#end	
+						</ul>
+					</div>
+					<div class="proBodBottom"></div>
+				</div>
+			#end
+		
+			#if($myWhitePapers.size() > 0)
+				#set($found = true)
+				<div id="proBodWrapper">
+					<div class="proHeader"><span class="proBodsteps">White Papers</span></div>
+					<div id="proBodBody" class="ratedBody">
+						<ul>
+							#foreach($item in $myWhitePapers)
+								#if($item.displayTitle && $item.displayTitle != "")
+									#set($itemTitle = $item.displayTitle)								
+								#else
+									#set($itemTitle = $item.title)
+								#end
+								
+								<li><a href="$item.url">$itemTitle</a></li>	
+							#end	
+						</ul>
+					</div>
+					<div class="proBodBottom"></div>
+				</div>
+			#end
+		
+			<p>
+			This personal portfolio page is being built for you <span class="imp">dynamically</span> by the Clickability Platform, leveraging <span class="imp"><a href="/en/products/Feature-Visitor-Registration-and-Personalization-45963002.html">visitor registration</a></span>, <span class="imp"><a href="/en/products/Demand-Generation-System-Integration-49142452.html">demand gen integration</a></span>, and <span class="imp"><a href="/en/products/Sales-Force-Automation-Integration-49143737.html">SFA integration</a></span>.  To learn more about how you could use the Clickability Platform to power your website and provide this experience for your prospects and customers, please contact your account manager $salesRep.firstName $salesRep.lastName.
+			</p>
+		</div>
+	</div>
+
+	$cms.template("Bottom")
+#end

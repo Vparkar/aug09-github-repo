@@ -1,0 +1,59 @@
+
+#if($grioInputItem)##
+	#if($grioInputItem.thumbnail && $grioInputItem.thumbnail.url != "")##
+		#set($grioInputImage = $grioInputItem.thumbnail)##
+	#elseif($grioInputItem.images && $grioInputItem.images.size() > 0)##
+		#set($grioInputImage = $grioInputItem.images.get(0))##
+	#else##
+		#set($grioInputImage = $grioInputItem.image)##
+	#end##
+#end##
+##
+#set($grio = $util.newObject)##
+#set($foo = $grio.add("mediaObject", $grioInputImage))##
+##
+#set($grioOutputString = "")##
+#set($grioOutputImage = false)##
+#set($grioOutputURL = "")##
+#set($grioOutputWidth = false)##
+#set($grioOutputHeight = false)##
+##
+#if($cms.media($grioInputImage.id))
+	#set($drpInputImage = $grioInputImage)##
+	#set($drpMaxWidth = $grioMaxWidth)##
+	#set($drpMaxHeight = $grioMaxHeight)##
+	##
+	#set($drpBypassRatio = $grioBypassRatio)
+	$cms.template("Determine Resize Properties")##
+	##
+	#if($resizeWidth)##
+		#set($grioOutputString = $util.resizeImageTag($grioInputImage, $drpMaxWidth, 0, $grioInputAttributes))##
+	#elseif($resizeHeight)##
+		#set($grioOutputString = $util.resizeImageTag($grioInputImage, 0, $drpMaxHeight, $grioInputAttributes))##
+	#else##
+		#set($grioOutputString = $util.tag($grioInputImage, $grioInputAttributes))##
+	#end##
+	##
+	#set($foo = $grio.add("height", $drpOutputHeight))##
+	#set($foo = $grio.add("width", $drpOutputWidth))##
+	#set($foo = $grio.add("imageTag", "$!grioOutputString"))##
+	#set($foo = $grio.add("imageObject", $grioInputImage))##
+	##
+	#if($grioOutputString.indexOf("<img") > -1)##
+		#set($grioOutputURL = $grioOutputString)##
+		#set($grioOutputURL = $grioOutputURL.replaceAll('<img src="', ''))##
+		#if($grioOutputURL.indexOf('"') > -1)##
+			#set($grioOutputURL = $grioOutputURL.substring(0, $grioOutputURL.indexOf('"')))##
+		#end##
+	#end##
+	#set($foo = $grio.add("url", $grioOutputURL))##
+#end
+##
+#set($grioInputImage = false)##
+#set($grioInputItem = false)##
+#set($grioInputAttributes = "")##
+#set($resizeWidth = false)
+#set($resizeHeight = false)
+#set($grioBypassRatio = false)
+#set($grioMaxWidth = false)
+#set($grioMaxHeight = false)

@@ -1,0 +1,16 @@
+#set($s = $cms.newSearch)##
+$s.addContentType("Press Release")##
+$s.addContentType("Blog Post")##
+##$s.addDateRange("liveDate",$util.add($util.now,"day",-30),$util.now)##
+$s.pageSize(500)##
+$s.page(1)##
+#foreach($r.id in $s.execute())##
+#set($fullItem = $cms.content($r.id,false))##
+#set($twitterAccounts = $util.newArrayList)##
+#foreach($id in $fullItem.twitterAccounts)##
+#set($foo = $twitterAccounts.add($id))##
+#end##
+#if(!$fullItem.sentToTwitter && $twitterAccounts.size() > 0)
+$r.id
+#end
+#end

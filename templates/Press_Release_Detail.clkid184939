@@ -1,0 +1,159 @@
+#set($content = $cms.content)
+
+#if(!$content || $content.typeName != "Press Release")
+	#foreach($item in $cms.filteredLinks("Press Release", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+#set($isEditable = true)
+$cms.template("Top")
+
+<div class="headline">$cms.edit($content, "title")</div>
+
+<div id="newsarticle">
+	$cms.template("Networking Tools")
+	
+	#if($content.subHeadline && $content.subHeadline != "")
+		<div class="calloutText">$cms.edit($content, "subHeadline")</div>
+	#end
+	
+	<div class="bodyCopy">
+			$cms.template("Display WMA Info")
+			#if($content.image && $content.image.url != "")
+				#set($contentImage = $content.image)
+			
+			#elseif($content.images.size() > 0)
+				#set($contentImage = $content.images.get(0))
+				#set($foundArray = true)
+			#end
+			
+			#set($grioInputImage = $contentImage)
+			#set($grioMaxWidth = 150)
+			$cms.template("Get Resized Image Object")
+			#if($grioOutputString && $grioOutputString != "")
+				<div class="contentRight" style="clear:right;">
+					<div class="infoWrapperRight">
+						<div class="infoUnder">
+							<div class="infoHeader">RELATED IMAGES</div>
+							<p>$grioOutputString</p>
+						</div>
+					</div>
+				</div>
+			#end
+			
+			#set($found = false)
+			#foreach($item in $content.images)
+				#if(!$foundArray || $velocityCount > 1)
+					#if(!$found)
+						#set($found = true)
+						<br/><div class="contentRight" style="clear:right;">
+							<div class="infoWrapperRight">
+								<div class="infoUnder">
+									<div class="infoHeader">MORE RELATED IMAGES</div>
+									<ul>
+					#end
+					
+					<li><a href="$item.url">
+						#if($item.caption && $item.caption != "")
+							$item.caption
+						#else
+							$item.filename
+						#end
+					</a></li>
+				#end
+			#end
+			
+			#if($found)
+							</ul>
+						</div>
+					</div>
+				</div>
+			#end
+
+
+
+			#set($found = false)
+			#foreach($item in $content.relatedDocuments)
+				#if(!$found)
+					#set($found = true)
+					<br/><div class="contentRight" style="clear:right;">
+						<div class="infoWrapperRight">
+							<div class="infoUnder">
+								<div class="infoHeader">RELATED DOCUMENTS</div>
+								<ul>
+				#end
+				
+				<li><a href="$item.url" target="_blank">
+					#if($item.caption && $item.caption != "")
+						$item.caption
+					#else
+						$item.filename
+					#end
+				</a></li>						
+			#end
+			
+			#if($found)
+							</ul>
+						</div>
+					</div>
+				</div>
+			#end
+
+		<br/>
+	
+		#set($glcInputItem = $content)
+		#set($glcTagName = "relatedItems")
+		$cms.template("Get Linked Content")
+		
+		#set($found = false)
+		#foreach($item in $glcOutputArray)
+			#if(!$found)
+				#set($found = true)
+				<div class="contentRight" style="clear:right;">
+					<div class="infoWrapperRight">
+						<div class="infoUnder">
+							<div class="infoHeader">RELATED ITEMS</div>
+							<ul>
+			#end
+			
+			<li>
+				#if($req.param("cmsedit") == "Y")
+					<span>$cms.edit($item, "title")</span>
+				#else
+					<a href="$item.url">$item.title</a> 
+				#end
+			</li>						
+		#end
+		
+		#if($found)
+						</ul>
+					</div>
+				</div>
+			</div>
+		#end
+			
+			$cms.translate($cms.edit($content, "body").replaceAll("&quot;", "\""))
+<br clear="all" />
+	#set($trends = $util.newArrayList)
+		#foreach($catObj in $content.getCategorization().getCategories(7834))
+			#if($catObj.name != "Uncategorized")
+				#set($foo = $trends.add($catObj))
+			#end
+		#end
+		
+		#if($trends.size() > 0)
+			<br/>
+			<span class="tag-label">Trends: </span>
+
+			#foreach($catObj in $trends)
+				<span class="tags">$catObj.name</span>
+			#end
+			<br/><br/>
+		#end
+	
+	</div>
+</div>
+
+$cms.template("Bottom")
+

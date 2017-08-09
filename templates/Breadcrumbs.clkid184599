@@ -1,0 +1,23 @@
+<div class="breadCrumb">
+	#set($tempPath = $topLevel.path)
+	#foreach($path in $pathArray)
+		#if($velocityCount == 1)
+			<a href="$topLevel.path">Home</a>
+		#else
+			#set($tempPath = "$tempPath$path")
+			&raquo; 
+		
+			#set($tempSection = $cms.websiteSection($tempPath))
+
+			#if($tempSection.displayName && $tempSection.displayName != "")
+				<a href="$tempPath">$tempSection.displayName</a>
+			#else
+				<a href="$tempPath">$tempSection.name</a>
+			#end
+		#end
+	#end
+
+	#if($content)
+		 &raquo;  $content.title
+	#end
+</div>

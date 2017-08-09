@@ -1,0 +1,143 @@
+* {
+padding : 0;
+margin : 0;
+}
+body {
+	font-size: 14px;
+	color: #333;
+	font-weight: normal;
+	line-height: 125%;
+	margin-top: 10px;
+	margin-right: 10px;
+	margin-left: 10px;
+	width: 512px;
+	
+}
+
+ul { list-style-position: inside; margin-left: 2px }
+ul li { list-style-type: square; margin-left: 15px;  }
+ul ul li { list-style: none; margin-left: 10px; list-style-type: lower-alpha; list-style-position: inside }
+
+input, textarea {
+border : 1px solid #aaa;
+}
+input:hover, textarea:hover {
+border : 1px solid #888;
+}
+img {
+border : 0;
+margin-right : 10px;
+}
+a {
+color : #36be00;
+text-decoration : none;
+background : #fff;
+}
+a:hover {
+text-decoration : underline;
+}
+blockquote {
+margin : 0 0 15px 30px;
+border-left : 3px solid #8adf88;
+padding : 0 0 0 8px;
+}
+input, textarea {
+border : 1px solid #aaa;
+}
+input:hover, textarea:hover {
+border : 1px solid #888;
+}
+input.text {
+color : #000000;
+border : 1px solid #e6e6e6;
+background : inherit;
+}
+textarea.text {
+font-size : 8pt;
+border : 1px solid #e6e6e6;
+}
+input.text:hover, textarea.text:hover {
+border : 1px solid #d6d6d6;
+}
+form {
+display : inline;
+margin : 0;
+padding : 0;
+}
+.date {
+color : #aaa;
+font-weight : bold;
+background : transparent;
+}
+.green {
+color : #36be00;
+}
+.bigl {
+font-size : 1.2em;
+}
+.bold {
+font-weight : bold;
+}
+
+body {
+padding : 0;
+margin : 15px auto;
+background : #fafafa;
+}
+
+body {
+background : #fafafa;
+}
+
+body p {
+margin-top : 10px;
+}
+body img {
+
+margin : 10px 10px 10px 0;
+}
+
+body .readm {
+color : #36be00;
+font-weight : bold;
+background : inherit;
+}
+
+body h2 {
+font : bold 1.6em "Tahoma", verdana, Arial;
+color : #585858;
+background : transparent;
+margin-bottom : 4px;
+border-bottom : 1px solid #e3eaef;
+}
+
+body #rightside {
+float : right;
+width : 220px;
+background : #f0f0f0;
+padding : 10px;
+margin : 0 0 10px 0;
+}
+body #rightside h2 {
+margin-bottom : 5px;
+}
+body #leftside {
+background : inherit;
+margin-right : 10px;
+width : 530px;
+}
+body #leftside .r {
+float : right;
+width : 250px;
+text-align : justify;
+margin-bottom : 15px;
+}
+body #leftside .le {
+width : 250px;
+text-align : justify;
+margin-bottom : 15px;
+}
+body #leftside .pad {
+padding : 15px 0 15px 0;
+text-align : justify;
+}

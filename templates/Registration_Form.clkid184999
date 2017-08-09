@@ -1,0 +1,346 @@
+#set($curUser = $cms.subscriptionUser)
+
+#if($req.param("uid") && $req.intParam("uid") > 0)
+	#set($qString = "uid=$req.param('uid')")
+
+	#set($gptItem = $cms.content($req.intParam("uid"), false))
+	$cms.template("Get Primary Target")
+	#if($gptTargetedItem)
+		#set($reqItem = $gptTargetedItem)
+		#set($reqItemTitle = $reqItem.title)
+
+	#else
+		#set($reqItem = $cms.media($req.intParam("uid")))
+		#set($reqItemTitle = $reqItem.fileName)
+		#set($isMedia = true)
+	#end
+#end
+
+#if($req.param("shortForm") == "y")
+	#set($showShortForm = true)
+	
+	#set($message = "Thank you for your interest in ${reqItemTitle}.  Please enter your email address below so we may send you the requested information.  You will also receive: a password to access other information; and a link to your personal Clickability evaluation portfolio.")
+
+
+#elseif($req.param("finishReg") == "y")
+	#set($finishReg = true)
+	#set($message = "Please take a moment to complete your information. We will create a personal resource portfolio for you. Your portfolio will grant you immediate access to all premium content, promote content in your area of interest, enable you to SAVE items as you browse our website and provide you direct access to the team that can serve you.")
+
+#elseif($curUser)
+	#set($finishReg = true)
+	#set($message = "Please take a moment to enter your information below. Clickability will create a personal evaluation portfolio for you.  Your portfolio will #if($reqItemTitle) grant you immediate access to ${reqItemTitle}, #end present content in your area of interest,  enable you to SAVE items as you browse our website and provide you direct access to a Clickability Account manager.")
+#end
+
+
+<script type="text/javascript">	
+    #if($req.param("uid") && $req.intParam("uid") > 0)
+		RegActions.uid = $req.param("uid");
+	#end
+
+	#if($showShortForm)
+		function goToReturnUrl(){
+			#if($reqItem)
+				#if($isMedia)
+					RegActions.displayMessage({
+						errorMessage: "",
+						disableAction: "none"
+					});
+					
+					window.open('$reqItem.url','resizable,scrollbars');
+					
+					document.getElementById("shortFormMessage").innerHTML = "Thank you for your interest. Here is the item for you:";
+					document.getElementById("mediaDownload").style.display = "block";
+					
+				#else
+					RegActions.displayMessage({
+						errorMessage: "Forwarding to requested item...click <a href='$reqItem.url?c=y&sf=y'>here</a> if not forwarded in 3 seconds.",
+						disableAction: "none"
+					});
+					
+					location.replace("$reqItem.url?c=y&sf=y");
+				#end
+			#else
+				RegActions.displayMessage({
+					errorMessage: "Forwarding to Profile Page...click <a href='" + Global.profileUrl + RegActions.contentID + ".html?fv=y&$!qString'>here</a> if not forwarded in 3 seconds.",
+					disableAction: "none"
+				});
+				
+				location.replace(Global.profileUrl + RegActions.contentID + ".html?fv=y&$!qString");
+			#end
+		}
+		
+		function validateShortRegForm(regForm){
+			try{
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Validating form.",
+					disableAction: "none"
+				});
+		
+				var errorMessages = [];
+    
+				if(regForm.elements["email"].value === "")
+	                errorMessages.push("You must enter your email.");
+	            else if(!ValidateFormFunctions.isValidEmail(regForm.elements["email"].value))
+	                errorMessages.push("Invalid Email Address.");
+
+				if(errorMessages.length > 0){
+	               	RegActions.displayMessage({
+						errorMessage: 'The following errors were encountered:<br/><ul><li>' + errorMessages.join('</li><li>') + '</li></ul>'
+					});
+					return false;
+				}
+			
+				RegActions.userPassword = ValidateFormFunctions.randomPassword(10);
+				regForm.password1.value = RegActions.userPassword;
+	
+				RegActions.ajaxRequest(Global.tapiUrl, {subAction:'availableUserEmail', e:regForm.email.value}, RegActions.hrAvailableUserEmailShortForm);
+				
+				return false;					
+			}catch(e){ 
+				RegActions.displayMessage({
+					errorMessage: e,
+					errorType: "System"
+				});
+			}
+		}
+	#else
+		function goToReturnUrl(){
+			RegActions.displayMessage({
+				errorMessage: "Forwarding to Profile Page...click <a href='" + Global.profileUrl + RegActions.contentID + ".html?fv=y&$!qString'>here</a> if not forwarded in 3 seconds.",
+				disableAction: "none"
+			});
+			
+			location.replace(Global.profileUrl + RegActions.contentID + ".html?fv=y&$!qString");
+		}
+		
+		function validateLongRegForm(regForm){
+	        try{
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Validating form.",
+					disableAction: "none"
+				});
+			
+				var errorMessages = [];
+        
+				if(regForm.elements["firstname"].value === "")
+	                errorMessages.push("You must enter your first name.");
+        
+				if(regForm.elements["lastname"].value === "")
+	                errorMessages.push("You must enter your last name.");
+
+				if(regForm.elements["company"].value === "")
+	                errorMessages.push("You must enter your company name.");
+	
+				if(regForm.elements["phone"].value === "")
+	                errorMessages.push("You must enter your phone number.");
+				else if(!ValidateFormFunctions.isValidPhone(regForm.elements["phone"].value))
+					errorMessages.push("Invalid Phone Number");
+
+				#if($finishReg)
+					if(regForm.elements["email"].value === "")
+	                	errorMessages.push("You must enter your email.");
+	            	else if(!ValidateFormFunctions.isValidEmail(regForm.elements["email"].value))
+	                	errorMessages.push("Invalid Email Address.");
+				#end
+				
+				if(regForm.elements["category.7067"].value === "" || regForm.elements["category.7067"].value === undefined)
+	                errorMessages.push("You must choose your persona.");
+	
+				if(regForm.elements["category.7062"].value === "" || regForm.elements["category.7062"].value === undefined)
+	                errorMessages.push("You must choose your region.");
+	
+				if(errorMessages.length > 0){
+	               		RegActions.displayMessage({
+						errorMessage: 'The following errors were encountered:<br/><ul><li>' + errorMessages.join('</li><li>') + '</li></ul>'
+					});
+					return false;
+				}
+				
+				#if($finishReg)
+					RegActions.hrAvailableUserEmail({});
+				#else
+					RegActions.userPassword = ValidateFormFunctions.randomPassword(10);
+					regForm.password1.value = RegActions.userPassword;
+					
+					RegActions.ajaxRequest(Global.tapiUrl, {subAction:'availableUserEmail', e:regForm.email.value}, RegActions.hrAvailableUserEmail);
+				#end
+				
+				return false;					
+			}catch(e){ 
+				RegActions.displayMessage({
+					errorMessage: e,
+					errorType: "System"
+				});
+			}
+		}
+	#end
+</script>
+
+#if($req.param("shortForm") == "y")
+	<h1 id="shortFormMessage"></h1>
+#end
+
+<div id="newsarticle">
+	<div class="bodyCopy">
+		<span style="color:red; font-weight:bold; display:none;" id="systemMessage"></span>
+		
+		#if($reqItem && $isMedia)
+			<div id="mediaDownload" style="display:none;">
+				<a href="$reqItem.url" #if($isMedia) onclick="window.open(this.href,'resizable,scrollbars'); return false;" #end>
+					<img src="$cms.media("file_document_paper_green_g18359.png", "designimages").url" align="left" border="0"/>
+				</a>
+
+				<p>
+					Requested: <a href="$reqItem.url" #if($isMedia) onclick="window.open(this.href,'resizable,scrollbars'); return false;" #end>$reqItemTitle</a>
+
+					<br/><br/>
+
+					URL: $reqItem.url
+
+					<br/><br/>
+
+					<span id="saveToFavorites" onclick="SMActions.addToFavorites($reqItem.id)" class="fakeLink loggedin">SAVE</span>
+				</p>
+				<br clear="all" />
+			</div>
+		#end
+    	
+		<div id="comments" class="item" style="clear:both;">
+	    	#if($showShortForm)
+				<form method="post" action="/s" class="form1" name="frmRegister" onsubmit="return validateShortRegForm(this)">
+					<input type="hidden" value="" name="password1" class="regTextField">
+					<input type="hidden" name="permanent" value="Y" />
+					
+					<label class="regLabel"><span style="color:#a1030c;">*</span>E-mail Address:</label>
+					<input type="text" value="$!email" name="email" class="regTextField">
+					
+					<br clear="all" /><br/>
+					<input type="submit" value="Register" class="commentsubmit"/>
+					
+					<p>Click <a href="/s?action=doReg">here</a> for the full registration form.</p>
+				</form>
+							
+			#else
+				#if($userLocation.isAvailable())
+					#set($city = $userLocation.getCity())
+					#set($country = $userLocation.getCountry())
+					#set($company= $userLocation.getOrganization())
+					#set($state = $userLocation.getRegion())
+					#set($phone = "${userLocation.getAreaCode()}-")
+				#end
+				
+				#if($curUser)
+					#set($firstname = $curUser.firstname)
+					#set($lastname = $curUser.lastname)
+					#set($company = $curUser.company)
+					#set($phone = $curUser.phone)
+					#set($email = $curUser.email)
+				#end
+				
+				#if($finishReg)
+					#set($action = "updateProfileAJAX")
+				#else
+					#set($action = "doReg")
+				#end
+				
+				<form method="post" action="/s" class="form1" name="frmRegister" onsubmit="return validateLongRegForm(this)">	
+					<P>Already a member? <a href="/s?action=doLogin&$!qString">Login.</a></p>
+
+					#if($message && $message != "")
+						<p>$message</p>
+					#end
+					
+					<input type="hidden" name="elqFormName" value="masterLeadForm">
+					<input type="hidden" name="elqCustomerGUID" value="">
+					<input type="hidden" name="elqCookieWrite" value="0">
+					<input type="hidden" name="elqSiteID" value="819">
+					<input type="hidden" name="oid" value="00D30000000094o" />
+					<input type="hidden" name="lead_source" value="Web Lead" /> 
+				
+					#if($reqItem.campaignID && $reqItem.campaignID != "")
+						<input type="hidden" name="campaign_id" value="$reqItem.campaignID">
+					#end
+				
+					#if($reqItem.whitePaper && $reqItem.whitePaper != "")
+						<input type="hidden" name="whitepaper" value="$reqItem.title" >
+					#end
+								
+					<input type="hidden" name="frmAction" value="$action" />
+					<input type="hidden" name="permanent" value="Y" />
+		        
+		
+					<input type="hidden" name="linkedcontent.profileRep.appendonly" value="true"/>
+					<input type="hidden" name="linkedcontent.templatetag" value="profileRep"/>
+					<input type="hidden" name="linkedcontent.profileRep.tocontentids" value=""/>
+					
+					#if(!$finishReg)
+						<input type="hidden" value="" name="password1">
+					#end
+					
+					<label class="regLabel"><strong><span style="color:#a1030c;">*</span> indicates a required field</i></strong></label>
+				 
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>First Name:</label>
+					<input type="text" value="$!firstname" name="firstname" class="regTextField">
+				
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>Last Name:</label>
+					<input type="text" value="$!lastname" name="lastname" class="regTextField">
+				
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>Company:</label>
+					<input type="text" value="$!company" name="company" class="regTextField">
+				
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>Phone:</label>
+					<input type="text" value="$!phone" name="phone" class="regTextField">
+				
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>E-mail Address:</label>
+					#if($finishReg)
+						<input type="hidden" value="$!email" name="email"><div class="regTextField">$!email</div>
+					#else
+						<input type="text" value="$!email" name="email" class="regTextField">
+					#end
+					
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>Persona</label>
+					<select name="category.7067" class="regSelect">
+						<option value="">Please Select</option>
+						#foreach($catObj in $cms.getCategorySet(7067).getCategories())
+							#if($catObj.name != "Uncategorized")
+								<option value="$catObj.id">$catObj.name</option>
+							#end
+						#end
+					</select>
+					
+					<div class="regClear"></div>
+					<label class="regLabel"><span style="color:#a1030c;">*</span>Region:</label>
+					<select name="category.7062" class="regSelect">
+						<option value="">Please Select</option>
+						#foreach($catObj in $cms.getCategorySet(7062).getCategories())
+							#if($catObj.name != "Uncategorized")
+								<option value="$catObj.id">$catObj.name</option>
+							#end
+						#end
+					</select>
+					
+					<div class="regClear"></div>
+					<label class="regLabel">City:</label>
+					<input type="text" value="$!city" name="citye" class="regTextField">
+					
+					<div class="regClear"></div>
+					<label class="regLabel">State:</label>
+					<input type="text" value="$!state" name="region" class="regTextField">
+					
+					<div class="regClear"></div>
+					<label class="regLabel">Country:</label>
+					<input type="text" value="$!country" name="country" class="regTextField">
+
+					<br clear="all" /><br/>
+					<input type="submit" value="Register" class="commentsubmit"/>
+				</form>
+			#end
+		</div>
+	</div>
+</div>

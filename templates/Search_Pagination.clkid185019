@@ -1,0 +1,39 @@
+	#if($gsraEstimatedPages > 1)
+
+			#if($gsraPage > 1)
+				#set($prevButton = true)
+				#set($prevPageNum = $gsraPage - 1)
+			#end
+			
+			#if($gsraPage < $gsraEstimatedPages)
+				#set($nextButton = true)
+				#set($nextPageNum = $gsraPage + 1)
+			#end
+
+			#if($gsraEstimatedPages > 10)
+				#set($endPage = 10)
+			#else
+				#set($endPage = $gsraEstimatedPages)
+			#end
+			
+			<ul class="pagination">
+				#set($bqInputParams = $gsraOutputParams)
+				#set($bqExcludeArray = ["page"])
+				$cms.template("Build Querystring")
+				#if($prevButton)
+					<li><a href="?page=$prevPageNum&$bqOutputString">Previous</a></li>
+				#end
+
+				#foreach($i in [1..$endPage])
+					#if($i == $gsraPage)
+						<li class="current_page">$i</li>
+					#else
+						<li><a href="?page=$i&$bqOutputString">$i</a></li>
+					#end
+				#end
+
+				#if($nextButton)
+					<li><a href="?page=$nextPageNum&$bqOutputString">Next</a></li>
+				#end
+			</ul>
+		#end

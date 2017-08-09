@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+$cms.template("Setup")##
+######################################################################################
+## Get Path
+######################################################################################
+##
+#if($req.param("path") && $req.param("path") != "")##
+	#set($thisSection = $cms.websiteSection($req.param("path")))##
+#end##
+#if(!$thisSection)##
+	#set($thisSection = $cms.websiteSection("/"))##
+#end##
+##
+######################################################################################
+## Set Object Variables
+######################################################################################
+##
+#set($rssObj = $util.newObject)##
+
+#if($thisSection.displayName && $thisSection.displayName != "")
+	#set($thisSectionName = $thisSection.displayName)
+#else
+	#set($thisSectionName = $thisSection.name)
+#end
+
+#set($foo = $rssObj.add("title", "$thisSectionName"))##
+#set($foo = $rssObj.add("link", "$!thisSection.url"))##
+#set($foo = $rssObj.add("description", "$!thisSection.rssDescription"))##
+##
+######################################################################################
+## Check Section
+######################################################################################
+##
+
+	#set($mySearch = $cms.newSearch)##
+	$mySearch.pageSize(10)##
+	$mySearch.page(1)##
+	$mySearch.setSortBy("-contentLiveDate")##
+	$mySearch.addWSS($thisSection.path)
+	#set($articles = $util.newArrayList)##
+	#foreach($item in $mySearch.execute)##
+		#set($gptItem = $item)##
+		$cms.template("Get Primary Target")##
+		#if($gptTargetedItem)##
+			#set($foo = $articles.add($gptTargetedItem))##
+		#end##
+	#end
+	#set($foo = $rssObj.add("items", $articles))##
+
+
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+	<channel>
+		<title><![CDATA[$!rssObj.title]]></title>
+		<link><![CDATA[$!rssObj.link]]></link>
+		<description><![CDATA[$!rssObj.description]]></description>
+		<language>en-us</language>
+		#foreach($item in $rssObj.items)##
+			<item>
+				<title><![CDATA[$!item.title]]></title>
+				<link><![CDATA[$!item.url]]></link>
+				<description>
+					<![CDATA[$!item.summary]]>
+				</description>
+				<content:encoded>
+				<![CDATA[
+				$!item.body
+				]]>
+				</content:encoded>
+			</item>
+		#end##
+	</channel>
+</rss>

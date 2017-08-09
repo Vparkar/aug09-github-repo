@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+##set up request paramaters
+#set($param = $req.param('type'))##
+<rss xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:taxo="http://purl.org/rss/1.0/modules/taxonomy/" version="2.0">
+    <channel>
+        #if($param != "")##     
+            ## SET UP SEARCH
+            #set($feedSearch = $cms.newSearch)##
+            #if($param == "press-release")##
+                #set($title = "Press releases")##
+                #set($desc = "Ciena News and Press Releases")##
+                $feedSearch.addContentType("Press Release")##
+                $feedSearch.setSortBy("-startDate")##
+                $feedSearch.pageSize(5)##
+                #set($feedResults = $feedSearch.execute)##
+            #elseif($param == "products")##
+                #set($title = "Products")##
+                #set($desc = "Products")##
+                $feedSearch.addContentType("Products")##
+                $feedSearch.pageSize(1000)##
+                #set($feedResults = $feedSearch.execute)##
+            #elseif($param == "blog")##
+                #set($title = "Blog")##
+                #set($desc = "Ciena Blog Entries")##
+                $feedSearch.addContentType("Blog")##
+                $feedSearch.setSortBy("-startDate")##
+                $feedSearch.pageSize(10)##
+                #set($feedResults = $feedSearch.execute)##
+            #elseif($param == "byline-article")##
+                #set($title = "Byline Articles")##
+                #set($desc = "Ciena Byline Articles")##
+                $feedSearch.addContentType("Link")##
+                $feedSearch.addWSS("/corporate/news-events/byline-articles")##
+                $feedSearch.setSortBy("-startDate")##
+                $feedSearch.pageSize(75)##
+                #set($feedResults = $feedSearch.execute)##
+            #elseif($param == "partners")##
+                #set($title = "Blog Posts tagged Partners")##
+                #set($desc = "Blog Posts with Partners tag")##
+                $feedSearch.addContentType("Blog")##
+                $feedSearch.addKeywords("enterprise bizconnect partners")##
+                $feedSearch.setSearchFields("metadata")##
+                $feedSearch.pageSize(10)##
+                $feedSearch.setSortBy("-startDate")##
+                #set($feedResults = $feedSearch.execute)##
+            #elseif($param == "event")##
+                #set($title = "Events")##
+                #set($desc = "Ciena Events")##
+                $feedSearch.addContentType("Products")##
+                ##
+                $feedSearch.setSortBy("startDate")##
+                $feedSearch.pageSize(1000)##
+                #set($feedResults = $feedSearch.execute)##
+                ##
+                $feedSearch.setSortBy("-modifiedDate")##
+                #set($dateResults = $feedSearch.execute)##
+                ##
+            #end##
+            <title>Ciena: $title</title>
+            #if($req.fullURI == "/templates/RSS_Feeds?type=blog")##
+            <link>http://${cms.envHost}www.ciena.com/Ciena_Insights_Blog.rss</link>
+            #elseif($req.fullURI == "/templates/RSS_Feeds?type=press-release")##
+            <link>http://${cms.envHost}www.ciena.com/ciena-press-releases.rss</link>
+            #else##
+            <link>http://${cms.envHost}www.ciena.com/templates/RSS_Feeds?type=$param</link>
+            #end##
+            <description>$desc</description>
+            <language>en-us</language>
+            <copyright>Copyright $util.currentYear, Ciena Corporation</copyright>
+            #foreach($dateSearch in $dateResults)##
+                #if($velocityCount <= 1)
+                    <pubDate>$dateSearch.modifiedDate</pubDate>
+                #end##
+            #end##
+            <dc:creator>Ciena Corporation</dc:creator>
+            <dc:language>en-us</dc:language>
+            <dc:rights>Copyright $util.date("yyyy"), Ciena Corporation</dc:rights>
+            #if($param =="event")##
+                ## EVENTS RSS FEED
+                #foreach($feedResult in $feedResults)##
+                    #set($content = $cms.getContent($feedResult.id))##
+                    ## ONLY DISPLAY IF START DATE IS AFTER TODAY
+                    #if($util.isAfter($content.startDate, $util.yesterday))##
+                        <item>
+                            ## CHECK IF A COORDINATE HAS BEEN SET IN CONTENT TYPE
+                            #foreach($coordinate in $content.coordinates)##
+                                #set($stop = $coordinate.latitude)##
+                            #end##
+                            ##
+                            ## CHECK FOR INNOVATION LAB STOP
+                            #if($stop && $stop != "")##
+                                <title>Innovation Lab Stop: $util.encode.html($feedResult.title)</title>
+                            #else##
+                                <title>$util.encode.html($feedResult.title)</title>
+                            #end##
+                            ##
+                            #if($content.eventLink != "")##
+                                <link>$content.eventLink</link>
+                            #else##
+                                <link>http://www.ciena.com/corporate/news-events/calendar/</link>
+                            #end##
+                            <description></description>
+                            <guid isPermaLink="false">Event: $util.encode.html($feedResult.title)</guid>
+                            <dc:creator>$feedResult.author</dc:creator>
+                            <dc:date>$content.startDate</dc:date>
+                            <location>$content.location</location>
+                            <lastBuildDate>$content.modifiedDate</lastBuildDate>
+                        </item>
+                    #end##
+                    #set($stop = "")
+                #end##
+            #elseif($param == "products")##
+                ## PRODUCTS RSS FEED
+                #foreach($feedResult in $feedResults)##
+                    #set($content = $cms.getContent($feedResult.id))##
+                    <item>
+                        #if($content.displayName != "")##
+                            <title>$content.displayName</title>
+                        #else##
+                            <title>$content.title</title>
+                        #end##
+                        #if($content.relatedResourcesUrl != "")##
+                            <link>http://${cms.envHost}${cms.domain}$content.relatedResourcesUrl</link>
+                        #else##
+                            <link>http://${cms.envHost}${cms.domain}$feedResult.path</link>
+                        #end##
+                        <abstract>$content.summary</abstract>
+                        <body><![CDATA[$content.body]]></body>
+                        #if($content.relatedProductItemIDs.size() > 0)##
+                            #foreach($relatedID in $content.relatedProductItemIDs)##
+                            #set($relatedItem = $cms.getContent($relatedID))##
+                            <relatedProduct>$relatedItem.title</relatedProduct>
+                            #end##
+                        #end##
+                        <creator>$feedResult.author</creator>
+                        <modifiedDate>$cms.websiteSection.modifiedDate</modifiedDate>
+                    </item>
+                #end##
+            #elseif($param == "blog")##
+                ## BLOG RSS FEED
+                #foreach($feedResult in $feedResults)##
+                    #set($content = $cms.getContent($feedResult.id))##
+                    <item>
+                        #if($content.displayName != "")##
+                            <title>$util.encode.html($content.displayName)</title>
+                        #else##
+                            <title>$util.encode.html($content.title)</title>
+                        #end##
+                        <link>$feedResult.url</link>
+                        <pubDate>$content.startDate</pubDate>
+                        <description>$util.encode.html($content.body)</description>
+                        <author>$feedResult.author</author>
+                        <lastBuildDate>$cms.websiteSection.modifiedDate</lastBuildDate>
+                    </item>
+                #end##
+            #elseif($param == "partners")##
+                ## BLOG RSS FEED, BUT ONLY WITH PARTNERS/BIZCONNECT TAG
+                #foreach($feedResult in $feedResults)##
+                    #set($content = $cms.getContent($feedResult.id))##
+
+                    <item>
+                        #if($content.displayName != "")##
+                            <title>$util.encode.html($content.displayName)</title>
+                        #else##
+                            <title>$util.encode.html($content.title)</title>
+                        #end##
+                        <link>$feedResult.url</link>
+                        <pubDate>$content.startDate</pubDate>
+                        <description>![CDATA[$util.encode.html($content.body)]]</description>
+                        <author>$feedResult.author</author>
+                        <lastBuildDate>$cms.websiteSection.modifiedDate</lastBuildDate>
+                    </item>
+                #end##
+            #elseif($param == "press-release")##
+                ## PRESS RELEASES RSS FEED
+                #foreach($feedResult in $feedResults)##
+                    #set($content = $cms.getContent($feedResult.id))##
+                    #*
+                    <item>
+                        #if($content.displayName != "")##
+                            <title>$util.encode.html($content.displayName)</title>
+                        #else##
+                            <title>$util.encode.html($content.title)</title>
+                        #end##
+                        <link>$feedResult.url</link>
+                        
+                        #if($content.location != "")##
+                            <location>$util.encode.html($content.location)</location>
+                        #else##
+                            <location>Linthicum, MD</location>
+                        #end##
+                        <pubDate>$content.startDate</pubDate>
+                        <description><![CDATA[$content.body]]></description>
+                        <author>$content.author</author>
+                    </item>
+                    *#
+                    <item>
+                        #if($content.displayName != "")##
+                            <title>$util.encode.html($content.displayName)</title>
+                        #else##
+                            <title>$util.encode.html($content.title)</title>
+                        #end##
+                        <link>$feedResult.url?src=rss</link>
+                        <description></description>
+                        <pubDate>$util.date("E, dd MMM yyyy HH:mm:ss z", $content.startDate)</pubDate>
+                        #set($contentIDstring = "$content.id")##
+                        <guid isPermaLink="false">$util.MD5AsHex("${content.id}${content.title}")</guid>
+                        <dc:creator>Ciena Corporation</dc:creator>
+                        <dc:date>$util.date("yyyy-MM-dd", $content.startDate)T13:00:00Z</dc:date>
+                    </item>
+                    
+                #end##
+                #elseif($param == "byline-article")##
+                    ## BYLINE ARTICLE RSS FEED
+                    #foreach($feedResult in $feedResults)##
+                        #set($content = $cms.getContent($feedResult.id))##
+                        <item>
+                            #if($content.linkText != "")##
+                            <title>$util.encode.html($content.linkText)</title>
+                            #else##
+                            <title>$util.encode.html($content.title)</title>
+                            #end##
+                            <link>$util.encode.html($content.linkURL)</link>
+                            #if($content.subhead != "")##
+                            <byline>$util.encode.html($content.subhead)</byline>
+                            #end##
+                            <pubDate>$content.startDate</pubDate>
+                            <publication>$util.encode.html($content.publication)</publication>
+                            <author>$content.author</author>
+                            <lastBuildDate>$cms.websiteSection.modifiedDate</lastBuildDate>
+                        </item>
+                    #end##
+                #end##
+            #end##
+    </channel>
+</rss>

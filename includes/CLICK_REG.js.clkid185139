@@ -1,0 +1,838 @@
+var Global = {
+	"profileUrl" : "http://" + document.domain + "/en/profiles/",
+	"defaultRegisterFormName" : "frmRegister",
+	"defaultSystemMessageObjId" : "systemMessage",
+	"tapiUrl" : "http://" + document.domain + "/templates/tapi",
+
+	"profileContentTypeId" : "20627",
+	"profileSectionId" : "514382",
+
+	"defaultCorpSalesRepId" : "49128357",
+	"defaultMediaSalesRepId" : "52981497",
+
+	"paymentOptId" : "172",
+
+	"categoryPersona" : "category.7067",
+	"categoryRegion" : "category.7062",
+
+	"RegionIds" : {
+		"Asia": 294917,
+		"Europe": 826887,
+		"NorthAmerica": 294922,
+		"SouthAmerica": 826902,
+		"MiddleEast-Africa": 294927
+	}
+}
+
+var ValidateFormFunctions = {
+	trim: function(stringToTrim){ 
+		return stringToTrim.replace(/^\s+|\s+$/g,""); 
+	},
+
+
+	ltrim: function(stringToTrim){ 
+		return stringToTrim.replace(/^\s+/,""); 
+	},
+
+
+	rtrim: function(stringToTrim){
+		return stringToTrim.replace(/\s+$/,""); 
+	},
+
+
+	replaceSpacesWithOne: function(stringToTrim){ 
+		return ValidateFormFunctions.removeChars(stringToTrim.replace(/ \s+/g, " ")); 
+	},
+
+
+	removeChars: function(string){ 
+		return string.replace(/[^0-9,a-z,A-Z, ]/gi, ""); 
+	},
+
+ 	isValidPhone: function(string){ 
+		var reg = /^(\+\d)*\s*(\({0,1}\d{3}\){0,1}\s*)+(-{0,1}|\s{0,1}|\.{0,1})\d{3}(-{0,1}|\s{0,1}|\.{0,1})\d{4}$/; 
+		return reg.test(string)
+ 	},
+
+	isValidEmail: function(address){
+    	var reg = /^([a-zA-Z0-9_\-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([a-zA-Z0-9\-]+\.)+))([a-zA-Z]{2,3}|[0-9]{1,3})(\]?)$/;
+    	return reg.test(address); 
+	},
+
+	randomPassword: function(length){
+		chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+		pass = "";
+		for(x=0;x<length;x++){
+			i = Math.floor(Math.random() * 62);
+			pass += chars.charAt(i);
+		}
+		return pass;
+	}
+}
+
+var SMActions = {
+	hrIsItemSaved: function (response) {
+		if(response.success === true){
+			$j("#saveButton").html("SAVED").addClass("saveButtonInactive").removeClass("saveButtonActive").unbind("click");
+		}
+	},
+		
+	addToFavorites: function (options){
+		if(options.cid > 0){
+			if(CLICK_CS.cookiejar.fetch("curUserInfo")){
+				var postVars = {
+					"isAjax" : "Y",
+					"contentID" : CLICK_CS.subcookiejar.fetch('curUserInfo', 'cid'),
+					"ctid" : "20627",
+					"setReady" : "Y",
+					"editContent" : "Y",
+					"element.title" : CLICK_CS.subcookiejar.fetch('curUserInfo', 'title'),
+					"linkedcontent.savedItemsProfile.appendonly" : "true",
+					"linkedcontent.templatetag" : "savedItemsProfile",
+					"linkedcontent.savedItemsProfile.tocontentids" : options.cid
+				}
+				
+				$j.ajax({
+					type: "POST",
+					url: "/d",
+					data: $j.param(postVars),
+					dataType: "json",
+					success: SMActions.hrAddToSavedForm
+				});
+			}else{
+				alert("You must login to be able to save items.")
+			}
+		}
+	},
+		
+	hrAddToSavedForm: function (response){
+		if(response.error == "Error creating discussion"){
+			$j("#saveButton").html("SAVED").addClass("saveButtonInactive").removeClass("saveButtonActive").unbind("click");
+			alert("The item has been saved successfully.");
+		}else{
+			alert("There was an error saving the item.   Please try again.");
+		}
+	}
+}
+
+var FormCreator = {
+	/*
+	createFormFromObject: function(postVars){
+		$j("body").append("<form id='tempForm'></form>")
+	},
+	
+	createFormFromObject: function(options){
+		$j("body").append("<form id='" + options.formId + "'></form>")
+		$j.each(options.formFields, function(i, val){
+			$j("$options.id").append("<input type='hidden' name='" + i + "' value='" + val + "'");
+		});
+		
+		//var $j.tempForm = "<form id='" + options.formId + "'></form>";
+		//$j.each(options.formFields, function(i, val){
+			//$j.tempForm.append("<input type='hidden' name='" + i + "' value='" + val + "'");
+		//});
+		
+		//return $j.tempForm
+	},
+	*/
+	
+	createForm: function(name, method, action){
+		try{
+			var form = document.createElement("FORM");
+			document.body.appendChild(form);
+			form.name = name;
+			form.method = method;
+			form.action = action;
+			
+			return form;
+
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	createInputField: function (form, type, name, value){
+		try{
+			var field = document.createElement('input');
+			field.setAttribute('type', type);
+			field.setAttribute('name', name);
+			field.value = value;
+			form.appendChild(field);
+		
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}			
+	},
+	
+	toggleAllFormFields: function(form, disableAction){
+		var el = form.elements;
+		for(var i=0;i<el.length;i++){
+			el[i].setAttribute('disabled', disableAction)
+		}
+	}
+}
+
+var RegActions = {
+	displayMessage: function(options){
+		try{
+			location.hash="top";
+			var errorMessage = options.errorMessage;
+		
+			if(options.errorType != undefined && options.errorType != ""){
+				errorMessage = options.errorType + ": " + errorMessage;
+			}
+			
+			if(options.systemMessageObjId != undefined && document.getElementById(options.systemMessageObjId) != undefined){
+				var systemMessageObj = document.getElementById(options.systemMessageObjId)
+			}else if(Global.defaultSystemMessageObjId != undefined && document.getElementById(Global.defaultSystemMessageObjId) != undefined){
+				var systemMessageObj = document.getElementById(Global.defaultSystemMessageObjId)
+			}
+			
+			if(systemMessageObj != undefined){
+				systemMessageObj.innerHTML = errorMessage;
+				systemMessageObj.style.display = "";
+			}else{
+				alert(errorMessage);
+			}
+		
+			if(options.hideFormName != undefined && document[options.hideFormName] != undefined){
+				var form = document[options.hideFormName];
+			}else if(Global.defaultRegisterFormName != undefined && document[Global.defaultRegisterFormName] != undefined){
+				var form = document[Global.defaultRegisterFormName];
+			}
+			
+			if(form != undefined){
+				form.style.display = (options.disableAction == undefined ? "" : options.disableAction);
+			}
+			
+			return false;
+		}catch(e){ alert(e); }
+	},
+	
+	
+	ajaxRequest: function(url,data, returnFunction, actionType) {  
+		try{
+			var handlerFunction = function(originalRequest){
+				var response = "(" + ValidateFormFunctions.trim(originalRequest.responseText) + ")";
+				response = eval(response);
+				returnFunction(response);    
+       		}    
+			
+			
+			if(actionType == undefined)
+				actionType = "get";
+			
+			var aj = new Ajax.Request(  
+				url, {  
+					method: actionType,   
+					parameters: data,   
+					onComplete: handlerFunction  
+					}  
+			);
+			return true;
+			
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	initHrRun: function(){
+		RegActions.eloquaTries = 0;
+		
+		RegActions.hrCreateUserShortFormRun = false;
+		RegActions.hrSendShortFormEmailRun = false;
+		RegActions.hrLongFormEmailRun = false;
+		
+		RegActions.hrUpdateUserSubscriptionRun = false;
+		RegActions.hrVerifyIDInsertedRun = false;
+		RegActions.hrUpdateUserRun = false;
+		RegActions.hrCreateProfileRun = false;
+		RegActions.hrCreateUserRun = false;
+		RegActions.hrCreateEloquaUserRun = false;	
+	},
+
+
+	hrAvailableUserEmail: function(response) {
+		try{
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Verifying User Email Available.",
+				disableAction: "none"
+			});
+			
+			if(response.errorMessage != undefined){
+				RegActions.displayMessage({
+					errorMessage: response.errorMessage
+				});
+			}else{
+				RegActions.initHrRun();				
+				RegActions.createEloquaUser();
+				//RegActions.createUserForm();
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	hrAvailableUserEmailShortForm: function(response) {
+		try{
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Verifying User Email Available.",
+				disableAction: "none"
+			});
+			
+			if(response.errorMessage != undefined){
+				RegActions.displayMessage({
+					errorMessage: response.errorMessage
+				});
+			}else{
+				RegActions.initHrRun();				
+				RegActions.createUserShortForm();
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	createEloquaUser: function(){
+		try{
+			RegActions.eloquaTries += 1;
+			
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Contacting Server",
+				disableAction: "none"
+			});
+			
+			var registerForm = document[Global.defaultRegisterFormName];
+
+			var createEloquaUserForm = FormCreator.createForm("createEloquaUserForm", "POST", "");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "elqFormName", "masterLeadForm");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "elqCustomerGUID", "");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "elqCookieWrite", "0");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "elqSiteID", "819");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "oid", "00D30000000094o");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "lead_source", "Web Lead");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "url", "http://now.eloqua.com/e/f2.aspx");
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "retURL", Global.tapiUrl + "?subAction=success");
+			
+			if(registerForm.campaign_id != undefined){
+				FormCreator.createInputField(createEloquaUserForm, "hidden", "campaign_id", registerForm.campaign_id.value);
+			}
+			
+			if(registerForm.whitepaper != undefined){
+				FormCreator.createInputField(createEloquaUserForm, "hidden", "whitepaper", registerForm.whitepaper.value);
+			}
+						
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "first_name", registerForm.firstname.value);
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "last_name", registerForm.lastname.value);
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "company", registerForm.company.value);
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "phone", registerForm.phone.value);
+			FormCreator.createInputField(createEloquaUserForm, "hidden", "email", registerForm.email.value);
+			
+			// Commenting out since we don't need to actually send to Eloqua for demo.
+			//RegActions.ajaxRequest(Global.tapiUrl, "subAction=postForm&" + Form.serialize(createEloquaUserForm), RegActions.hrCreateEloquaUser);
+			
+			//Only needed since things are timing out
+			setTimeout(function(){
+				return RegActions.hrCreateEloquaUser({success:true});
+			}, 1000)
+			
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	hrCreateEloquaUser: function(response){
+		try{
+			if(RegActions.hrCreateEloquaUserRun === false){
+				RegActions.hrCreateEloquaUserRun = true;
+				
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Contacting Server",
+					disableAction: "none"
+				});
+			
+				if(response.errorMessage != undefined){
+					if(RegActions.eloquaTries < 3){
+						RegActions.hrCreateEloquaUserRun = false;
+						setTimeout(function(){
+							return RegActions.createEloquaUser;
+						}, 500)
+					}else{
+						RegActions.displayMessage({
+							errorMessage: response.errorMessage
+							});
+					}
+					
+					return false;
+				}else if(response == undefined || response == "" || response.success == undefined){
+					RegActions.displayMessage({
+						errorMessage: "An error has occurred submitting your data.  Please try again."
+					});
+					return false;
+			
+				}else{
+					RegActions.createUserForm();
+				}
+				return false;
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	createUserShortForm: function(){
+		try{
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Creating User",
+				disableAction: "none"
+			});
+			
+			var registerForm = document[Global.defaultRegisterFormName];
+		
+			var createUserForm = FormCreator.createForm("createUserForm", "POST", "");
+			FormCreator.createInputField(createUserForm, "hidden", "rurl", Global.tapiUrl + "?subAction=success");
+			FormCreator.createInputField(createUserForm, "hidden", "destid", Global.profileSectionId);
+			FormCreator.createInputField(createUserForm, "hidden", "email", registerForm.email.value);
+			FormCreator.createInputField(createUserForm, "hidden", "permanent", "Y");
+			FormCreator.createInputField(createUserForm, "hidden", "doLogin", "y");
+			
+			if(registerForm.password1 != undefined){
+				FormCreator.createInputField(createUserForm, "hidden", "password1", registerForm.password1.value);
+			}
+			
+			createUser(createUserForm, true, RegActions.hrCreateUserShortForm);
+
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	hrCreateUserShortForm: function(){
+		try{
+			if(RegActions.hrCreateUserShortFormRun === false){
+				RegActions.hrCreateUserShortFormRun = true;
+			
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Verifying User Created.",
+					disableAction: "none"
+				});
+				
+				if(User.error != undefined){							
+					throw User.error;
+				}else{
+					RegActions.ajaxRequest(Global.tapiUrl, {"subAction":"sendShortFormEmail", "p":RegActions.userPassword, "e":document[Global.defaultRegisterFormName].email.value, "uid":RegActions.uid}, RegActions.hrSendShortFormEmail)
+				}
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	hrSendShortFormEmail: function(response){
+		try{
+			if(RegActions.hrSendShortFormEmailRun === false){
+				RegActions.hrSendShortFormEmailRun = true;
+			
+				if(response.errorMessage != undefined){
+					RegActions.displayMessage({
+						errorMessage: response.errorMessage
+					});
+				}else{
+					goToReturnUrl();
+				}
+				
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	createUserForm: function(){
+		try{
+			var registerForm = document[Global.defaultRegisterFormName];
+			
+			if(registerForm.frmAction.value === "updateProfileAJAX"){
+				var errorMessage = "Processing Request...Updating User"
+			}else{
+				var errorMessage = "Processing Request...Creating User"
+			}	
+			
+			RegActions.displayMessage({
+				errorMessage: errorMessage,
+				disableAction: "none"
+			});
+		
+			
+		
+			var createUserForm = FormCreator.createForm("createUserForm", "POST", "");
+			FormCreator.createInputField(createUserForm, "hidden", "rurl", Global.tapiUrl + "?subAction=success");
+			FormCreator.createInputField(createUserForm, "hidden", "destid", Global.profileSectionId);
+			FormCreator.createInputField(createUserForm, "hidden", "firstname", registerForm.firstname.value);
+			FormCreator.createInputField(createUserForm, "hidden", "lastname", registerForm.lastname.value);
+			FormCreator.createInputField(createUserForm, "hidden", "company", registerForm.company.value);
+			FormCreator.createInputField(createUserForm, "hidden", "phone", registerForm.phone.value);
+			FormCreator.createInputField(createUserForm, "hidden", "email", registerForm.email.value);
+			FormCreator.createInputField(createUserForm, "hidden", "doLogin", "y");
+
+			if(registerForm.password1 != undefined)
+				FormCreator.createInputField(createUserForm, "hidden", "password1", registerForm.password1.value);
+				
+			if(registerForm.frmAction.value === "updateProfileAJAX"){
+				//updateRegistration(createUserForm, true, RegActions.hrCreateUser);
+				RegActions.ajaxRequest("/s", Form.serialize(createUserForm), RegActions.hrCreateUser);
+
+			}else{
+				createUser(createUserForm, true, RegActions.hrCreateUser);
+			}
+			
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	hrCreateUser: function(){
+		try{
+			if(RegActions.hrCreateUserRun === false){
+				RegActions.hrCreateUserRun = true;
+			
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Verifying User Created.",
+					disableAction: "none"
+				});
+			
+				if(User.error != undefined){							
+					throw User.error;
+				}else{
+					RegActions.createProfileForm();
+				}
+				
+				return false;
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	createProfileForm: function(){
+		try{
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Creating Profile",
+				disableAction: "none"
+			});
+			
+			var registerForm = document[Global.defaultRegisterFormName];
+		
+			var createProfileForm = FormCreator.createForm("createProfileForm", "POST", "");
+			FormCreator.createInputField(createProfileForm, "hidden", "rurl", Global.tapiUrl + "?subAction=success");
+			FormCreator.createInputField(createProfileForm, "hidden", "ctid", Global.profileContentTypeId);
+			FormCreator.createInputField(createProfileForm, "hidden", "setReady", "Y");
+			FormCreator.createInputField(createProfileForm, "hidden", "destid", Global.profileSectionId);
+			FormCreator.createInputField(createProfileForm, "hidden", "onFailure", Global.tapiUrl + "?subAction=fail");
+			FormCreator.createInputField(createProfileForm, "hidden", "element.title", registerForm.email.value);
+			FormCreator.createInputField(createProfileForm, "hidden", "element.firstName", registerForm.firstname.value);
+			FormCreator.createInputField(createProfileForm, "hidden", "element.lastName", registerForm.lastname.value);
+			FormCreator.createInputField(createProfileForm, "hidden", "element.company", registerForm.company.value);						
+			FormCreator.createInputField(createProfileForm, "hidden", "element.phone", registerForm.phone.value);
+			FormCreator.createInputField(createProfileForm, "hidden", "element.email", registerForm.email.value);
+			
+			FormCreator.createInputField(createProfileForm, "hidden", Global.categoryPersona, registerForm[Global.categoryPersona].value);
+			FormCreator.createInputField(createProfileForm, "hidden", Global.categoryRegion, registerForm[Global.categoryRegion].value);
+				
+			FormCreator.createInputField(createProfileForm, "hidden", "linkedcontent.profileRep.appendonly", registerForm["linkedcontent.profileRep.appendonly"].value);
+			FormCreator.createInputField(createProfileForm, "hidden", "linkedcontent.templatetag", registerForm["linkedcontent.templatetag"].value);
+			
+			if(registerForm[Global.categoryRegion].value == Global.RegionIds.NorthAmerica || registerForm[Global.categoryRegion].value == Global.RegionIds.SouthAmerica){
+				FormCreator.createInputField(createProfileForm, "hidden", "linkedcontent.profileRep.tocontentids", Global.defaultMediaSalesRepId);
+			}else{
+				FormCreator.createInputField(createProfileForm, "hidden", "linkedcontent.profileRep.tocontentids", Global.defaultCorpSalesRepId);
+			}
+			
+			setTimeout(function(){
+				return insertUserContent(createProfileForm, true, RegActions.hrCreateProfile);
+			}, 0)
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	hrCreateProfile: function(response){
+		try{
+			if(RegActions.hrCreateProfileRun === false){
+				RegActions.hrCreateProfileRun = true;
+				
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Verifying Profile Created.",
+					disableAction: "none"
+				});
+			
+				if(UserContent.messages !== null && UserContent.messages['Global'] !== null && UserContent.messages['Global'] !== undefined){							
+					var errormessage = "";
+					for(i=0; i<UserContent.messages['Global'].length; i++){
+						var messageDefault = UserContent.messages['Global'][i].messageDefault;
+					
+						if(messageDefault != undefined && messageDefault != ""){
+							errormessage +="<li>" + messageDefault + "</li>";
+						}
+					}
+					if(errormessage != ""){
+						throw "The following errors were encountered:<br/><ul>" + errormessage + "<\\ul>"
+					}
+					return false;
+				}else{
+					RegActions["contentID"] = response.contentID;
+					CLICK_CS.subcookiejar.bake('pid', {pid:RegActions["contentID"]}, 365);
+					
+					var registerForm = document[Global.defaultRegisterFormName];
+					
+					if(registerForm.frmAction.value === "updateProfileAJAX"){
+						goToReturnUrl();
+						//RegActions.updateUserSubscription();	
+					}else{
+						RegActions.sendLongFormEmail();
+					}
+				}
+			}
+			return true;
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+
+	
+	sendLongFormEmail: function(response){
+		try{
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Sending Verification Email.",
+				disableAction: "none"
+			});
+			
+			RegActions.ajaxRequest(Global.tapiUrl, {"subAction":"sendLongFormEmail", p:RegActions.userPassword, "e":document[Global.defaultRegisterFormName].email.value, uid:RegActions.uid, pid:RegActions.contentID}, RegActions.hrLongFormEmail)
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	hrLongFormEmail: function(response){
+		try{
+			if(RegActions.hrLongFormEmailRun === false){
+				RegActions.hrLongFormEmailRun = true;
+			
+				if(response.errorMessage != undefined){
+					RegActions.displayMessage({
+						errorMessage: response.errorMessage
+					});
+				}else{
+					goToReturnUrl();
+					//RegActions.updateUserSubscription();	
+				}
+				
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	updateUserSubscription: function(){
+		RegActions.displayMessage({
+			errorMessage: "Processing Request...Updating User Subscription.",
+			disableAction: "none"
+		});
+		
+		var updateUserSubscriptionForm = FormCreator.createForm("updateUserSubscriptionForm", "POST", "");
+		
+		FormCreator.createInputField(updateUserSubscriptionForm, "hidden", "action", "selectPayment");
+		FormCreator.createInputField(updateUserSubscriptionForm, "hidden", "paymentOpt", Global.paymentOptId);
+		FormCreator.createInputField(updateUserSubscriptionForm, "hidden", "rurl", Global.tapiUrl + "?subAction=success");		
+		
+		RegActions.displayMessage({
+			errorMessage: "Processing Request...AJAX Updating User Subscription.",
+			disableAction: "none"
+		});
+		
+		RegActions.ajaxRequest("/s", Form.serialize(updateUserSubscriptionForm), RegActions.hrFakeUpdateUserSubscription)
+		
+		//Only needed since things are timing out
+		//setTimeout(function(){
+			//return RegActions.hrUpdateUserSubscription;
+		//}, 3000)
+	},
+	
+	hrFakeUpdateUserSubscription: function(response) {
+		//do nothing
+	},
+	
+	hrUpdateUserSubscription: function(response) {
+		try{
+		
+			RegActions.displayMessage({
+				errorMessage: "Processing Request...Return Function User Subscription.",
+				disableAction: "none"
+			});
+			
+			if(RegActions.hrUpdateUserSubscriptionRun === false){
+				RegActions.hrUpdateUserSubscriptionRun = true;
+				
+				RegActions.displayMessage({
+					errorMessage: "Processing Request...Verifying User Subscription Updated.",
+					disableAction: "none"
+				});
+			
+				if(response.errorMessage != undefined){
+					RegActions.displayMessage({
+						errorMessage: response.errorMessage
+					});
+					return false;
+				}else{
+					RegActions.displayMessage({
+						errorMessage: "Complete.",
+						disableAction: "none"
+					});
+					goToReturnUrl();
+				}
+			
+				return true;
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	emailRep: function(options){
+		RegActions.hrEmailRepRun = false;
+		
+		RegActions.displayMessage({
+			hideFormName: "emailForm",
+			errorMessage: "Processing Request...Emailing Account Manager.",
+			disableAction: "none"
+		});
+		
+		RegActions.ajaxRequest(Global.tapiUrl, {"subAction":"sendemail", "pid":CLICK_CS.subcookiejar.fetch("curUserInfo", "cid"), "repId":options.repId, "ebody":options.ebody}, RegActions.hrEmailRep)
+		return false;
+	},
+	
+	hrEmailRep: function(response) {
+		try{
+			if(RegActions.hrEmailRepRun === false){
+				RegActions.hrEmailRepRun = true;
+				
+				if(response.errorMessage != undefined){
+					RegActions.displayMessage({
+						hideFormName: "emailForm",
+						errorMessage: response.errorMessage
+					});
+					return false;
+				}else{
+					RegActions.displayMessage({
+						hideFormName: "emailForm",
+						errorMessage: "Email has been sent successfully.",
+						disableAction: "none"
+					});
+				}
+			
+				return false;
+			}
+		}catch(e){ 
+			RegActions.displayMessage({
+				errorMessage: e,
+				errorType: "System"
+			});
+		}
+	},
+	
+	
+	
+	lockDownLinks : function(){
+		var cid = CLICK_CS.subcookiejar.fetch("curUserInfo", "cid")
+		if(cid !== null){
+			var url = "/en/profiles/" + cid + ".html?";
+		}else if(CLICK_CS.cookiejar.fetch("UID") && CLICK_CS.cookiejar.fetch("UID").length === 32){
+			var url = "/s?action=editReg&finishReg=y";
+		}else{
+			var url = "/s?action=doReg&shortForm=y"; // removed shortForm=y for now
+		}
+		
+		var links = document.getElementsByTagName("a");
+		for (var eleLink=0; eleLink < links.length; eleLink ++){
+			if(links[eleLink].name > 0){
+				links[eleLink].setAttribute("href",  url + "&uid=" + links[eleLink].name);
+			}
+		}
+	},
+	
+	
+	init : function () {
+		RegActions.lockDownLinks();
+	},
+	
+	addLoadEvent : function (func) {
+		if(typeof Prototype=='undefined') {
+			var oldonload = window.onload;
+			if (typeof window.onload != 'function') {
+			    window.onload = func;
+			}else {
+			    window.onload = function(){
+			        oldonload();
+			        func();
+			    };
+			};
+		}else{
+			Event.observe(window, 'load', func);
+		}
+	}
+}

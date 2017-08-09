@@ -1,0 +1,269 @@
+##set($content = $cms.content)
+##$cms.template("Top")
+
+$imware.customButtonCode
+#if($feedback)
+	#set($ratingScoreType = $feedback.ratingScoreType)
+	#set($typeSize = $ratingScoreType.maxRating)
+
+	#if($typeSize == 1)
+		#if($feedback.isRated())
+			#set($avg = $math.subtract($feedback.ratingData.upVotes, $feedback.ratingData.downVotes))
+		#else
+			#set($avg = "0")
+		#end
+		
+		<script>
+			var validRate = "true";
+
+			function submitUpDownRating(arrowRating){
+				if(validRate == "true"){
+					validRate = "false";
+			
+					document.ratingForm[arrowRating].value = "true";
+			
+					try{
+						insertComment(document.ratingForm, true, handleResponseUpDown)
+						return false;
+					}catch(e){
+						alert(e);
+					}
+				}
+				else{
+					alert("You can only vote once per visit.")
+				}
+				return false;
+			}
+	
+			function handleResponseUpDown(response){
+				if(document.ratingForm.upvote.value == "true"){
+					document.getElementById("average").innerHTML = $avg + 1
+				}else{
+					document.getElementById("average").innerHTML = $avg - 1
+				}				
+				
+				document.getElementById("averageText").style.display = "block";
+		
+				return false;
+			}
+		</script>
+		
+		<style>
+			#textNav{
+				height:35px;
+			}
+		</style>		
+	#else
+		<script>
+			var validRate = "true";
+
+			function submitNumRating(rating){
+				if(validRate == "true"){
+					validRate = "false";
+					document.forms['ratingForm'].rating.value = rating;
+					try{
+						insertComment(document.ratingForm, true, handleResponseNum)
+						return false;
+					}catch(e){
+						alert(e);
+					}
+				}
+				else{
+					alert("You can only vote once per visit.")
+				}
+				return false;
+			}
+
+			function handleResponseNum(response){
+				var avg = parseFloat(document.getElementById("average").innerHTML)
+				var count = parseInt(document.getElementById("count").innerHTML)
+				var newAvg = ((avg*count)+(parseInt(document.ratingForm.rating.value)))/(count+1)
+
+				document.getElementById("average").innerHTML = newAvg.toFixed(2);
+				document.getElementById("preset-stars").style.width = newAvg*20 + "px";
+
+				document.getElementById("count").innerHTML = (count + 1);
+				document.getElementById("averageText").style.display = "block";
+				return false;
+			}
+
+			function hidePreset(){
+				document.getElementById("preset-stars").style.visibility = "hidden";
+			}
+
+			function showPreset(){
+				document.getElementById("preset-stars").style.visibility = "visible";
+			}
+		</script>
+		
+		<style>
+			.star-rating{
+				list-style:none;
+				margin: 0px;
+				padding:0px;
+				width: $math.multiply($math.newInt($typeSize), 20)px;
+				height: 20px;
+				position: relative;
+				background: url(http://media.animalbites.com/designimages/star_rating.gif) top left repeat-x;		
+			}
+			.star-rating a.preset-stars{
+				left: 0px;
+				background: url(http://media.animalbites.com/designimages/star_rating.gif) left bottom;
+				z-index: 1;
+				#if($feedback.isRated())
+					#set($avg = $math.divide($math.round($math.multiply($feedback.averageRating,100)),100))
+					#set($width = "$math.newInt($math.multiply($avg, 20))px")
+				#else
+					#set($avg = "0")
+					#set($width = "0px")
+				#end
+			}
+		</style>
+	#end
+#end
+<!-- Test Statement -->
+<form id="ratingForm" name="ratingForm" method="post">
+<div id="textNav">
+	#if($feedback)
+		<div style="float:left">
+			
+				<input type="hidden" name="path" id="path" value="$req.fullURI">
+				<input type="hidden" name="enableRating" value="true"/>
+				<input type="hidden" name="disableCookieCheck" value="true"/>
+				<input type="hidden" name="field" value=""/>				
+				
+				#if($typeSize == 1)
+					<input type="text" style="display:none;" name="upvote" value="false" />
+					<input type="text" style="display:none;" name="downvote" value="false" />
+										
+					#set($grioInputImage = $cms.media("webdev-arrow-up-icon.jpg", "designimages"))
+					#set($grioMaxHeight = 30)
+					$cms.template("Get Resized Image Object")
+					<a href="#" onclick="return submitUpDownRating('upvote')">$grioOutputString</a>
+				
+					#set($grioInputImage = $cms.media("webdev-arrow-down-icon.jpg", "designimages"))
+					#set($grioMaxHeight = 30)
+					$cms.template("Get Resized Image Object")
+					<a href="#" onclick="return submitUpDownRating('downvote')">$grioOutputString</a>
+								
+				#else
+					<input type="hidden" name="rating" value=""/>
+					
+					<ul class='star-rating'>
+						#foreach($i in [1..$math.newInt($typeSize)])
+							<li onmouseover="hidePreset()" onmouseout="showPreset()"><a href='#' onclick='return submitNumRating("${i}");' title='Rate this $i stars out of $typeSize' class='num${i}-stars'></a></li>
+						#end
+					
+						<li><a href='#' id='preset-stars' class='preset-stars' style="width:$width"></a></li>
+					</ul>
+				#end
+			
+		</div>
+</form>	
+		#if($avg == "0")
+			#set($style = "none")
+		#else
+			#set($style = "block")
+		#end
+		
+		<div id="averageText" style="display:$style">			
+			#if($typeSize == 1)
+				Current Count: 
+				<div id="average" style="display:inline;">$avg</div>
+			#else
+				Average: 
+				<div id="average" style="display:inline;">$avg</div>
+			 	with
+				<div id="count" style="display:inline;">$feedback.ratingCount</div> votes
+			#end
+		</div>
+	#end
+	
+	<span class="loggedin">
+		<span id="saveButton" class="textNav saveButtonActive" onclick="SMActions.addToFavorites({cid:$content.id})">SAVE</span>
+		<span class="textNavDivider">|</span>
+	</span>
+	
+	<script>		
+		#if($cms.isContentPreview)
+			SMActions.disableSave(document.getElementById("saveToFavorites"));
+		#else
+			RegActions.ajaxRequest("http://$cms.envHost$cms.domain/templates/tapi", {subAction:'isItemSaved', pid:CLICK_CS.subcookiejar.fetch("curUserInfo", "cid"), cid:'$content.id', lcTag:'savedItemsProfile'}, SMActions.hrIsItemSaved)
+		#end		
+	</script>
+	
+	<a href="javascript: return ET()">EMAIL</a>
+	<span class="textNavDivider">|</span>
+	
+	<a href="javascript: return PT()">PRINT</a>
+	
+	#if($content.typeName == "Products")
+		<span class="textNavDivider">|</span>		
+		<a href="$topLevel.path/products/submit">SUBMIT</a>
+	#end
+		
+	#if($content.typeName == "Blog Post")
+		<span class="textNavDivider">|</span>	
+		<a href="#comments">COMMENTS</a>
+	#end
+
+	#*<div id="userLoggedIn" style="display:none;">
+		<span>
+			<a href="#" onclick="submit_post(); return false;"><img src="http://static.ak.fbcdn.net/images/fbconnect/login-buttons/connect_white_small_short.gif"/></a>Post To My Wall
+	</div>
+
+	<div id="userLoggedOut" style="display:none;">
+		<div class="white">
+			<fb:login-button size="small" background="white" length="short"></fb:login-button>
+			<span id="fbConnectText">Connect with Facebook</span></div>
+		</div>
+	</div>
+	
+	<script type="text/javascript">
+		function update_user_box() {
+			var user_loggedin_box = document.getElementById("userLoggedIn");
+			var user_loggedout_box = document.getElementById("userLoggedOut");
+
+			user_loggedout_box.style.display = "none";
+			user_loggedin_box.style.display = "inline";
+	
+			FB.XFBML.Host.parseDomTree();
+		}
+
+		function update_user_not() {
+			var user_loggedin_box = document.getElementById("userLoggedIn");
+			var user_loggedout_box = document.getElementById("userLoggedOut");
+
+			user_loggedout_box.style.display = "inline";
+			user_loggedin_box.style.display = "none";
+
+			FB.XFBML.Host.parseDomTree();
+		}
+
+		function submit_post() {
+			var template_var = {"bundleId": "262229145170",
+				"content.title": "$content.title",
+				"content.url": "$content.url",
+				"content.summary": "$!util.encode.html($content.summary)"
+		
+				#set($grioInputImage = $content.image)
+				#set($grioMaxWidth = 130)
+				$cms.template("Get Resized Image Object")
+				#if($grioOutputURL && $grioOutputURL != "")
+					,"images":[{"src":"$grioOutputURL", "href":"$content.url"}]
+				#end
+			};
+			
+			FB.Connect.showFeedDialog("262229145170", template_var);
+		}
+	</script>
+
+	<script type="text/javascript" src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php" mce_src="http://static.ak.connect.facebook.com/js/api_lib/v0.4/FeatureLoader.js.php"> </script>
+
+	<script type="text/javascript">
+		var api_key = "7b575aa19cebad988e02f323358b1c32";
+		var channel_path = "/templates/xd_receiver.htm";
+		FB.init(api_key, channel_path, {"ifUserConnected": update_user_box, "ifUserNotConnected": update_user_not});
+	</script>*#
+</div>
+

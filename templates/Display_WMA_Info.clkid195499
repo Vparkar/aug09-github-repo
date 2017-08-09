@@ -1,0 +1,116 @@
+### Add to Portfolio template tag: $wma.getAddContentToPortfolioUrl(Integer destId, Integer contentId) 
+
+#if($cms.content)
+	#set($wmaItem = $cms.content)
+	#set($destId = $cms.websiteSection.id)
+	#set($contentId = $wmaItem.id)
+	$codeDebug.log("destId: $destId, contentId: $contentId")
+	#if($wmaItem.typeName == "Products")
+		#set($wmaType = "viewProduct")
+	#elseif($wmaItem.typeName == "Press Release")
+		#set($wmaType = "viewPress")
+	#elseif($wmaItem.typeName == "Event")
+		#set($wmaType = "viewEvent")
+	#end
+	#foreach($action in $wma.getActionDefinitions())
+		#if($action.tag == $wmaType)
+			#set($wmaScore = $action.leadScoreAdjustment)
+		#end
+	#end
+	#######################
+	## Display WMA Info
+	#######################
+	<table border="1" cellpadding="5" style="background-color:DarkSeaGreen;">
+	<tr><td>
+	#set($increment = 0)
+	#set($intInc = 0)
+	#set($wmaInfo = $wma.getContentAttributes($wmaItem.id))
+	#if(!$wmaInfo.profileLevel)
+		#set($wmaLevel = "This content is not gated")
+	#else
+		#set($wmaLevel = $wmaInfo.profileLevel)
+	#end
+	<b>WMA INFO:</b> 
+	<br>Content Gated Level: $wmaLevel
+	<br>Content Lead Score:  $!wmaInfo.leadScoreContribution<br><hr>
+	######## DISPLAY CONTENT ITEM LEAD SCORE ###########
+	#if($wmaInfo.leadScoreContribution > 0)
+		#set($foo = $wma.adjustLeadScore($wmaInfo.leadScoreContribution,"content item ($wmaItem.id) adjustment"))
+		#set($increment = $math.add($increment, $wmaInfo.leadScoreContribution))
+	#end
+	#set($intArray = $util.newArrayList)
+	######## DISPLAY CONTENT ITEM INTERESTS ###########
+	#if($wmaInfo.interestDefinitions.size() > 0)
+		#foreach($interest in $wmaInfo.interestDefinitions) 
+			#if($velocityCount == 1)
+				Interests assigned to this content item:<br>
+			#end
+			#set($foo = $wma.adjustInterestScore($interest.tag, 1))
+			#set($foo = $intArray.add($interest))
+			$interest.name#if($wmaInfo.interestDefinitions.size() > 1 && $wmaInfo.interestDefinitions.size() != $velocityCount),#end
+		#end<hr>
+	#else
+		There are no interests assigned to this content item.<br><hr>
+	#end
+	######## DISPLAY CONTENT ITEM CAMPAIGNS ###########
+	#if($wmaInfo.getCampaignIds().size() > 0)
+		#foreach($id in $wmaInfo.getCampaignIds())
+			#if($velocityCount == 1)
+				Campaign(s) assigned to this content item:<br>
+			#end
+			$id<br>
+		#end<hr>
+	#else
+		No Campaigns are assigned to this content item.<br><hr>
+	#end
+	
+	#set($wmaInfo = "")
+	######## DISPLAY ACTIONS ###########
+	#set($foo = $wma.trackVisitorAction($wmaType, "$content.id: $wmaItem.typeName Action"))
+	#set($increment = $math.add($increment, $wmaScore))
+	
+	Visitor Lead Score (before loading this page): $wma.leadScore<br>
+	Visitor Page Views: $wma.pageViewCount<br><hr>
+	
+	$codeDebug.log("$wmaType Action: wma.trackVisitorAction($wmaType, '$content.id: View $wmaItem.typeName Action')")
+	
+	View $wmaItem.typeName Action increments Lead Score ($wmaScore).<br>
+	
+	#if($wma.pageViewCount == 10)
+		$codeDebug.log("View Ten Action: wma.trackVisitorAction('viewTen', '$content.id: View Ten Action')")
+		View Ten Action +10 for Lead Score: $math.add($wma.getLeadScore(), 10)<br>
+	#elseif($wma.pageViewCount == 50)
+		$codeDebug.log("View Fifty Action: wma.trackVisitorAction('viewFifty', '$content.id: View Fifty Action')")
+		View Fifty Action +50 for Lead Score: $math.add($wma.getLeadScore(), 50)<br>
+	#end	
+	<hr>
+	######## DISPLAY USER INTERESTS ###########
+	#foreach($interest in $wma.interestDefinitions)
+		#if($velocityCount == 1)
+		-- Visitor Interests (prior to visiting this page) --<br>
+		#end
+		#if($wma.getInterestScore($interest.tag))
+			#set($interestScore = $wma.getInterestScore($interest.tag))
+		#else
+			#set($interestScore = 0)
+		#end
+		#if($interestScore && $interestScore > 0)
+			$interest.tag - $interest.name - Score: <style="font:bold;">$!interestScore</style><br>
+		#end
+	#end
+	</td></tr>
+	$codeDebug.log("isContentInPortfolio: wma.isContentInPortfolio(false, $destId, $wmaItem.id): $wma.isContentInPortfolio(false, $destId, $wmaItem.id)")
+	#if($wma.isContentInPortfolio(false, $destId, $wmaItem.id))
+	<tr><td><a href="$wma.getRemoveContentFromPortfolioUrl($destId, $contentId)&rurl=$util.encode.url($req.fullURL)">Remove From Resource Portfolio</a></td></tr>
+	#else
+	<tr><td><a href="$wma.getAddContentToPortfolioUrl($destId, $contentId)&rurl=$util.encode.url($req.fullURL)">Add to Resource Portfolio</a></td></tr>
+	#end	
+	</table>
+	#######################
+	## End WMA Info
+	#######################
+#end
+
+
+
+

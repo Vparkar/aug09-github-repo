@@ -1,0 +1,3 @@
+Matts Test<br>
+
+is ff: $userAgent.isFirefox()

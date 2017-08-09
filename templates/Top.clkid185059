@@ -1,0 +1,243 @@
+$cms.template("Setup")
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:fb="http://www.facebook.com/2008/fbml">
+##set($foo = $cms.setHeader("Cache-Control", "max-age=-1,no-store, no-cache"))
+##set($foo = $cms.setHeader("Pragma", " no-cache"))
+##set($foo = $cms.setHeader("Expires", "-1"))
+<head>
+<meta name="google-site-verification" content="$Google.googleSiteVerification" />
+	<title>$!pageTitle</title>
+	
+
+	<!-- jQuery -->
+
+	#if($isEditable && $req.param("cmsedit") == "Y")
+		#editCSS() 
+
+		<style>
+			#form_container{z-index: 100;}
+		</style>
+
+	#elseif($showDatePicker)
+		#socialMediaCodeNoLibrary()
+
+	#else
+		#socialMediaCode()
+
+	#end
+
+			<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+		##<script type="text/javascript" src="http://$envHost${cms.domain}/includes/jquery.js"></script>
+##<script type="text/javascript" src="http://$envHost${cms.domain}/includes/jquery.click_cs.js"></script>
+
+
+	#foreach($template in $cssArrayTemplates)
+		<link type="text/css" rel="stylesheet" href="http://$envHost${cms.domain}/templates/$template"/>
+	#end
+
+	#foreach($include in $cssArrayInc)
+		<link type="text/css" rel="stylesheet" href="http://$envHost${cms.domain}/includes/$include"/>
+	#end
+
+	#foreach($template in $jsArrayTemplates)
+		<script language="javascript" type="text/javascript" src="http://$envHost${cms.domain}/templates/$template"></script>
+	#end
+
+	#foreach($include in $jsArrayInc)
+		<script language="javascript" type="text/javascript" src="http://$envHost${cms.domain}/includes/$include"></script>
+	#end
+
+<script>
+		$cms.include("CLICK_REG.js").text
+	</script>
+
+
+
+	########################################################################
+	## Lightbox
+	
+		<link rel="stylesheet" type="text/css" href="http://$envHost${cms.domain}/includes/nyroModal.css">
+		<script type="text/javascript" src="http://$envHost${cms.domain}/includes/jquery.nyroModal-1.5.5.pack.js"></script>
+	
+	########################################################################
+
+
+	########################################################################
+	## Loads Scripts to pull geo-location data
+	
+		#if($showUserData)
+			<script type="text/javascript" src="/g/js/base64.js"></script>
+			<script type="text/javascript" src="/g/js/json.js"></script>
+			<script type="text/javascript" src="/g/js/userdata.js"></script>
+			#end
+	########################################################################
+
+	########################################################################
+	## Flash Piece Loader
+	
+		#if($isTopLevel)
+			<script language="javascript">AC_FL_RunContent = 0;</script>
+			<script src="http://$envHost${cms.domain}/includes/AC_RunActiveContent.js" language="javascript"></script>
+		#end
+	
+	########################################################################
+
+
+	########################################################################
+	## Calendar Date Picker
+	
+		#if($showDatePicker)
+		    <!-- required plugins -->
+				<script type="text/javascript" src="http://$envHost${cms.domain}/includes/date.js"></script>
+		
+			<!--[if IE]><script type="text/javascript" src="http://$envHost${cms.domain}/includes/jquery.bgiframe.min.js"></script><![endif]-->
+    
+		    <!-- jquery.datePicker.js -->
+				<script type="text/javascript" src="http://$envHost${cms.domain}/includes/date_picker.js"></script>
+				<script type="text/javascript" src="http://$envHost${cms.domain}/includes/jquery.datePicker-2.1.2.js"></script>
+    
+		    <!-- datePicker required styles -->
+				<link rel="stylesheet" type="text/css" media="screen" href="http://$envHost${cms.domain}/includes/datePicker.css">
+
+		#end
+	
+	########################################################################
+
+
+	########################################################################
+	## Accordion
+	
+		<script language="javascript" type="text/javascript">
+			var $j = jQuery.noConflict();
+     
+			$j(document).ready(function() {
+				$j("#rightColumnAccordion").msAccordion({defaultid:1, vertical:true});
+				$j("#accordion3").msAccordion({defaultid:1, vertical:true});
+				$j("#accordion4").msAccordion({defaultid:1, vertical:true, event:'mouseover'});
+			})
+		</script>
+		
+	########################################################################
+</head>
+
+<body>
+
+
+	$imware.tracker
+	<div id="headWrapper">
+		<div id="headLeft">
+			#set($grioInputImage = $siteConfig.headerImage)
+			#set($grioMaxWidth = 168)
+			$cms.template("Get Resized Image Object")
+			<a href="$topLevel.path">$grioOutputString</a>
+			
+			#if($siteConfig.companySlogan && $siteConfig.companySlogan != "")
+				<div id="tagLine">$siteConfig.companySlogan</div>
+			#end
+		</div>
+		
+		<div id="headRight">
+			<div id="headRightTop">
+				<div id="headRightTopWrapper">
+					<div id="headRightTopForm">
+						<form class="clk_search" action="$topLevel.path/search" method="get">
+							<table border="0" cellpadding="0" cellspacing="0">
+								<tr>
+									<td>
+										#set($outputString= "Search")
+										##$cms.template("Lookup Translation")
+						
+										<input name="keywords" type="text" class="searchClk" value="$outputString" onfocus="clearDefault(this)" /> 
+									</td>
+									<td>
+										#set($outputString= "Submit")
+										##$cms.template("Lookup Translation")
+										<input name="submit" type="image" class="submitClk" value="$outputString" src="$cms.media("submitClk.gif", "designimages").url" /> 
+									</td>
+								</tr>
+							</table>
+						</form>
+					</div>
+					<div id="headRightTopLinks">
+						<span class="loggedout">
+							<a class="headRightTopNav" href="/s?action=login">PORTFOLIO</a>
+						</span>
+				
+						<span class="loggedin">
+							<span id="curUserName"></span>
+							/
+							<a class="headRightTopNav" href="/s?action=doLogout">LOGOUT</a>
+						</span>
+						
+						/ <a class="headRightTopNav nyroModal" href="#userLocationData">LOCATION DATA</a>
+					</div>
+				</div>
+			</div>
+			<div id="headRightBot">
+				<!-- [BEGIN navigation ] -->
+				<div id="nav_box">
+					#foreach($i in [$siteNav.size()..1])
+						#set($item = $siteNav.get($math.subtract($i, 1)))
+						$codeDebug.log("Item $velocityCount of $siteNav.size(): $i - $topLevel.path - $item.url - $item.text")
+						<div class="navDivider">
+							<img src="$cms.media("nav_divider.gif", "designimages").url" alt="" width="1" height="23" border="0" /> 
+						</div>
+						<div class="dropMenuBoxWrapper">
+							<ul class="ullevel0">
+								<li class="lilevel0" style="white-space:nowrap;">
+									<a href="$topLevel.path$item.url">$item.text</a>
+								</li>
+							</ul>
+						</div>
+					#end
+					<div class="navDivider">
+						<img src="$cms.media("nav_divider.gif", "designimages").url" alt="" width="1" height="23" border="0" /> 
+					</div>
+				</div>
+				<div class="clear">
+				</div>
+			</div>
+		</div>
+		
+	
+	</div>
+	<div id="mainsectionWrapper">
+		#if($isTopLevel)
+			<div id="flashWrapper"><img src="$cms.media("animalbites.jpg", "designimages").url" /></div>
+			<div id="mainsectionInner">
+		#else
+			<div id="contentsectionInner">
+				<div id="content">
+					#if($content.typeName == "Profile")
+						$cms.template("Profile Right Sidebar")
+					
+					#else
+						$cms.template("Content Right Sidebar")
+					#end
+					
+					<div id="contentTwo">
+						<div class="wideHeaderShort"></div>
+						<div class="wideBody">
+							#if($curSection && $curSection.path != "/s" && $curSection.path != "$topLevel.path/profiles")
+								$cms.template("Breadcrumbs")
+							#end
+
+					#if($isDetailPage || $sectionTitle != "")## THIS IS THE HEADLINE
+					<h1>
+						#if($isDetailPage)
+							#if($content.displayTitle && $content.displayTitle != "")
+								$content.displayTitle
+							#else
+								$content.title
+							#end
+						#else
+							$sectionTitle		
+						#end
+					</h1>
+					#if($cms.path != "/en/update")
+						$cms.template("Check Progressive Profile Level")
+					#end
+				#end
+		#end
+

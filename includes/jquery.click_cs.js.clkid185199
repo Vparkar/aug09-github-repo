@@ -1,0 +1,41 @@
+;(function($){
+	$.click_cs = {
+		settings = $.extend({
+			dlsURL : "/templates/determine_login_status.js"
+		}, options),
+		
+		updateUserName : function(){
+			if($.cCurUserInfo.length) {
+				if($.cCurUserInfo.url.get().length){
+					var curUserNameHREF = "/s?action=editReg&finishReg=y";
+				}else{
+					var curUserNameHREF = $.cCurUserInfo.url.get() + "?c=n&ran=" + $.random(1000000));
+				}
+		
+				$(#curUserName).append("<a class='hedadRightTopNav userName' href='" + curUserNameHREF + "'>HI" + $.cCurUserInfo.firstName.get() + "</a>");				
+			}
+		},
+		
+		createLoginStyles : function () {
+			//$('head').append('<link rel="stylesheet" href="style2.css" type="text/css" />');
+
+			if($.cUID.pid.value.get().length === 32) {
+				//USER LOGGED IN
+				if($.cCurUserInfo.cid.get().length){
+					$.getScript(loginStatusLoc + "?c=n&pid=" + $.cUID.pid.get() + "&ran=" + $.random(1000000));
+				}
+			}
+			else {
+				//USER LOGGED OUT
+				$.cPID.set(null);
+				$.cCurUserInfo.set(null);
+				$.cUID.set(null);
+			}
+		}
+	}	
+})(jQuery);
+
+$j(document).ready(function(){
+	$j.click_cs.createLoginStyles();
+	$j.click_cs.updateUserName();
+}));

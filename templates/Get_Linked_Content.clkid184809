@@ -1,0 +1,21 @@
+#set($glcOutputArray = $util.newArrayList)##
+##
+#if($glcContentTypeArray && $glcContentTypeArray.size() == 1)##
+	#set($glcRelatedContent = $glcInputItem.linkedContent($glcTagName, $glcContentTypeArray.get(0)))##
+#else##
+	#set($glcRelatedContent = $glcInputItem.linkedContent($glcTagName))##
+	#if($glcContentTypeArray && $glcContentTypeArray.size() > 1)##
+		#set($gibContentTypeArray = $glcContentTypeArray)##
+	#end##
+#end##
+##
+#set($gibInputIB = $glcRelatedContent)##
+#set($gibMaxItems = $glcMaxItems)##
+$cms.template("Get IB Items")##
+##
+#set($glcOutputArray = $gibOutputArray)##
+##
+#set($glcInputItem = false)##
+#set($glcTagName = false)##
+#set($glcContentTypeArray = false)##
+#set($glcMaxItems = false)

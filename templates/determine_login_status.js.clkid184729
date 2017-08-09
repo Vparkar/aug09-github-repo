@@ -1,0 +1,110 @@
+#set($subscriptionUser = $cms.subscriptionUser())
+
+#if($subscriptionUser)
+	#if($req.intParam("pid") > 0)
+		#set($gptItem = $cms.content($req.intParam("pid"), false))
+
+		#if($gptItem.title == $subscriptionUser.email)
+			$cms.template("Get Primary Target")
+			#set($curUser = $gptTargetedItem)
+		#end
+	#end
+
+	#if(!$curUser && $math.newInt($subscriptionUser.custom6) > 0)
+		#set($gptItem = $cms.content($math.newInt($subscriptionUser.custom6), false))
+	
+		#if($gptItem.title == $subscriptionUser.email)
+			$cms.template("Get Primary Target")
+			#set($curUser = $gptTargetedItem)
+		#end
+	#end
+	
+	
+	#if(!$curUser)
+		#foreach($i in [0..2])
+			#if(!$curUser)
+				#set($mySearch = $cms.newSearch)
+				$mySearch.addContentType("Profile")
+				$mySearch.addWSS("$topLevel.path/profiles")
+				$mySearch.setSortBy("-contentLiveDate")
+				$mySearch.addKeywords($subscriptionUser.email)
+				$mySearch.setSearchFields("title")
+				#foreach($item in $mySearch.execute)
+					#if(!$curUser && $item.title == $subscriptionUser.email)
+						#set($gptItem = $item)
+						$cms.template("Get Primary Target")
+						#set($curUser = $gptTargetedItem)
+					#end
+				#end
+			#end
+		#end
+	#end
+	
+	#if(!$curUser)
+		#foreach($i in [0..2])
+			#if(!$curUser)
+				#if($velocityCount <= 1)
+					#set($numToPull = 100)
+				#else
+					#set($numToPull = 3000)
+				#end
+
+				#foreach($item in $cms.filteredLinks("Profile", "$topLevel.path/profiles", $math.add($math.multiply($i, 100), 1), $numToPull))
+					#if(!$curUser && $item.title == $subscriptionUser.email)
+						#set($curUser = $item)
+					#end
+				#end
+			#end
+		#end
+	#end
+	
+	#if($curUser)
+		CLICK_CS.subcookiejar.bake ('curUserInfo', {
+			cid:'$curUser.id',
+			title:'$curUser.title',
+			firstName:'$curUser.firstName',
+			url:'$curUser.url'
+		}, 365);
+
+		function hrUpdateUser(){
+			//console.log("id updated")
+		}
+
+		#if($math.newInt($subscriptionUser.custom6) == 0)
+			function updateUserInfo(){
+				var editRegUserForm = FormCreator.createForm("editRegUserForm", "POST", "");
+				FormCreator.createInputField(editRegUserForm, "hidden", "custom6", $curUser.id);
+				FormCreator.createInputField(editRegUserForm, "hidden", "rurl", Global.tapiUrl + "?subAction=success");
+
+				updateUser(editRegUserForm, true, hrUpdateUser);
+			}
+
+			CLICK_CS.addLoadEvent(updateUserInfo);
+		#end
+
+		if(RegActions == undefined){
+			var RegActions = {};
+		}
+
+		RegActions["contentID"] = $curUser.id;
+
+		//Only needed since things are timing out
+		setTimeout(function(){
+			return hrUpdateUser;
+		}, 3000)
+
+
+
+	#else
+		CLICK_CS.subcookiejar.bake ('curUserInfo', {
+			firstName:'$subscriptionUser.email'
+		}, 365);
+	#end
+#end
+
+
+
+
+
+
+

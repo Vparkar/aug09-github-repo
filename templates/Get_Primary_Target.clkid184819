@@ -1,0 +1,9 @@
+#set($gptTargetedItem = false)##
+##
+#foreach($gptTarget in $gptItem.contentTargets)##
+	#if(!$gptTargetedItem && !$gptTarget.isDead())##
+		#set($gptTargetedItem = $cms.content($gptItem.id, "$gptTarget.path"))##
+	#end##
+#end##
+##
+#set($gptItem = false)##

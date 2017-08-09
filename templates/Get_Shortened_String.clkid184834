@@ -1,0 +1,63 @@
+#set($outputString = "")
+
+##$inputString is passed in from parent template
+#if($inputString && $inputString != "")
+	#set($inputString = $util.text($inputString).trim())
+	
+	#if($numWords > 0)
+		#foreach($item in $inputString.split(" "))
+			#if($velocityCount <= $numWords)
+				#set($outputString = "$!{outputString}${item} ")
+			#end
+		#end
+	
+	#elseif($numChars > 0)
+		#set($outputString = $string.substring($inputString, 0, $numChars))
+		
+	#elseif($numPara > 0)
+		#if($inputString.indexOf("<p>") > -1)
+			#set($outputString = $util.paragraph($inputString, 1, $numPara))
+		#else
+			#foreach($p in $string.split($inputString, "\n"))
+				#if($velocityCount <= $numPara)
+					#set($outputString = "$outputString<p>$p</p>")
+				#end
+			#end
+		#end
+	
+	#else		
+		#set($outputString = $string.substring($inputString, 0, 300))
+		
+	#end
+	
+	
+	#*
+		#if($outputString.indexOf("<img") > -1)
+			#set($outputString = $string.substring($outputString, 0, $string.indexOf($outputString,"<img")))
+		#end
+
+		#if($outputString.lastIndexOf("<a") > $outputString.lastIndexOf("</a>"))
+			#set($outputString = $string.substring($outputString, 0, $outputString.lastIndexOf("<a")))
+		#end
+	*#
+
+	#if(!($outputString.endsWith(".") || $outputString.endsWith("?") || $outputString.endsWith("!") || $outputString.endsWith(" ") || $outputString.endsWith(">")))
+		#set($outputString = $outputString.substring(0, $outputString.lastIndexOf(" ")))
+	#end
+	
+	#if(!$outputString)
+		#set($outputString = $inputString)
+	#end
+	
+	#set($outputString = $string.trim($outputString))
+	
+	#if(!$numPara && $outputString != $inputString)
+		#set($outputString = "${outputString}...")
+	#end
+	
+	
+#end
+
+#set($inputString = false)
+#set($numWords = false)
+#set($numChars = false)

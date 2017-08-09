@@ -1,0 +1,43 @@
+					#if(!$isTopLevel)
+								</div>
+								<div class="wideBottom"></div>
+							</div>
+				
+							#if($content.typeName == "Profile")
+								$cms.template("Profile Left Sidebar")
+							#else
+								$cms.template("Content Left Sidebar")
+							#end
+					#end
+
+				</div>
+		
+				<div id="poweredBy">
+					<img src="$cms.media("powered_by.gif", "designimages").url" alt="" width="138" height="16" border="0" />
+				</div>
+			
+#if(!$isTopLevel)
+</div>
+#end
+		</div>
+
+		<div class="clear"></div>
+
+		<div id="legal">
+			<p>&copy; $util.date("yyyy") Clickability Inc. ***This website is used solely for demonstrating Corporate Solutions on the Clickability Platform.***</p>
+		</div>
+	</div>
+
+	##$cms.template("User Location Data")
+	
+	##$cms.template("Collect Trend Items")
+
+	<script>
+		Trends.init();
+		RegActions.init();
+	</script>
+
+#set($foo = $GOT.add("showTrackingScript", "true"))
+$cms.template("Google Optimizer Template")
+</body>
+</html>

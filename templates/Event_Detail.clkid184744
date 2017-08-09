@@ -1,0 +1,90 @@
+#set($content = $cms.content)
+
+#if(!$content || $content.typeName != "Event")
+	#foreach($item in $cms.filteredLinks("Event", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+#set($upcomingEvents = $util.newArrayList)
+#foreach($schedule in $content.calendarSchedules)
+	#set($foo = $upcomingEvents.add($schedule))
+#end
+
+$cms.template("Top")
+
+
+<div class="headline">$cms.edit($content, "title")</div>
+<div class="bodyCopy">
+		$cms.template("Display WMA Info")
+#foreach($item in $util.sort($upcomingEvents, "-startDate"))
+	#set($eventItem = $content)
+	<div class="leadline">
+		#if($content.recurrenceDisplay && $content.recurrenceDisplay != "")
+			$cms.edit($content, "recurrenceDisplay")
+		#else
+			$util.date("MMMM dd, yyyy", $util.parseDate($item.startDate,"yyyy-MM-dd"))
+			#if(!$util.inSameDay($util.parseDate($item.startDate,"yyyy-MM-dd"),$util.parseDate($item.endDate,"yyyy-MM-dd")))
+				- $util.date("MMMM dd, yyyy", $util.parseDate($item.endDate,"yyyy-MM-dd"))
+			#end
+	
+			#if($item.startTimeFormatted && $item.startTimeFormatted != "")
+				#set($outputString = "($item.startTimeFormatted")
+	
+				#if($item.endTimeFormatted && $item.endTimeFormatted != "")
+					#set($outputString = "$outputString - $item.endTimeFormatted)")
+				#else
+					#set($outputString = "$outputString)")
+				#end					
+	
+				$outputString
+			#end
+			
+			#if($item.location && $item.location != "")
+				| $item.location
+			#end
+		#end
+	</div>
+	
+	## THIS IS BODY TEXT
+	<div class="bodyCopy">
+		#foreach($id in $content.video)
+			#set($video = $cms.content($id,false))
+			#if($video)
+				<p>
+				Watch a video of this event:<br/><br/>
+					<script type="text/javascript" src="http://service.twistage.com/api/script"></script>
+					<script type="text/javascript">viewNode("$video.videoNodeID", {width:480,height:360});</script>
+				</p>
+			#end
+		#end
+		
+		#if($content.body && $content.body != "")
+			$cms.edit($content, "body")
+		#elseif($content.summary && $content.summary != "")
+			$cms.edit($content, "summary")
+		#end
+		
+		<p><a href="http://$cms.envHost$cms.domain/templates/add_to_calendar.ics?contentid=${content.id}">Add to Calendar</a></p>
+	</div>
+
+	#set($trends = $util.newArrayList)
+		#foreach($catObj in $content.getCategorization().getCategories(7834))
+			#if($catObj.name != "Uncategorized")
+				#set($foo = $trends.add($catObj))
+			#end
+		#end
+		
+		#if($trends.size() > 0)
+			<br/>
+			<span class="tag-label">Trends: </span>
+
+			#foreach($catObj in $trends)
+				<span class="tags">$catObj.name</span>
+			#end
+			<br/><br/>
+		#end
+	
+#end
+
+$cms.template("Bottom")

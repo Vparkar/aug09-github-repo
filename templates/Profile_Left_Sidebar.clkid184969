@@ -1,0 +1,105 @@
+<div id="contentOne">
+	#if($salesRep)
+		<div id="nextWrapper">
+			<div id="nextHeader"><span class="profilenextsteps">YOUR ACCOUNT MANAGER</span></div>
+			<div class="pullBody">
+				<div class="pullquoteWrapper"><span class="pullquoteSub">
+					#set($grioInputImage = $salesRep.profilePic)
+					#set($grioMaxWidth = 160)
+					$cms.template("Get Resized Image Object")
+					#if($grioOutputString && $grioOutputString != "")
+						$grioOutputString
+						<br/>
+					#end
+			
+					<strong>$!salesRep.firstName $!salesRep.lastName</strong>
+					<br/>
+					$!salesRep.summary
+				</span></div>
+			</div>
+			<div class="thinBottom"></div>
+		</div>
+		
+		#if($salesRep.email && $salesRep.email != "")
+			<br clear="all"/><br/>
+			
+			<div id="nextWrapper">
+				<div id="nextHeader"><span class="profilenextsteps">EMAIL $salesRep.firstName.toUpperCase()</span></div>
+				<div class="pullBody">
+					<div class="pullquoteWrapper"><span class="pullquoteSub">
+						<script>
+							function checkEmailForm(form){
+								try{
+									RegActions.displayMessage({
+										hideFormName: "emailForm",
+										errorMessage: "Processing Request...Validating form.",
+										disableAction: "none"
+									});
+
+									var errorMessages = [];
+
+									if(form.elements["ebody"].value === ""){
+						                errorMessages.push("You must enter text.");
+									}
+						
+									if(errorMessages.length > 0){
+						               	RegActions.displayMessage({
+											hideFormName: "emailForm",
+											errorMessage: 'Error:<br/><ul><li>' + errorMessages.join('</li><li>') + '</li></ul>'
+										});
+										return false;
+									}
+								
+									RegActions.emailRep({"repId":"$salesRep.id", "ebody":form.ebody.value});
+									return false;
+									
+								}catch(e){ 
+									RegActions.displayMessage({
+										hideFormName: "emailForm",
+										errorMessage: e,
+										errorType: "System"
+									});
+								}
+							}
+						</script>
+					
+						<span style="color:red; font-weight:bold; display:none;" id="systemMessage"></span>
+						<form action="POST" name="emailForm" onsubmit="return checkEmailForm(this)">
+							<textarea name="ebody" class="sidebar"></textarea>
+							<input type="submit" class="sidebar" value="Send Mail" />
+						</form>
+					</span></div>
+				</div>
+				<div class="thinBottom"></div>
+			</div>
+		#end
+	#end
+	
+	#if(($content.noteSalesRep && $content.noteSalesRep != "") || ($salesRep.globalNote && $salesRep.globalNote != "") || ($salesRep.defaultNote && $salesRep.defaultNote != ""))
+		<div class="rightWrapper">
+			<div class="thinHeaderShort"></div>
+			<div class="pullBody">
+				<div class="pullquoteWrapper">
+					<span class="pullquoteSub">
+						#if(($content.noteSalesRep && $content.noteSalesRep != "") || ($salesRep.globalNote && $salesRep.globalNote != ""))
+							#if($content.noteSalesRep && $content.noteSalesRep != "")
+								$content.noteSalesRep
+							#end
+					
+							#if(($content.noteSalesRep && $content.noteSalesRep != "") && ($salesRep.globalNote && $salesRep.globalNote != ""))
+								<hr>
+							#end
+						
+							#if($salesRep.globalNote && $salesRep.globalNote != "")
+								$salesRep.globalNote
+							#end
+						#else
+							$salesRep.defaultNote
+						#end
+					</span><br/>
+				</div>
+			</div>
+			<div class="thinBottom"></div>
+		</div>
+	#end
+</div>

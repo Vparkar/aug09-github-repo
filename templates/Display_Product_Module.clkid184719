@@ -1,0 +1,8 @@
+	<h3>Featured Product</h3>
+	<p class="strong">$module.title</p>
+	<p>
+		#if($module.summary && $module.summary != "")
+			$module.summary
+		#end
+		<a href="$module.url" title="more" class="more">more</a>
+	</p>

@@ -1,0 +1,129 @@
+##set($salesRep = $cms.content(50090102, false))
+
+<div id="contentThree">
+	<div class="nextWrapper">
+		<div id="nextHeader"><span class="profilenextsteps">MY INFO</span></div>
+		<div class="pullBody">
+			<div class="pullquoteWrapper">
+				<span class="pullquoteSub">
+					<p>You are logged in as $!content.firstName $!content.lastName</p>
+					<p>$!leadArrowImage<a href="/s?action=doLogout">Logout</a></p>
+					<p>$!leadArrowImage<a href="/s?action=editReg">Edit your info</a></p>
+				</span>
+			</div>
+		</div>
+		<div class="thinBottom"></div>
+	</div>
+	
+	#set($favDocuments = $util.newArrayList)
+	
+	#set($glcInputItem = $content)
+	#set($glcTagName = "savedItemsProfile")
+	$cms.template("Get Linked Content")
+	#set($foo = $favDocuments.addAll($glcOutputArray))
+	
+	#set($glcInputItem = $content)
+	#set($glcTagName = "actionedItemsProfile")
+	$cms.template("Get Linked Content")
+	#set($foo = $favDocuments.addAll($glcOutputArray))
+			
+	#if($favDocuments.size() > 0)
+		<div id="nextWrapper">
+			<div id="nextHeader"><span class="profilenextsteps">SAVED ITEMS</span></div>
+			<div class="pullBody">			<div class="pullBodyWrapper">
+				#foreach($item in $favDocuments)
+					#if($item.displayTitle && $item.displayTitle != "")
+						#set($itemTitle = $item.displayTitle)								
+					#else
+						#set($itemTitle = $item.title)
+					#end
+				
+					<p><a href="$item.url">$itemTitle</a></p>
+				#end
+			</div></div>
+			<div class="thinBottom"></div>
+		</div>
+	#else
+		<div class="nextWrapper">
+			<div id="nextHeader"><span class="profilenextsteps">SAVED ITEMS</span></div>
+			<div class="pullBody">
+				<div class="pullquoteWrapper">
+					<span class="pullquoteSub">
+						Save items as you browse and they will appear here.
+					</span>
+				</div>
+			</div>
+			<div class="thinBottom"></div>
+		</div>
+	#end
+
+	#set($repDocs = $util.newArrayList)
+	
+	#foreach($item in $salesRep.globalDocs)
+		#set($foo = $repDocs.add($item))
+	#end
+	
+	#foreach($item in $content.repDocuments)
+		#set($foo = $repDocs.add($item))
+	#end
+	
+	#set($gibInputIB = $salesRep.globalSharedItems)
+	$cms.template("Get IB Items")
+	#set($foo = $repDocs.addAll($gibOutputArray))
+	
+	### This code gets the assigned content assets from Salesforce based on a contacts email address:
+	#set($profileEmail=$content.email)
+	##set($profileEmail='joe@clickability.com')
+	
+	#set($sfclient=$sForce.newContext())
+	##set($foo=$sfclient.setLoginCredentials("jeff@clickability.com","h1pp057!mlYNTnwSmKgpHkEgrKes3PtB"))())
+	#set($foo=$sfclient.setLoginCredentials("apiuser@clickability.com","click123.N0apo9jFBDrJo6jJx3BcEYZR"))
+	#set($resultobj=$sfclient.query("Select Content_Assignment__c.Content_Item__r.title__c,Content_Assignment__c.Content_Item__r.ContentID__c  from Content_Assignment__c where Content_Assignment__c.Contact__r.email='$profileEmail'"))
+
+	##set($resultobj=$sfclient.query("Select CMS_Content_Assignment__c.CMS_Content_Item__r.title__c,CMS_Content_Assignment__c.CMS_Content_Item__r.Name  from CMS_Content_Assignment__c where CMS_Content_Assignment__c.Contact__r.email='$profileEmail'"))
+
+	#foreach($sobj in $resultobj)
+		#foreach($beanobj in $sForce.getResultData($sobj)) 
+			#if($beanobj.referenceObject==true)
+				#foreach($msgElement in $beanobj.refObjContent) 
+					#if($msgElement.name=="ContentID__c")
+						#set($tempContent = false)
+						#set($tempContent = $cms.content($math.newInt($msgElement.value),true))
+						#if($tempContent)
+							#set($foo = $repDocs.add($tempContent))
+						#end
+					#end
+				#end
+			#end
+		#end
+	#end
+
+	#if($repDocs.size() > 0)
+		<div id="nextWrapper">
+			<div id="nextHeader">
+		        <span class="profilenextsteps">SHARED BY $salesRep.firstName.toUpperCase()</span>
+			</div>
+			<div class="pullBody"><div class="pullBodyWrapper">
+				#foreach($item in $repDocs)
+					#if($item.url && $item.url != "")
+						#if($item.fileName && $item.fileName != "")
+							#set($itemTitle = $item.fileName)	
+					
+						#elseif($item.displayTitle && $item.displayTitle != "")
+							#set($itemTitle = $item.displayTitle)								
+					
+						#else
+							#set($itemTitle = $item.title)
+						#end
+			
+						<p><a href="$item.url">$itemTitle</a></p>
+					#end				
+				#end
+			</div></div>
+			<div class="thinBottom"></div>
+		</div>
+	#end
+
+
+	$cms.template("Mod Recently Viewed")
+</div>

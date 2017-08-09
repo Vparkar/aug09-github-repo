@@ -1,0 +1,178 @@
+<div id="userLocationData" class="hidden">
+	<h1>Your Location Data</h1>
+	<table>
+		<tr>
+			<td>IP Address</td>
+			<td>$!userLocation.getIp()</td>
+		</tr>
+			 
+		#if($userLocation.isAvailable())
+			<tr>
+				<td>City</td>
+				<td>$!userLocation.getCity()</td>
+			</tr>
+		
+			<tr>
+				<td>Country</td>
+				<td>$!userLocation.getCountry()</td>
+			</tr>
+		
+			<tr>
+				<td>ISP</td>
+				<td>$!userLocation.getIsp()</td>
+			</tr>
+		
+			<tr>
+				<td>Area Code</td>
+				<td>$!userLocation.getAreaCode()</td>
+			</tr>
+		
+			<tr>
+				<td>Latitude</td>
+				<td>$!userLocation.getLatitude()</td>
+			</tr>
+		
+			<tr>
+				<td>Longitude</td>
+				<td>$!userLocation.getLongitude()</td>
+			</tr>
+		
+			<tr>
+				<td>Metropolitan Code</td>
+				<td>$!userLocation.getMetropolitanCode()</td>
+			</tr>
+		
+			<tr>
+				<td>Organization</td>
+				<td>$!userLocation.getOrganization()</td>
+			</tr>
+		
+			<tr>
+				<td>Postal Code</td>
+				<td>$!userLocation.getPostalCode()</td>
+			</tr>
+		
+			<tr>
+				<td>Region</td>
+				<td>$!userLocation.getRegion()</td>
+			</tr>
+			
+			<tr>
+				<td>Time Zone</td>
+				<td>$!userLocation.getTimeZone()</td>
+			</tr>
+			
+			<tr>
+				<td>Referrer Domain</td>
+				<td>$!userRequest.getReferrerDomain()</td>
+			</tr>
+			
+			<tr>
+				<td>Referrer Search Engine</td>
+				<td>$!userRequest.getReferrerSearchEngine()</td>
+			</tr>
+			
+			<tr>
+				<td>Referrer Search Engine Keywords</td>
+				<td>$!userRequest.getReferrerSearchEngine().getKeywords()</td>
+			</tr>
+			
+			<tr>
+				<td>Referrer Search Engine Name</td>
+				<td>$!userRequest.getReferrerSearchEngine().getName()</td>
+			</tr>
+		#end
+	</table>
+	<h1>\$req and \$userRequest Data</h1>
+	<table border="1">
+		<tr>
+			<td>Title</td>
+			<td>\$req</td>
+			<td>\$userRequest</td>
+		</tr>
+		<tr>
+			<td>Referer</td>
+			<td>$!req.referer</td>
+			<td>$!userRequest.referer</td>
+		</tr>
+		<tr>
+			<td>IP</td>
+			<td>$req.ip</td>
+			<td>$userRequest.ip</td>
+		</tr>
+	
+		<tr>
+			<td>UserAgent</td>
+			<td>$req.userAgent</td>
+			<td>$userRequest.userAgent</td>
+		</tr>
+	
+		<tr>
+			<td>Host Header</td>
+			<td>$req.header("Host")</td>
+			<td>$userRequest.header("Host")</td>
+		</tr>
+	
+		<tr>
+			<td>Keep-Alive Header</td>
+			<td>$req.header("Keep-Alive")</td>
+			<td>$userRequest.header("Keep-Alive")</td>
+		</tr>
+	
+		<tr>
+			<td>Accept Language</td>
+			<td>$req.acceptLanguage</td>
+			<td>$userRequest.acceptLanguage</td>
+		</tr>
+		<tr>
+			<td>vmSessionId Cookie</td>
+			<td></td>
+			<td>$userRequest.getCookie("vmSessionId")</td>
+		</tr>
+	
+		<tr>
+			<td>Referer Domain</td>
+			<td></td>
+			<td>$userRequest.referrerDomain</td>
+		</tr>
+		#if($userRequest.referrerSearchEngine) 
+		<tr>
+			<td>Search engine was: </td>
+			<td></td>
+			<td>$userRequest.referrerSearchEngine.name </td>
+		</tr>
+		<tr>
+			<td>Keywords were:</td>
+			<td></td>
+			</td>$userRequest.referrerSearchEngine.keywords </td>
+		</tr>
+		#end 
+		</table>
+		
+		<h1>\$userAgent Data</h1>
+		<table>
+		<tr>
+			<td>OS</td>
+			<td>$userAgent.OSDetail</td>
+		</tr>
+		<tr>
+			<td>Gecko Version</td>
+			<td>$userAgent.geckoVersion</td>
+		</tr>
+	
+		<tr>
+			<td>Full Gecko Version</td>
+			<td>$userAgent.fullGeckoVersion</td>
+		</tr>
+	
+		<tr>
+			<td>Browser Detail</td>
+			<td>$userAgent.browserDetail</td>
+		</tr>
+	
+		<tr>
+			<td>User Agent</td>
+			<td>$userAgent.userAgent</td>
+		</tr>
+	</table>
+</div>

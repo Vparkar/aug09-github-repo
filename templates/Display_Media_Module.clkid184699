@@ -1,0 +1,28 @@
+<h3>	
+		#if($module.listHeader && $module.listHeader != "")
+			$module.listHeader
+		#end
+	</h3>
+	
+	#if($module.embedLink && $module.embedLink != "")
+		<div id="videoEmbed">$module.embedLink</div>
+	
+	#elseif($module.video && $module.video.url != "")
+		<div>
+			<object width="230" height="160" data="http://flowplayer.org/swf/flowplayer-3.1.2.swf?0.898171968614005" type="application/x-shockwave-flash">
+				<param name="movie" value="http://flowplayer.org/swf/flowplayer-3.1.2.swf?0.898171968614005" />
+				<param name="allowfullscreen" value="true" /><param name="allowscriptaccess" value="always" />
+				<param name="flashvars" value='config={"plugins":{"pseudo":{"url":"flowplayer.pseudostreaming-3.1.2.swf"},"controls":{"backgroundColor":"#000000","backgroundGradient":"low"}},"clip":{"provider":"pseudo","url":"$module.video.url"},"playlist":[{"provider":"pseudo","url":"$module.video.url"}]}' />
+			</object>
+		</div>
+		
+	#elseif($module.image && $module.image.url != "")
+		#set($grioInputImage = $module.image)
+		#set($grioMaxWidth = 180)
+		$cms.template("Get Resized Image Object")
+		$grioOutputString
+	#end
+	
+	#if($module.caption && $module.caption != "")
+		<p>$module.caption</p>
+	#end

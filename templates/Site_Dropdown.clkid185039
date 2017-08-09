@@ -1,0 +1,25 @@
+#set($siteHash = $util.newHashMap)
+#set($foo = $siteHash.put("/fr", "French"))
+#set($foo = $siteHash.put("/en", "English"))
+
+
+#set($found = false)
+#foreach($key in $siteHash.keySet)
+	#if(!$found)
+		#set($found = true)
+		<select style="font-size: 11px; color:gray;" onchange="if(this.selectedIndex > 0){location.href=this.options[this.selectedIndex].value;}">
+			#set($outputString= "Jump to Site")
+			##$cms.template("Lookup Translation")
+			<option value="0">$outputString</option>
+	#end
+
+	#set($outputString = $siteHash.get($key))
+
+	##$cms.template("Lookup Translation")
+
+	<option value="$key">$outputString</option>
+#end
+
+#if($found)
+	</select>
+#end

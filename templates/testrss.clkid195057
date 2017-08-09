@@ -1,0 +1,5 @@
+#set($channel = $rss.getChannel("http://twitter.com/statuses/user_timeline/106022891.rss"))
+#foreach($item in $channel.items)
+  <a href="$item.link">$item.title</a> $item.date<br>
+  $item.description <br><br>
+#end

@@ -1,0 +1,56 @@
+#set($cssDefaultNumChars = 300)
+#set($cssOutputString = "")
+
+#if($cssInputString && $cssInputString != "")
+	#if(!$cssReturnHTML)
+		#set($cssInputString = $util.text($cssInputString))
+	#end
+	
+	#if($cssNumWords > 0)
+		#foreach($cssItem in $cssInputString.split(" "))
+			#if($velocityCount <= $cssNumWords)
+				#set($cssOutputString = "$!{cssOutputString}${cssItem} ")
+			#end
+		#end
+	
+	#elseif($cssNumChars > 0)
+		#set($cssOutputString = $string.substring($cssInputString, 0, $cssNumChars))
+	
+	#elseif($cssNumPara > 0)
+		#if($cssInputString.indexOf("<p>") > -1)
+			#set($cssOutputString = $util.paragraph($cssInputString, 1, $cssNumPara))
+			#set($cssDontCheck = true)
+		#elseif($cssInputString.indexOf("<br") > -1)			
+			#foreach($cssP in $string.split($cssInputString.replaceAll("(<br[ ]*/>)+", "\\n"), "\\n"))
+				#if($velocityCount <= $cssNumPara)
+					#set($cssOutputString = "$cssOutputString<p>$cssP</p>")
+				#end
+			#end
+			
+		#else
+			#foreach($cssP in $string.split($cssInputString, "\n"))
+				#if($velocityCount <= $cssNumPara)
+					#set($cssOutputString = "$cssOutputString<p>$cssP</p>")
+				#end
+			#end
+		#end
+	
+	#else
+		#set($cssOutputString = $string.substring($cssInputString, 0, $cssDefaultNumChars))
+	#end
+	
+	#if(!($cssOutputString.endsWith(".") || $cssOutputString.endsWith("?") || $cssOutputString.endsWith("!") || $cssOutputString.endsWith(" ") || $cssOutputString.endsWith(">")) && !$cssDontCheck)
+		#set($cssOutputString = $string.substring($cssOutputString, 0, $cssOutputString.lastIndexOf(" ")))
+	#end
+	
+	#set($cssOutputString = $string.trim($cssOutputString))
+	
+	#if(!$cssNumPara && $cssOutputString != $cssInputString)
+		#set($cssOutputString = "${cssOutputString}...")
+	#end
+#end
+
+#set($cssInputString = false)
+#set($cssNumWords = false)
+#set($cssNumChars = false)
+#set($cssNumPara = false)

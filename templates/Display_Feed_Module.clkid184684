@@ -1,0 +1,77 @@
+#if($module.feedType.equals("Twitter"))
+		 #set($doc= $feed.getXMLDocument($module.feedURL))
+		#set($docElem = $doc.documentElement)
+
+		#set($itemsArray = $util.newArrayList)
+		
+		#if($module.feedURL.indexOf(".atom") > -1)
+			#set($items = $docElem.getElementsByTagName("entry"))
+		#else
+			#set($items = $docElem.getElementsByTagName("item"))
+		#end
+		#foreach($i in [0..$items.length])
+			#if($itemsArray.size() < 2)
+				#set($foo = $itemsArray.add($items.item($i)))
+			#end
+		#end
+	#else
+		#set($myFeed = $rss.channel($module.feedURL))
+		#set($itemsArray = $util.newArrayList)
+		#set($itemsArray = $myFeed.items)
+	#end
+		
+		#if($itemsArray.size() > 0)
+			<h3>	
+				#if($module.headline && $module.headline != "")
+					$module.headline
+				#end
+			</h3>
+			
+			#if($module.feedType.equals("Twitter"))
+				#foreach($item in $itemsArray)
+					#set($link = $item.getElementsByTagName("link").item(0).textContent)
+					#set($title = $item.getElementsByTagName("title").item(0).textContent)
+					
+					#if($module.feedURL.indexOf(".atom") > -1)
+						#set($pubDate = $item.getElementsByTagName("published").item(0).textContent)
+						#set($pubDate = $util.date("MMMM dd, yyyy h:mm:ss a", $util.parseDate($pubDate, "yyyy-MM-dd'T'hh:mm:ss'Z'")))
+					#else
+						#set($pubDate = $item.getElementsByTagName("pubDate").item(0).textContent)
+						#set($pubDate = $util.date("MMMM dd, yyyy h:mm:ss a", $util.parseDate($pubDate, "EEE, dd MMM yyyy HH:mm:ss '+0000'")))
+					#end
+					<p>
+						<a href="$link" target="_blank">$title</a>
+						<br />
+						<span>$pubDate</span>
+					</p>
+				#end
+			#else
+				#foreach($item in $itemsArray)
+					<p>
+						<a href="$item.link" target="_blank">$item.title</a>
+						#if($item.description && $item.description != "")
+							<br />
+							$item.description
+						#end
+						##<span>$util.date("MMMM dd, yyyy h:mm:ss a", $util.parseDate($item.pubDate, "EEE, dd MMM yyyy HH:mm:ss '+0000'"))</span> 
+					</p>
+				#end
+			#end
+		#else
+			<h3>Most Popular</h3> 
+
+			#set($mpSectionIDs = [$topLevel.id])
+			#set($mpNumItems = 2)
+			#set($mpPeriod = "M")
+			$cms.template("Get Most Popular Array")
+			#foreach($item in $mostPopularArray)
+				<p>
+					<a href="$item.url">$item.title</a> 
+					<br />
+
+					#if($item.startDate && $item.startDate != "")
+						<span>$util.date("MMMM dd, yyyy h:mm:ss a", $item.startDate)</span> 
+					#end
+				</p>
+			#end
+		#end

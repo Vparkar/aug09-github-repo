@@ -1,0 +1,75 @@
+#*
+
+##$cms.template("Top")
+
+<div id="nextWrapper">
+	<div id="nextHeader">
+        <span class="nextsteps">Highest Rated</span>
+    </div>
+   
+   <div id="nextBody" class="ratedBody">
+    	#set($mpItems = $util.newArrayList)
+		#foreach($mpItem in $feedback.highestRated(3,  "M", $topLevel.id, 10, 3))
+			#set($tempObject = $util.newObject)
+			
+			#set($foo = $tempObject.add("title", $mpItem.title))
+			
+			#set($gptItem = $cms.content($mpItem.getContentID().intValue(), false))
+			#set($foo = $tempObject.add("image", $gptItem.images.get(0)))
+			
+			$cms.template("Get Primary Target")
+			#set($foo = $tempObject.add("url", $gptTargetedItem.url))
+			
+			#set($foo = $tempObject.add("title", $mpItem.title))
+			
+			#set($average = $math.divide($math.round($math.multiply($feedback.averageRating($mpItem.getContentID().intValue()), 100)),100))
+			#set($foo = $tempObject.add("average", $average))
+			
+		
+			#set($foo = $mpItems.add($tempObject))
+		#end
+		
+		#set($sortedMP = $util.newArrayList)
+		#foreach($i in [0..$math.subtract($mpItems.size(), 1)])
+			#set($place = -1)
+			#foreach($item in $sortedMP)					
+				#set($itemAvg = $math.newInt($math.multiply($item.average,100)))
+				#set($mpAvg = $math.newInt($math.multiply($mpItems.get($i).average,100)))
+				
+				#if($place <= -1 && $itemAvg < $mpAvg)
+					#set($place = $math.subtract($velocityCount, 1))
+				#end
+			#end
+			
+			#if($place > -1)
+				#set($foo = $sortedMP.add($place, $mpItems.get($i)))
+			#else
+				#set($foo = $sortedMP.add($sortedMP.size(), $mpItems.get($i)))
+			#end
+		#end
+		
+		#foreach($item in $sortedMP)
+			#if($velocityCount < 4)
+				#if($velocityCount > 1)
+					<div class="mediaDivider" style="clear:both;width:160px;"></div>
+				#end
+				
+				<p>
+					#set($grioInputImage = $item.image)
+					#set($grioMaxWidth = 53)
+					#set($grioInputAttributes = " style='float:left; padding:5px;'")
+					$cms.template("Get Resized Image Object")
+					$!grioOutputString
+
+					<a href="$item.url">$item.title</a>
+					<span>
+						Avg:&nbsp;$item.average
+					</span>
+				</p>
+			#end
+		#end
+    </div>
+<div class="nextBottom">
+		</div>
+</div>
+*#

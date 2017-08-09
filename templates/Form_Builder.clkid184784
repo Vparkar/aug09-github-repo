@@ -1,0 +1,28 @@
+#set($content = $cms.content(123 , false))
+
+<html>
+<body>
+
+<script>
+function checkthis(form){
+
+}
+</script>
+
+
+<form name="myform">
+<input type="hidden" name="campaign_id" value="$content.campaignid" />
+
+#loop through fields to show
+if(firstname)
+     <input name="loop_first" value="$loopitem.defaultvalue" class="inputclass #if($required) required #end" />
+
+if lastname
+  ..........................
+
+
+
+
+</form>
+</body>
+</html>

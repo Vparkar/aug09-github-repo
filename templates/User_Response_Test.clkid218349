@@ -1,0 +1,34 @@
+add "delete=y" to url to test delete cookie<br>
+
+	<h1>User Response Headers</h1>
+	<table>
+		<tr>
+			<td>Committed?</td>
+			<td>$userResponse.isCommitted()</td>
+		</tr>
+		<tr>
+			<td>set Puppet Header</td>
+			<td>$userResponse.setHeader("Puppet", "this is amazing")</td>
+		</tr>
+	
+		<tr>
+			<td>set Dozen Header</td>
+			<td>$userResponse.setIntHeader("Dozen", $math.newInt(12))</td>
+		</tr>
+	
+		<tr>
+			<td>set Test Time Header</td>
+			<td>$userResponse.setDateHeader("Test Time", $util.now)</td>
+		</tr>
+	
+		<tr>
+			<td>Set Mills Cookie</td>
+			<td>$userResponse.setCookie("Mills", "is my last name", 600)</td>
+		</tr>
+		#if($req.param("delete") && $req.param("delete") == "y")
+		<tr>
+			<td>Remove Mills Cookie</td>
+			<td>$userResponse.removeCookie("Mills")</td>
+		</tr>
+		#end
+	</table>

@@ -1,0 +1,18 @@
+// toggle list and toggler image
+function toggle(image,list)
+{
+	var hiddencontent=document.getElementById(list).style;
+
+	if (hiddencontent.display=="none")
+	{
+		hiddencontent.display="block";
+		document.getElementById(image).src="http://images.clickability.com/designimages/success_close.gif";
+		document.getElementById(image).alt="Close -";
+	}
+		else
+	{
+		hiddencontent.display="none";
+		document.getElementById(image).src="http://images.clickability.com/designimages/success_open.gif";
+		document.getElementById(image).alt="Open +";
+	}
+}

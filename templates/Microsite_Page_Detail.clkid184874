@@ -1,0 +1,65 @@
+#set($content = $cms.content)
+
+#if(!$content)
+	#foreach($item in $cms.filteredLinks("Microsite Page", 1, 1))
+		#set($content = $item)
+	#end
+#end
+
+
+##set($content = $cms.content(48159927, false))
+
+#if($content.typeName == "Microsite Page")
+	#set($gibInputIB = $content.wrapperHTML)
+	#set($gibMaxItems = 1)
+	#set($returnUntargetedItems = true)
+	$cms.template("Get IB Items")
+
+	#foreach($item in $gibOutputArray)
+		#set($wrapper = $item)
+		#end	
+#else
+	#set($wrapper = $content)
+#end
+
+<style>
+	body{ margin-top:0px; margin-right:auto; margin-left:auto; width:994px; }
+
+	input, textarea{ font-size:.8em; }
+
+	#mainsectionWrapper{ width:994px; left:auto; right:auto; background-color:#dddddd; }
+;
+	#contentsectionInner{ width:990px; }
+
+	#content{ width:990px; overflow:hidden; }
+	
+	.clear{ clear:both; }
+
+	#set($numCols = 0)
+
+	#if($wrapper.showLeftColumn)
+		#set($numCols = $math.add($numCols, 1))
+		#contentOne{ width:200px; float:right; border:solid 1px #aaaaaa; margin-left:10px; padding:5px; }
+	#end
+
+	#if($wrapper.showRightColumn)
+		#set($numCols = $math.add($numCols, 1))
+		#contentThree{ width:200px; float:right; border:solid 1px #aaaaaa; margin-right:10px; padding:5px; }
+	#end
+
+	#contentTwo{ width:$math.subtract(918, $math.multiply(200, $numCols))px; float:right;  border:solid 1px #aaaaaa; padding:5px; margin: 0px 10px 0px 10px; }
+</style>
+
+<html>
+<body>
+	<div id="mainsectionWrapper">
+		<div id="contentsectionInner">
+			#if($wrapper.topHTML && $wrapper.topHTML.indexOf("#insertBody") > -1)
+				$!wrapper.topHTML.replaceAll("#insertBody", "#if($wrapper.showRightColumn)<div id='contentThree'>#set($moduleIB = $content.rightColumnModules)$cms.template('Display Modules')</div>#end<div id='contentTwo'>$!content.body</div>#if($wrapper.showLeftColumn)<div id='contentOne'>#set($moduleIB = $content.leftColumnModules)$cms.template('Display Modules')</div><div class='clear'></div>#end")
+			#else
+				#if($wrapper.showRightColumn)<div id='contentThree'>#set($moduleIB = $content.rightColumnModules)$cms.template('Display Modules')</div>#end<div id='contentTwo'>$!content.body</div>#if($wrapper.showLeftColumn)<div id='contentOne'>#set($moduleIB = $content.leftColumnModules)$cms.template('Display Modules')</div>#end<div class='clear'></div>
+			#end
+		</div>
+	</div>
+</body>
+</html>

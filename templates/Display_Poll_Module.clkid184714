@@ -1,0 +1,14 @@
+<h5>$module.title</h5>
+
+<form id="poll" action="http://polls.clickability.com/polls" >
+	<input type="hidden" name="pid" value="$module.id" />
+	<input type="hidden" name="cid" value="$cms.customerID" />
+	<input type="hidden" name="mr" value="1000" />
+	<input type="hidden" name="rurl" value="http://${cms.envHost}${cms.domain}$topLevel.path/polls/${module.id}.html?results=y">
+
+	#foreach($choice in $module.answers)
+		<p><span class="pCheck"><input name="oid" value="$velocityCount" #if($content.ismultivalue)type="checkbox" #else type="radio" #end>$choice.answer</span></p>
+	#end
+
+	<p><input type="submit" class="btn" value="vote" /></p>
+</form>

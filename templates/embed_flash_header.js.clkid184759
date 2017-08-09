@@ -1,0 +1,11 @@
+                var flashvars = {};
+                                     flashvars.pathToXml = "http://$cms.envHost${cms.domain}/templates/homepage_banner_xml.xml"
+                                     flashvars.pathToCss = "http://$cms.envHost${cms.domain}/templates/homepage_banner_styles.css"
+                                var params = {};
+                                                params.menu = "false";
+                                                params.quality = "high";
+                                                params.wmode = "transparent";
+                                                params.AllowScriptAccess = "always";
+                                var attributes = {};
+                                                attributes.id = "flashcontent";
+                                swfobject.embedSWF("$cms.media("clickability_flash.swf", "designvideo").url", "flashcontent", "943", "220", "9.0.0", "$cms.media("expressinstall.swf", "designvideo").url", flashvars, params, attributes);
