@@ -1,0 +1,32 @@
+##test
+#if($userRequest.referrerSearchEngine)
+Search engine was: $userRequest.referrerSearchEngine.name
+Keywords were:$userRequest.referrerSearchEngine.keywords
+#end 
+
+$userRequest.getUri()
+
+$userAgent.getUserAgent()
+
+<h4>Location</h4>
+<p>IP: $userLocation.ip</p>
+<p>Is Available: $userLocation.isAvailable()</p>
+<p>Country: $userLocation.country</p>
+<p>Region: $userLocation.region</p>
+<p>City: $userLocation.city</p>
+<p>Logitude: $userLocation.longitude</p>
+<p>Latitude: $userLocation.latitude</p>
+<p>Postal: $userLocation.postalCode</p>
+<p>MetroCode: $userLocation.metropolitanCode</p>
+<p>AreaCode: $userLocation.areaCode</p>
+<p>ISP: $userLocation.isp</p>
+<p>Org: $userLocation.organization</p>
+
+<h4>Keys</h4>
+<div>
+#foreach($key in $userData.keys())
+$key<br/>
+#end
+</div>
+
+
